@@ -19,6 +19,7 @@
     "framer-motion": "^11.1.7",
     "invert-color": "^2.0.0",
     "prettier": "^3.2.5",
+    "qrcode": "^1.5.3",
     "react-icons": "^5.1.0",
     "tailwind-merge": "^2.2.2"
   },

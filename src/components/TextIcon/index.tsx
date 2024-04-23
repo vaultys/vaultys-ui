@@ -23,7 +23,7 @@ export const TextIcon: React.FC<TextIconProps> = ({ text = "Te", backgroundColor
   const textY = 90;
 
   return (
-    <div style={{ backgroundColor, padding }} className={className}>
+    <div style={{ backgroundColor, fill, padding }} className={className}>
       <svg viewBox="0 0 128 128">
         <text fontSize={textSize} fontFamily="monospace" x={textX} y={textY}>
           {displayText.slice(0, 2).toLocaleUpperCase()}
