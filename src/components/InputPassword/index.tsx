@@ -1,0 +1,54 @@
+"use client";
+import { Input } from "@nextui-org/react";
+import { useState } from "react";
+import { BiCopy, BiHide, BiShow } from "react-icons/bi";
+
+export interface InputPasswordProps {
+  label: string;
+  onChange?: (value: string) => void;
+  valid?: boolean;
+  placeholder?: string;
+  value?: string;
+  className?: string;
+  disabled?: boolean;
+  copyToClipboard?: boolean;
+  color?: string;
+  testId?: string;
+}
+
+export const InputPassword: React.FC<InputPasswordProps> = ({ label, onChange, valid = true, placeholder, value, disabled, copyToClipboard = false, color, testId }) => {
+  const [show, setShow] = useState<boolean>();
+  return (
+    <Input
+      data-test={testId}
+      label={label}
+      value={value}
+      placeholder={placeholder}
+      onValueChange={(value: string) => onChange && onChange(value)}
+      classNames={{
+        inputWrapper: color,
+        label: "text-lg font-bold",
+      }}
+      isInvalid={!valid}
+      isDisabled={disabled}
+      endContent={
+        <div className="flex flex-row gap-2 items-center">
+          {copyToClipboard && (
+            <BiCopy
+              className="text-xl cursor-pointer"
+              onClick={() => {
+                if (value) {
+                  navigator.clipboard.writeText(value);
+                }
+              }}
+            />
+          )}
+          <button className="focus:outline-none" type="button" onClick={() => setShow(!show)}>
+            {show ? <BiShow className="text-xl cursor-pointer" /> : <BiHide className="text-xl cursor-pointer" />}
+          </button>
+        </div>
+      }
+      type={show ? "text" : "password"}
+    />
+  );
+};

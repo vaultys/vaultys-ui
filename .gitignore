@@ -145,3 +145,4 @@ public/workbox-*
 .env.test
 cypress/screenshots
 cypress/videos
+*storybook.log

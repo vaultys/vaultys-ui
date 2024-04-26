@@ -1,0 +1,17 @@
+import { Meta, StoryObj } from "@storybook/react";
+import TextIcon from ".";
+
+const meta: Meta<typeof TextIcon> = {
+  component: TextIcon,
+};
+
+export default meta;
+type Story = StoryObj<typeof TextIcon>;
+
+export const Primary: Story = {
+  args: {
+    text: "hello world",
+    backgroundColor: "#0000FF",
+    className: "w-32 h-32 rounded-full",
+  },
+};
