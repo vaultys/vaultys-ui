@@ -1,3 +1,4 @@
+"use client";
 import invert from "invert-color";
 
 export interface TextIconProps {
