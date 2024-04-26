@@ -1,5 +1,5 @@
 "use client";
-import { ReactElement, useEffect, useRef, useState } from "react";
+import { ReactElement, ReactNode, useEffect, useRef, useState } from "react";
 import { Header } from "./Header";
 import { Row } from "./Row";
 import { HeaderItem } from "./HeaderItem";
@@ -67,6 +67,8 @@ export interface TableProps {
   dataTest?: string;
   blur?: boolean;
   unselectAll?: boolean;
+  emptyTableContent?: ReactNode;
+  showLines?: boolean;
 }
 
 export const Table: React.FC<TableProps> = ({
@@ -79,6 +81,8 @@ export const Table: React.FC<TableProps> = ({
   dataTest,
   blur = false,
   unselectAll,
+  emptyTableContent,
+  showLines,
 }) => {
   const [selectedAll, setSelectedAll] = useState<boolean>(false);
   const [editMode, setEditMode] = useState<boolean>(false);
@@ -378,36 +382,43 @@ export const Table: React.FC<TableProps> = ({
   };
 
   return (
-    <table className="w-full text-sm text-left" ref={ref} data-test={dataTest}>
-      <Header items={getHeaderItems()} />
-      <tbody data-test={`${dataTest}-body`}>
-        {rows.sort(applySort).map((row: TableRow, index: number) => (
-          <Row
-            blur={blur}
-            dataTest={`${dataTest}-row-${index}`}
-            id={row.rowId}
-            clickable={row.clickable && typeof row.onClick === "function"}
-            warning={row.warning}
-            danger={row.danger}
-            inactiveState={row.inactive}
-            onSelectedClicked={(selected: boolean) => {
-              if (selected) {
-                setSelectedIds([...selectedIds, row.id]);
-              } else {
-                setSelectedIds(selectedIds.filter((selectedId) => selectedId !== row.id));
-              }
-            }}
-            onRowClicked={() => (row.clickable && typeof row.onClick === "function" ? row.onClick() : changeRowInEditMode(row.id))}
-            selectable={row.selectable}
-            tableSelectable={selectable}
-            selected={selectedAll}
-            key={row.id}
-            rowItems={getRowItems(row)}
-            configurable={configureButton}
-            onConfigureClicked={() => typeof row.onConfigureClicked === "function" && row.onConfigureClicked()}
-          />
-        ))}
-      </tbody>
-    </table>
+    <div className="bg-light-secondary dark:bg-dark-secondary p-4 rounded-large shadow-small flex flex-col relative min-h-[400px] ">
+      {rows.length === 0 && emptyTableContent && (
+        <div className="absolute top-0 opacity-50 bottom-0 left-0 right-0 flex items-center justify-center text-center">{emptyTableContent}</div>
+      )}
+      <table className="min-w-full h-auto table-auto w-full border-separate border-spacing-y-1" ref={ref} data-test={dataTest}>
+        <Header items={getHeaderItems()} />
+        <tbody data-test={`${dataTest}-body`}>
+          {rows.sort(applySort).map((row: TableRow, index: number) => (
+            <Row
+              rowIndex={index}
+              showLines={showLines}
+              blur={blur}
+              dataTest={`${dataTest}-row-${index}`}
+              id={row.rowId}
+              clickable={row.clickable && typeof row.onClick === "function"}
+              warning={row.warning}
+              danger={row.danger}
+              inactiveState={row.inactive}
+              onSelectedClicked={(selected: boolean) => {
+                if (selected) {
+                  setSelectedIds([...selectedIds, row.id]);
+                } else {
+                  setSelectedIds(selectedIds.filter((selectedId) => selectedId !== row.id));
+                }
+              }}
+              onRowClicked={() => (row.clickable && typeof row.onClick === "function" ? row.onClick() : changeRowInEditMode(row.id))}
+              selectable={row.selectable}
+              tableSelectable={selectable}
+              selected={selectedAll}
+              key={row.id}
+              rowItems={getRowItems(row)}
+              configurable={configureButton}
+              onConfigureClicked={() => typeof row.onConfigureClicked === "function" && row.onConfigureClicked()}
+            />
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 };

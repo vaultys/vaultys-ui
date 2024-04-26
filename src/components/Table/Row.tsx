@@ -21,6 +21,8 @@ export interface RowProps {
   danger?: boolean;
   blur?: boolean;
   dataTest?: string;
+  rowIndex?: number;
+  showLines?: boolean;
 }
 
 export const Row: React.FC<RowProps> = ({
@@ -40,6 +42,8 @@ export const Row: React.FC<RowProps> = ({
   danger = false,
   blur = false,
   dataTest,
+  rowIndex,
+  showLines,
 }) => {
   const [isSelected, setIsSelected] = useState<boolean>(false);
 
@@ -51,11 +55,13 @@ export const Row: React.FC<RowProps> = ({
     <tr
       data-test={dataTest}
       id={id}
-      className={`${isSelected ? "bg-secondary" : `${danger ? "bg-danger" : warning ? "bg-warning" : "bg-light-secondary dark:bg-dark-secondary"}`} ${
-        inactiveState && "text-gray-500"
-      }
-      border-b ${blur && "blur-sm"} hover:blur-0
-       border-light dark:border-dark hover:brightness-75 dark:hover:brightness-125 h-12 ${clickable && "cursor-pointer"}`}
+      className={`${rowIndex && rowIndex % 2 !== 0 && showLines && "brightness-95 dark:brightness-110"} ${
+        isSelected
+          ? "bg-primary/20 text-primary dark:bg-secondary/20 dark:text-secondary"
+          : `${danger ? "bg-danger" : warning ? "bg-warning" : `bg-light-secondary dark:bg-dark-secondary`}`
+      } ${inactiveState && "text-gray-500"}
+      ${blur && "blur-sm"} hover:blur-0 
+       hover:brightness-75 dark:hover:brightness-125 h-12 ${clickable && "cursor-pointer"}`}
       onClick={() => {
         typeof onRowClicked === "function" && onRowClicked();
       }}
