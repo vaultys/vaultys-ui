@@ -7,3 +7,4 @@ export * from "./components/NavButton";
 export * from "./components/NavBarPC";
 export * from "./components/SearchBar";
 export * from "./components/InputPassword";
+export * from "./components/AsyncModal";
