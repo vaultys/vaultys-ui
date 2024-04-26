@@ -164,7 +164,7 @@ export const Table: React.FC<TableProps> = ({
     if (currentRow?.id === rowId) return;
     const update = values.reduce((res: any, element) => {
       const col = cols.find((col: TableColumn) => col.jsonFieldName === element.jsonFieldName);
-      col?.inputType === "date" ? (res[element.jsonFieldName] = new Date(element.value).toISOString()) : (res[element.jsonFieldName] = element.value);
+      col?.inputType === "date" && element.value ? (res[element.jsonFieldName] = new Date(element.value).toISOString()) : (res[element.jsonFieldName] = element.value);
       return res;
     }, {});
 
