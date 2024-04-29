@@ -109,14 +109,15 @@ const InputModalContextProvider: React.FC<InputModalContextProviderProps> = (pro
         <Modal
           isOpen={isOpen}
           onClose={onClose}
+          backdrop="blur"
           className={content.className}
           classNames={{
-            base: "bg-light dark:bg-dark",
+            base: "vui-bg-light dark:vui-bg-dark vui-text-black dark:vui-text-white",
           }}
         >
           <ModalContent>
-            <ModalHeader className="flex flex-col items-center">{content.title}</ModalHeader>
-            <ModalBody className="items-center gap-8">
+            <ModalHeader className="vui-flex vui-flex-col vui-items-center">{content.title}</ModalHeader>
+            <ModalBody className="vui-items-center vui-gap-8">
               <div>{content.message}</div>
 
               {content.type === "password" && (
@@ -126,7 +127,7 @@ const InputModalContextProvider: React.FC<InputModalContextProviderProps> = (pro
                   placeholder="Type here to validate"
                   onChange={(value: string) => setVal(value)}
                   value={val}
-                  color="bg-light-secondary dark:bg-dark-secondary"
+                  color="vui-bg-light-secondary dark:vui-bg-dark-secondary"
                 />
               )}
               {content.type === "confirm" && (
@@ -137,18 +138,18 @@ const InputModalContextProvider: React.FC<InputModalContextProviderProps> = (pro
                   onValueChange={(value: string) => setVal(value)}
                   value={val}
                   classNames={{
-                    inputWrapper: "bg-light-secondary dark:bg-dark-secondary",
+                    inputWrapper: "vui-bg-light-secondary dark:vui-bg-dark-secondary",
                   }}
                 />
               )}
             </ModalBody>
             <ModalFooter>
-              <Button color="success" className="text-white" onPress={() => handleOk()} data-test="confirm-dialog-accept">
-                <span className="text-ellipsis truncate ...">{content.acceptText}</span>
+              <Button color="success" className="vui-text-white" onPress={() => handleOk()} data-test="confirm-dialog-accept">
+                <span className="vui-text-ellipsis vui-truncate ...">{content.acceptText}</span>
               </Button>
               {content.type !== "info" && (
-                <Button color="danger" className="text-white" onPress={() => handleCancel()} data-test="confirm-dialog-deny">
-                  <span className="text-ellipsis truncate ...">{content.declineText}</span>
+                <Button color="danger" className="vui-text-white" onPress={() => handleCancel()} data-test="confirm-dialog-deny">
+                  <span className="vui-text-ellipsis vui-truncate ...">{content.declineText}</span>
                 </Button>
               )}
             </ModalFooter>

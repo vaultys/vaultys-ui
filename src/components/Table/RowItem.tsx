@@ -80,7 +80,7 @@ export const RowItem: React.FC<RowItemProps> = ({
 
   return (
     <td
-      className={` px-2 first:rounded-l-lg rtl:first:rounded-r-lg rtl:first:rounded-l-[unset] last:rounded-r-lg rtl:last:rounded-l-lg rtl:last:rounded-r-[unset] ${className}`}
+      className={` vui-px-2 first:vui-rounded-l-lg rtl:first:vui-rounded-r-lg rtl:first:vui-rounded-l-[unset] last:vui-rounded-r-lg rtl:last:vui-rounded-l-lg rtl:last:vui-rounded-r-[unset] ${className}`}
       id={id}
       data-test={testId}
     >

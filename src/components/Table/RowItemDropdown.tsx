@@ -10,7 +10,7 @@ export interface RowItemDropdownProps {
 
 export const RowItemDropdown: React.FC<RowItemDropdownProps> = ({ value, items, onChange }) => {
   return (
-    <Dropdown className="bg-light dark:bg-dark">
+    <Dropdown className="vui-bg-light dark:vui-bg-dark">
       <DropdownTrigger>
         <Button endContent={<IoMdArrowDropdown />} variant="bordered">
           {value}

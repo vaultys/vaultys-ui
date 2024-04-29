@@ -13,5 +13,5 @@ export const QrCodeElement: React.FC<QrCodeElementProps> = ({ text, className })
     const canvas = canvasRef.current;
     QRCode.toCanvas(canvas, text);
   }, []);
-  return <canvas ref={canvasRef} className={`rounded-lg shadow-lg ${className}`} />;
+  return <canvas ref={canvasRef} className={`vui-rounded-lg vui-shadow-lg ${className}`} />;
 };

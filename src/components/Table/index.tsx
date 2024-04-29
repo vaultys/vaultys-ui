@@ -1,5 +1,5 @@
 "use client";
-import { ReactElement, ReactNode, useEffect, useRef, useState } from "react";
+import React, { ReactElement, ReactNode, useEffect, useRef, useState } from "react";
 import { Header } from "./Header";
 import { Row } from "./Row";
 import { HeaderItem } from "./HeaderItem";
@@ -382,11 +382,13 @@ export const Table: React.FC<TableProps> = ({
   };
 
   return (
-    <div className="bg-light-secondary dark:bg-dark-secondary p-4 rounded-large shadow-small flex flex-col relative min-h-[400px] ">
+    <div className="vui-bg-light-secondary dark:vui-bg-dark-secondary vui-p-4 vui-rounded-large vui-shadow-small vui-flex vui-flex-col vui-relative vui-min-h-[400px] ">
       {rows.length === 0 && emptyTableContent && (
-        <div className="absolute top-0 opacity-50 bottom-0 left-0 right-0 flex items-center justify-center text-center">{emptyTableContent}</div>
+        <div className="vui-absolute vui-top-0 vui-opacity-50 vui-bottom-0 vui-left-0 vui-right-0 vui-flex vui-items-center vui-justify-center vui-text-center">
+          {emptyTableContent}
+        </div>
       )}
-      <table className="min-w-full h-auto table-auto w-full border-separate border-spacing-y-1" ref={ref} data-test={dataTest}>
+      <table className="vui-min-w-full vui-h-auto vui-table-auto vui-w-full vui-border-separate vui-border-spacing-y-1" ref={ref} data-test={dataTest}>
         <Header items={getHeaderItems()} />
         <tbody data-test={`${dataTest}-body`}>
           {rows.sort(applySort).map((row: TableRow, index: number) => (

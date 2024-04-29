@@ -27,15 +27,15 @@ export const InputPassword: React.FC<InputPasswordProps> = ({ label, onChange, v
       onValueChange={(value: string) => onChange && onChange(value)}
       classNames={{
         inputWrapper: color,
-        label: "text-lg font-bold",
+        label: "vui-text-lg vui-font-bold",
       }}
       isInvalid={!valid}
       isDisabled={disabled}
       endContent={
-        <div className="flex flex-row gap-2 items-center">
+        <div className="vui-flex vui-flex-row vui-gap-2 vui-items-center">
           {copyToClipboard && (
             <BiCopy
-              className="text-xl cursor-pointer"
+              className="vui-text-xl vui-cursor-pointer"
               onClick={() => {
                 if (value) {
                   navigator.clipboard.writeText(value);
@@ -43,8 +43,8 @@ export const InputPassword: React.FC<InputPasswordProps> = ({ label, onChange, v
               }}
             />
           )}
-          <button className="focus:outline-none" type="button" onClick={() => setShow(!show)}>
-            {show ? <BiShow className="text-xl cursor-pointer" /> : <BiHide className="text-xl cursor-pointer" />}
+          <button className="focus:vui-outline-none" type="button" onClick={() => setShow(!show)}>
+            {show ? <BiShow className="vui-text-xl vui-cursor-pointer" /> : <BiHide className="vui-text-xl vui-cursor-pointer" />}
           </button>
         </div>
       }

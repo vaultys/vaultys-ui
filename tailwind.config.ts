@@ -2,6 +2,7 @@ import type { Config } from "tailwindcss";
 import { nextui } from "@nextui-org/react";
 
 const config: Config = {
+  prefix: "vui-",
   darkMode: ["class", 'html[class~="dark"]'],
   content: ["./src/components/**/*.{js,ts,jsx,tsx,mdx}", "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}"],
   theme: {
@@ -29,6 +30,13 @@ const config: Config = {
       },
     },
   },
-  plugins: [nextui()],
+  plugins: [
+    nextui({
+      prefix: "vui-",
+    }),
+  ],
+  corePlugins: {
+    preflight: false,
+  },
 };
 export default config;
