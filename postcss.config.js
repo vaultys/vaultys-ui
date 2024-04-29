@@ -1,4 +1,8 @@
-const tailwindcss = require("tailwindcss");
 module.exports = {
-  plugins: [require("tailwindcss")(), require("autoprefixer")()],
+  plugins: {
+    tailwindcss: {
+      config: process.env.MODE === "storybook" ? "./tailwind.storybook.config.ts" : "tailwind.config.ts",
+    },
+    autoprefixer: {},
+  },
 };

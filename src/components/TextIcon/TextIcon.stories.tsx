@@ -12,6 +12,6 @@ export const Primary: Story = {
   args: {
     text: "hello world",
     backgroundColor: "#0000FF",
-    className: "w-32 h-32 rounded-full",
+    className: "vui-w-32 vui-h-32 vui-rounded-full",
   },
 };
