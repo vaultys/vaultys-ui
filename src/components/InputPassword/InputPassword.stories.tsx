@@ -1,4 +1,5 @@
 import { Meta, StoryObj } from "@storybook/react";
+import "../../../dist/index.css";
 import { InputPassword } from ".";
 const meta: Meta<typeof InputPassword> = {
   title: "",

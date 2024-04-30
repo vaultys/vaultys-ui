@@ -1,5 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { QrCodeElement } from ".";
+import "../../../dist/index.css";
 const meta: Meta<typeof QrCodeElement> = {
   component: QrCodeElement,
 };

@@ -119,16 +119,21 @@ export interface SelectLanguageProps {
   languages: string[];
   onLanguageClicked: (language: string) => void;
   currentValue: string;
+  size: "sm" | "md" | "lg" | "xl" | "2xl" | "3xl" | "4xl" | "5xl";
 }
 
-export const SelectLanguage: React.FC<SelectLanguageProps> = ({ languages, onLanguageClicked, currentValue }) => {
+export const SelectLanguage: React.FC<SelectLanguageProps> = ({ languages, onLanguageClicked, currentValue, size = "3xl" }) => {
   const Flag = ({ lc, emoji }) => (
-    <div className={`text-3xl cursor-pointer px-1 ${currentValue == lc ? "" : "opacity-20"}`} onClick={() => onLanguageClicked(lc)} data-test={lc}>
+    <div
+      className={`${size === "sm" && "vui-text-sm"} ${size === "md" && "vui-text-md"} ${size === "lg" && "vui-text-lg"} ${size === "xl" && "vui-text-xl"} ${size === "2xl" && "vui-text-2xl"} ${size === "3xl" && "vui-text-3xl"} ${size === "4xl" && "vui-text-4xl"} ${size === "5xl" && "vui-text-5xl"} vui-cursor-pointer vui-px-1 ${currentValue == lc ? "" : "vui-opacity-20"}`}
+      onClick={() => onLanguageClicked(lc)}
+      data-test={lc}
+    >
       {emoji}
     </div>
   );
   return (
-    <div className="flex flex-row gap-1">
+    <div className="vui-flex vui-flex-row vui-gap-1">
       {languages.map((language) => (
         <Flag lc={language} emoji={emojis[language]} />
       ))}
