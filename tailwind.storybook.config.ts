@@ -2,7 +2,7 @@ import type { Config } from "tailwindcss";
 import { nextui } from "@nextui-org/react";
 
 const config: Config = {
-  darkMode: ["class", 'html[class~="dark"]'],
+  darkMode: "class",
   content: ["./src/components/**/*.{js,ts,jsx,tsx,mdx}", "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}"],
   theme: {
     fontFamily: {
