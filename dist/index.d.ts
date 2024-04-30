@@ -142,4 +142,10 @@ type InputModalContextProviderProps = {
 declare const InputModalContextProvider: React$1.FC<InputModalContextProviderProps>;
 declare const useInputModalContext: () => ModalContextType;
 
-export { ColumnType, InputModalContextProvider, InputPassword, type InputPasswordProps, NavBar, type NavBarProps, NavButton, type NavButtonProps, QrCodeElement, type QrCodeElementProps, type RowItem, SearchBar, type SearchBarProps, SortType, Table, type TableColumn, type TableProps, type TableRow, TextIcon, type TextIconProps, WindowScreen, type WindowScreenProps, useInputModalContext, useModalShow };
+interface LoaderProps {
+    message: string;
+    img: string;
+}
+declare const Loader: React.FC<LoaderProps>;
+
+export { ColumnType, InputModalContextProvider, InputPassword, type InputPasswordProps, Loader, type LoaderProps, NavBar, type NavBarProps, NavButton, type NavButtonProps, QrCodeElement, type QrCodeElementProps, type RowItem, SearchBar, type SearchBarProps, SortType, Table, type TableColumn, type TableProps, type TableRow, TextIcon, type TextIconProps, WindowScreen, type WindowScreenProps, useInputModalContext, useModalShow };
