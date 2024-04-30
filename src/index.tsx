@@ -9,3 +9,4 @@ export * from "./components/SearchBar";
 export * from "./components/InputPassword";
 export * from "./components/AsyncModal";
 export * from "./components/Loader";
+export * from "./components/SelectLanguage";

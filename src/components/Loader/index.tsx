@@ -12,10 +12,10 @@ export const Loader: React.FC<LoaderProps> = ({ message, img }) => {
 
   if (show) {
     return (
-      <div className="py-7 h-screen flex flex-row items-center bg-primary">
-        <div className="flex flex-col items-center m-auto gap-5 p-10 backdrop-blur rounded-full shadow-[rgba(0,_0,_0,_0.2)_0px_30px_20px_-7px] bg-white bg-opacity-25">
-          <img src={img} className="h-56" alt="Smartlink" />
-          <div className="">{message}</div>
+      <div className="p-5 flex flex-row items-center justify-center">
+        <div className="flex flex-col items-center gap-5 animate-pulse">
+          <img className="h-20" src={img} />
+          {message}
         </div>
       </div>
     );

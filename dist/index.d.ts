@@ -148,4 +148,11 @@ interface LoaderProps {
 }
 declare const Loader: React.FC<LoaderProps>;
 
-export { ColumnType, InputModalContextProvider, InputPassword, type InputPasswordProps, Loader, type LoaderProps, NavBar, type NavBarProps, NavButton, type NavButtonProps, QrCodeElement, type QrCodeElementProps, type RowItem, SearchBar, type SearchBarProps, SortType, Table, type TableColumn, type TableProps, type TableRow, TextIcon, type TextIconProps, WindowScreen, type WindowScreenProps, useInputModalContext, useModalShow };
+interface SelectLanguageProps {
+    languages: string[];
+    onLanguageClicked: (language: string) => void;
+    currentValue: string;
+}
+declare const SelectLanguage: React.FC<SelectLanguageProps>;
+
+export { ColumnType, InputModalContextProvider, InputPassword, type InputPasswordProps, Loader, type LoaderProps, NavBar, type NavBarProps, NavButton, type NavButtonProps, QrCodeElement, type QrCodeElementProps, type RowItem, SearchBar, type SearchBarProps, SelectLanguage, type SelectLanguageProps, SortType, Table, type TableColumn, type TableProps, type TableRow, TextIcon, type TextIconProps, WindowScreen, type WindowScreenProps, useInputModalContext, useModalShow };
