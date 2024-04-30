@@ -21,5 +21,3 @@ export const Loader: React.FC<LoaderProps> = ({ message, img }) => {
     );
   } else return <></>;
 };
-
-export default Loader;
