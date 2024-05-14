@@ -382,7 +382,7 @@ export const Table: React.FC<TableProps> = ({
   };
 
   return (
-    <div className="vui-bg-light-secondary dark:vui-bg-dark-secondary vui-p-4 vui-rounded-large vui-shadow-small vui-flex vui-flex-col vui-relative vui-min-h-[400px] ">
+    <div className="vui-bg-light-secondary dark:vui-bg-dark-secondary w-max vui-min-w-full vui-p-4 vui-rounded-large vui-shadow-small vui-flex vui-flex-col vui-relative vui-min-h-[400px]">
       {rows.length === 0 && emptyTableContent && (
         <div className="vui-absolute vui-top-0 vui-opacity-50 vui-bottom-0 vui-left-0 vui-right-0 vui-flex vui-items-center vui-justify-center vui-text-center">
           {emptyTableContent}
