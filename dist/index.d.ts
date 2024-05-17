@@ -156,4 +156,23 @@ interface SelectLanguageProps {
 }
 declare const SelectLanguage: React.FC<SelectLanguageProps>;
 
-export { ColumnType, InputModalContextProvider, InputPassword, type InputPasswordProps, Loader, type LoaderProps, NavBar, type NavBarProps, NavButton, type NavButtonProps, QrCodeElement, type QrCodeElementProps, type RowItem, SearchBar, type SearchBarProps, SelectLanguage, type SelectLanguageProps, SortType, Table, type TableColumn, type TableProps, type TableRow, TextIcon, type TextIconProps, WindowScreen, type WindowScreenProps, useInputModalContext, useModalShow };
+declare enum PasswordType {
+    PASSWORD = 0,
+    PASSPHRASE = 1
+}
+type PasswordConfig = {
+    length: number;
+    numbers: boolean;
+    capitalLetters: boolean;
+    lowercaseLetters: boolean;
+    specialCharacters: boolean;
+};
+type PassphraseConfig = {};
+interface PasswordGeneratorProps {
+    passwordType?: PasswordType;
+    passwordConfig?: PasswordConfig;
+    passphraseConfig?: PassphraseConfig;
+}
+declare const PasswordGenerator: React.FC<PasswordGeneratorProps>;
+
+export { ColumnType, InputModalContextProvider, InputPassword, type InputPasswordProps, Loader, type LoaderProps, NavBar, type NavBarProps, NavButton, type NavButtonProps, type PassphraseConfig, type PasswordConfig, PasswordGenerator, type PasswordGeneratorProps, PasswordType, QrCodeElement, type QrCodeElementProps, type RowItem, SearchBar, type SearchBarProps, SelectLanguage, type SelectLanguageProps, SortType, Table, type TableColumn, type TableProps, type TableRow, TextIcon, type TextIconProps, WindowScreen, type WindowScreenProps, useInputModalContext, useModalShow };

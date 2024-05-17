@@ -73,6 +73,8 @@ __export(src_exports, {
   Loader: () => Loader,
   NavBar: () => NavBar,
   NavButton: () => NavButton,
+  PasswordGenerator: () => PasswordGenerator,
+  PasswordType: () => PasswordType,
   QrCodeElement: () => QrCodeElement,
   SearchBar: () => SearchBar,
   SelectLanguage: () => SelectLanguage,
@@ -1074,6 +1076,168 @@ var SelectLanguage = ({ languages, onLanguageClicked, currentValue, size = "3xl"
   );
   return /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("div", { className: "vui-flex vui-flex-row vui-gap-1", children: languages.map((language) => /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(Flag, { lc: language, emoji: emojis[language] })) });
 };
+
+// src/components/PasswordGenerator/index.tsx
+var import_react15 = require("@nextui-org/react");
+var import_react16 = require("react");
+var import_bs3 = require("react-icons/bs");
+var import_fa6 = require("react-icons/fa6");
+var import_fi = require("react-icons/fi");
+var import_jsx_runtime21 = require("react/jsx-runtime");
+var PasswordType = /* @__PURE__ */ ((PasswordType2) => {
+  PasswordType2[PasswordType2["PASSWORD"] = 0] = "PASSWORD";
+  PasswordType2[PasswordType2["PASSPHRASE"] = 1] = "PASSPHRASE";
+  return PasswordType2;
+})(PasswordType || {});
+var CAPITAL_LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+var LOWERCASE_LETTERS = "abcdefghijklmnopqrstuvwxyz";
+var NUMBERS = "0123456789";
+var SPECIAL_CHARS = `.,;:?!'"@#%&*+-_=()[]{}<>/\\|~^`;
+var PasswordGenerator = ({ passwordType, passwordConfig, passphraseConfig }) => {
+  var _a, _b, _c, _d, _e;
+  const [length, setLength] = (0, import_react16.useState)((_a = passwordConfig == null ? void 0 : passwordConfig.length) != null ? _a : 16);
+  const [numbers, setNumbers] = (0, import_react16.useState)((_b = passwordConfig == null ? void 0 : passwordConfig.numbers) != null ? _b : true);
+  const [capitalLetters, setCapitalLetters] = (0, import_react16.useState)((_c = passwordConfig == null ? void 0 : passwordConfig.capitalLetters) != null ? _c : true);
+  const [lowercaseLetters, setLowercaseLetters] = (0, import_react16.useState)((_d = passwordConfig == null ? void 0 : passwordConfig.lowercaseLetters) != null ? _d : true);
+  const [specialCharacters, setSpecialCharacters] = (0, import_react16.useState)((_e = passwordConfig == null ? void 0 : passwordConfig.specialCharacters) != null ? _e : true);
+  const [type, setType] = (0, import_react16.useState)(passwordType != null ? passwordType : 0 /* PASSWORD */);
+  const [robustness, setRobustness] = (0, import_react16.useState)(2 /* GOOD */);
+  const [copied, setCopied] = (0, import_react16.useState)(false);
+  const [password, setPassword] = (0, import_react16.useState)("WrG3q!nmGgK^LLdw*ih7!n");
+  (0, import_react16.useEffect)(() => {
+    if (!numbers && !capitalLetters && !lowercaseLetters && !specialCharacters)
+      setLowercaseLetters(true);
+    else {
+      generatePassword();
+    }
+  }, [numbers, capitalLetters, lowercaseLetters, specialCharacters]);
+  (0, import_react16.useEffect)(() => {
+    let score = 0;
+    score += length * 2;
+    if (capitalLetters)
+      score += 10;
+    if (lowercaseLetters)
+      score += 10;
+    if (numbers)
+      score += 10;
+    if (specialCharacters)
+      score += 10;
+    if (capitalLetters && lowercaseLetters && numbers && specialCharacters)
+      score += 10;
+    if (score > 40 && score <= 50)
+      setRobustness(1 /* MINIMAL */);
+    else if (score > 50 && score <= 75)
+      setRobustness(2 /* GOOD */);
+    else if (score > 75)
+      setRobustness(3 /* ROBUST */);
+    else
+      setRobustness(0 /* BAD */);
+  }, [numbers, capitalLetters, lowercaseLetters, specialCharacters, length]);
+  const generatePassword = () => {
+    let passwordChars = "";
+    let password2 = [];
+    if (lowercaseLetters) {
+      passwordChars += LOWERCASE_LETTERS;
+      let index = Math.floor(Math.random() * length);
+      while (password2[index]) {
+        index = Math.floor(Math.random() * length);
+      }
+      password2[index] = LOWERCASE_LETTERS.charAt(Math.floor(Math.random() * LOWERCASE_LETTERS.length));
+    }
+    if (capitalLetters) {
+      passwordChars += CAPITAL_LETTERS;
+      let index = Math.floor(Math.random() * length);
+      while (password2[index]) {
+        index = Math.floor(Math.random() * length);
+      }
+      password2[index] = CAPITAL_LETTERS.charAt(Math.floor(Math.random() * CAPITAL_LETTERS.length));
+    }
+    if (numbers) {
+      passwordChars += NUMBERS;
+      let index = Math.floor(Math.random() * length);
+      while (password2[index]) {
+        index = Math.floor(Math.random() * length);
+      }
+      password2[index] = NUMBERS.charAt(Math.floor(Math.random() * NUMBERS.length));
+    }
+    if (specialCharacters) {
+      passwordChars += SPECIAL_CHARS;
+      let index = Math.floor(Math.random() * length);
+      while (password2[index]) {
+        index = Math.floor(Math.random() * length);
+      }
+      password2[index] = SPECIAL_CHARS.charAt(Math.floor(Math.random() * SPECIAL_CHARS.length));
+    }
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * passwordChars.length);
+      if (!password2[i])
+        password2[i] = passwordChars.charAt(randomIndex);
+    }
+    setPassword(password2.join(""));
+  };
+  (0, import_react16.useEffect)(() => {
+    setCopied(false);
+  }, [password]);
+  const passwordStrength = () => {
+    switch (robustness) {
+      case 0 /* BAD */:
+        return /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(import_fa6.FaFaceFrown, { className: "vui-text-danger vui-w-16 vui-h-16 vui-mx-auto" });
+      case 1 /* MINIMAL */:
+        return /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(import_fa6.FaFaceMeh, { className: "vui-text-warning vui-w-16 vui-h-16 vui-mx-auto" });
+      case 2 /* GOOD */:
+        return /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(import_fa6.FaFaceSmile, { className: "vui-text-success vui-w-16 vui-h-16 vui-mx-auto" });
+      case 3 /* ROBUST */:
+        return /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(import_fa6.FaFaceGrin, { className: "vui-text-success vui-w-16 vui-h-16 vui-mx-auto" });
+      default:
+        break;
+    }
+  };
+  return /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("div", { className: "vui-flex vui-flex-col vui-gap-2 vui-w-full vui-bg-light dark:vui-bg-dark vui-p-4 vui-text-black dark:vui-text-white vui-rounded-large", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(
+      "div",
+      {
+        className: `vui-flex vui-flex-row vui-flex-shrink-0 vui-justify-between vui-gap-4 vui-border-2 vui-p-4 vui-rounded-large vui-transition-all vui-duration-1000  ${copied ? "vui-border-success vui-bg-success" : "vui-border-modern-blue"}`,
+        children: [
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
+            "span",
+            {
+              onClick: () => {
+                navigator.clipboard.writeText(password);
+                setCopied(true);
+              },
+              className: `vui-grow-0 vui-font-bold vui-cursor-copy vui-break-all vui-w-11/12`,
+              children: password
+            }
+          ),
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(import_bs3.BsCopy, { className: "vui-w-6 vui-h-6" })
+        ]
+      }
+    ),
+    passwordStrength(),
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
+      import_react15.Slider,
+      {
+        label: `Length`,
+        minValue: 8,
+        maxValue: 128,
+        defaultValue: length,
+        onChange: (value) => setLength(value),
+        onChangeEnd: generatePassword,
+        size: "lg",
+        classNames: {
+          filler: "vui-bg-modern-blue",
+          track: "vui-border-s-modern-blue vui-bg-light-secondary dark:vui-bg-dark-secondary",
+          thumb: "vui-bg-black dark:vui-bg-white"
+        }
+      }
+    ),
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(import_react15.Checkbox, { color: "primary", isSelected: lowercaseLetters, onValueChange: (value) => setLowercaseLetters(value), children: "a-z" }),
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(import_react15.Checkbox, { color: "primary", isSelected: capitalLetters, onValueChange: (value) => setCapitalLetters(value), children: "A-Z" }),
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(import_react15.Checkbox, { color: "primary", isSelected: numbers, onValueChange: (value) => setNumbers(value), children: "0-9" }),
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(import_react15.Checkbox, { color: "primary", isSelected: specialCharacters, onValueChange: (value) => setSpecialCharacters(value), children: SPECIAL_CHARS }),
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(import_react15.Button, { startContent: /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(import_fi.FiRefreshCcw, {}), onPress: generatePassword, color: "success", children: "Regenerate" })
+  ] });
+};
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   ColumnType,
@@ -1082,6 +1246,8 @@ var SelectLanguage = ({ languages, onLanguageClicked, currentValue, size = "3xl"
   Loader,
   NavBar,
   NavButton,
+  PasswordGenerator,
+  PasswordType,
   QrCodeElement,
   SearchBar,
   SelectLanguage,
