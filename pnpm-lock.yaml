@@ -23,6 +23,9 @@ importers:
       autoprefixer:
         specifier: ^10.4.18
         version: 10.4.18(postcss@8.4.36)
+      bip39:
+        specifier: ^3.1.0
+        version: 3.1.0
       framer-motion:
         specifier: ^11.1.7
         version: 11.1.7(@emotion/is-prop-valid@1.2.2)(react-dom@18.2.0(react@18.3.1))(react@18.3.1)
@@ -2062,6 +2065,10 @@ packages:
       react: '>=18'
       react-dom: '>=18'
 
+  '@noble/hashes@1.4.0':
+    resolution: {integrity: sha512-V1JJ1WTRUqHHrOSh597hURcMqVKVGL/ea3kv0gSnEdsEZ0/+VyPghM1lMNGc00z7CIQorSvbKpuJkxvuHbvdbg==}
+    engines: {node: '>= 16'}
+
   '@nodelib/fs.scandir@2.1.5':
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
     engines: {node: '>= 8'}
@@ -3336,6 +3343,9 @@ packages:
   binary-extensions@2.3.0:
     resolution: {integrity: sha512-Ceh+7ox5qe7LJuLHoY0feh3pHuUDHAcRUeyL2VYghZwfpkNIy/+8Ocg0a3UuSoYzavmylwuLWQOf3hl0jjMMIw==}
     engines: {node: '>=8'}
+
+  bip39@3.1.0:
+    resolution: {integrity: sha512-c9kiwdk45Do5GL0vJMe7tS95VjCii65mYAH7DfWl3uW8AVzXKQVUm64i3hzVybBDMp9r7j9iNxR85+ul8MdN/A==}
 
   bl@4.1.0:
     resolution: {integrity: sha512-1W07cM9gS6DcLperZfFSj+bWLtaPGSOHWhPiGzXmvVJbRLdG82sH/Kn8EtW1VqWVA54AKf2h5k5BbnIbwF3h6w==}
@@ -8986,6 +8996,8 @@ snapshots:
       react: 18.3.1
       react-dom: 18.2.0(react@18.3.1)
 
+  '@noble/hashes@1.4.0': {}
+
   '@nodelib/fs.scandir@2.1.5':
     dependencies:
       '@nodelib/fs.stat': 2.0.5
@@ -11134,6 +11146,10 @@ snapshots:
   big.js@5.2.2: {}
 
   binary-extensions@2.3.0: {}
+
+  bip39@3.1.0:
+    dependencies:
+      '@noble/hashes': 1.4.0
 
   bl@4.1.0:
     dependencies:

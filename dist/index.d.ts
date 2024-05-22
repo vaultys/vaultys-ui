@@ -168,12 +168,22 @@ type PasswordConfig = {
     lowercaseLetters: boolean;
     specialCharacters: boolean;
 };
-type PassphraseConfig = {};
+type PassphraseConfig = {
+    wordNumber: number;
+    language: Locale;
+};
+type Locale = "fr" | "en";
 interface PasswordGeneratorProps {
     passwordType?: PasswordType;
     passwordConfig?: PasswordConfig;
     passphraseConfig?: PassphraseConfig;
+    locale?: Locale;
+    onConfigChanged: (config: {
+        passwordType: PasswordType;
+        passwordConfig: PasswordConfig;
+        passphraseConfig: PassphraseConfig;
+    }) => void;
 }
 declare const PasswordGenerator: React.FC<PasswordGeneratorProps>;
 
-export { ColumnType, InputModalContextProvider, InputPassword, type InputPasswordProps, Loader, type LoaderProps, NavBar, type NavBarProps, NavButton, type NavButtonProps, type PassphraseConfig, type PasswordConfig, PasswordGenerator, type PasswordGeneratorProps, PasswordType, QrCodeElement, type QrCodeElementProps, type RowItem, SearchBar, type SearchBarProps, SelectLanguage, type SelectLanguageProps, SortType, Table, type TableColumn, type TableProps, type TableRow, TextIcon, type TextIconProps, WindowScreen, type WindowScreenProps, useInputModalContext, useModalShow };
+export { ColumnType, InputModalContextProvider, InputPassword, type InputPasswordProps, Loader, type LoaderProps, type Locale, NavBar, type NavBarProps, NavButton, type NavButtonProps, type PassphraseConfig, type PasswordConfig, PasswordGenerator, type PasswordGeneratorProps, PasswordType, QrCodeElement, type QrCodeElementProps, type RowItem, SearchBar, type SearchBarProps, SelectLanguage, type SelectLanguageProps, SortType, Table, type TableColumn, type TableProps, type TableRow, TextIcon, type TextIconProps, WindowScreen, type WindowScreenProps, useInputModalContext, useModalShow };

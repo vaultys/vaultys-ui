@@ -1,5 +1,6 @@
 "use client";
-import { Button, Checkbox, Slider } from "@nextui-org/react";
+import { Button, Checkbox, Select, SelectItem, Slider } from "@nextui-org/react";
+import { generateMnemonic, setDefaultWordlist } from "bip39";
 import { useEffect, useState } from "react";
 import { BsCopy } from "react-icons/bs";
 import { FaFaceFrown, FaFaceGrin, FaFaceMeh, FaFaceSmile } from "react-icons/fa6";
@@ -18,12 +19,19 @@ export type PasswordConfig = {
   specialCharacters: boolean;
 };
 
-export type PassphraseConfig = {};
+export type PassphraseConfig = {
+  wordNumber: number;
+  language: Locale;
+};
+
+export type Locale = "fr" | "en";
 
 export interface PasswordGeneratorProps {
   passwordType?: PasswordType;
   passwordConfig?: PasswordConfig;
   passphraseConfig?: PassphraseConfig;
+  locale?: Locale;
+  onConfigChanged: (config: { passwordType: PasswordType; passwordConfig: PasswordConfig; passphraseConfig: PassphraseConfig }) => void;
 }
 
 const CAPITAL_LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -38,7 +46,46 @@ const enum ROBUSTNESS {
   ROBUST,
 }
 
-export const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({ passwordType, passwordConfig, passphraseConfig }) => {
+const TRAD = {
+  charNumber: {
+    fr: "Nombre de charactères",
+    en: "Character number",
+  },
+  wordNumber: {
+    fr: "Nombre de mots",
+    en: "Word number",
+  },
+  regenerate: {
+    fr: "Regénérer",
+    en: "Regenerate",
+  },
+  passwordType: {
+    fr: "Type de mot de passe",
+    en: "Password type",
+  },
+  password: {
+    fr: "Mot de passe",
+    en: "Password",
+  },
+  passhprase: {
+    fr: "Phrase de passe",
+    en: "Passphrase",
+  },
+  language: {
+    fr: "Langage",
+    en: "Language",
+  },
+  french: {
+    fr: "Français",
+    en: "French",
+  },
+  english: {
+    fr: "Anglais",
+    en: "English",
+  },
+};
+
+export const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({ passwordType, passwordConfig, passphraseConfig, locale = "fr", onConfigChanged }) => {
   const [length, setLength] = useState<number>(passwordConfig?.length ?? 16);
   const [numbers, setNumbers] = useState<boolean>(passwordConfig?.numbers ?? true);
   const [capitalLetters, setCapitalLetters] = useState<boolean>(passwordConfig?.capitalLetters ?? true);
@@ -47,7 +94,11 @@ export const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({ passwordTy
   const [type, setType] = useState<PasswordType>(passwordType ?? PasswordType.PASSWORD);
   const [robustness, setRobustness] = useState<ROBUSTNESS>(ROBUSTNESS.GOOD);
   const [copied, setCopied] = useState<boolean>(false);
-  const [password, setPassword] = useState<string>("WrG3q!nmGgK^LLdw*ih7!n");
+  const [password, setPassword] = useState<string>("");
+
+  const [wordsNumber, setWordsNumber] = useState<number>(passphraseConfig?.wordNumber ?? 12);
+  const [language, setLanguage] = useState<Locale>(passphraseConfig?.language ?? "en");
+  const [passphrase, setPassphrase] = useState<string>("");
 
   useEffect(() => {
     if (!numbers && !capitalLetters && !lowercaseLetters && !specialCharacters) setLowercaseLetters(true);
@@ -55,6 +106,16 @@ export const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({ passwordTy
       generatePassword();
     }
   }, [numbers, capitalLetters, lowercaseLetters, specialCharacters]);
+
+  useEffect(() => {
+    if (wordsNumber < 6) setRobustness(ROBUSTNESS.BAD);
+    else if (wordsNumber >= 6 && wordsNumber < 8) setRobustness(ROBUSTNESS.MINIMAL);
+    else if (wordsNumber >= 8 && wordsNumber < 10) setRobustness(ROBUSTNESS.GOOD);
+    else if (wordsNumber >= 10) setRobustness(ROBUSTNESS.ROBUST);
+    if (language === "fr") setDefaultWordlist("french");
+    else setDefaultWordlist("english");
+    generatePassphrase();
+  }, [wordsNumber, language]);
 
   useEffect(() => {
     let score = 0;
@@ -115,9 +176,31 @@ export const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({ passwordTy
     setPassword(password.join(""));
   };
 
+  const generatePassphrase = () => {
+    const mnemonic = generateMnemonic(256);
+    setPassphrase(mnemonic.split(" ").slice(0, wordsNumber).join(" "));
+  };
+
   useEffect(() => {
     setCopied(false);
-  }, [password]);
+  }, [password, passphrase, type]);
+
+  useEffect(() => {
+    onConfigChanged({
+      passwordType: type,
+      passphraseConfig: {
+        language,
+        wordNumber: wordsNumber,
+      },
+      passwordConfig: {
+        capitalLetters,
+        length,
+        lowercaseLetters,
+        numbers,
+        specialCharacters,
+      },
+    });
+  }, [type, length, lowercaseLetters, capitalLetters, numbers, specialCharacters, wordsNumber, language]);
 
   const passwordStrength = () => {
     switch (robustness) {
@@ -138,50 +221,99 @@ export const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({ passwordTy
   return (
     <div className="vui-flex vui-flex-col vui-gap-2 vui-w-full vui-bg-light dark:vui-bg-dark vui-p-4 vui-text-black dark:vui-text-white vui-rounded-large">
       <div
-        className={`vui-flex vui-flex-row vui-flex-shrink-0 vui-justify-between vui-gap-4 vui-border-2 vui-p-4 vui-rounded-large vui-transition-all vui-duration-1000  ${
+        className={`vui-cursor-copy vui-flex vui-flex-row vui-flex-shrink-0 vui-justify-between vui-gap-4 vui-border-2 vui-p-4 vui-rounded-large vui-transition-all vui-duration-1000  ${
           copied ? "vui-border-success vui-bg-success" : "vui-border-modern-blue"
         }`}
+        onClick={() => {
+          navigator.clipboard.writeText(type === PasswordType.PASSWORD ? password : passphrase);
+          setCopied(true);
+        }}
       >
-        <span
-          onClick={() => {
-            navigator.clipboard.writeText(password);
-            setCopied(true);
-          }}
-          className={`vui-grow-0 vui-font-bold vui-cursor-copy vui-break-all vui-w-11/12`}
-        >
-          {password}
-        </span>
+        <span className={`vui-grow-0 vui-font-bold vui-break-all vui-w-11/12`}>{type === PasswordType.PASSWORD ? password : passphrase}</span>
         <BsCopy className="vui-w-6 vui-h-6" />
       </div>
       {passwordStrength()}
-      <Slider
-        label={`Length`}
-        minValue={8}
-        maxValue={128}
-        defaultValue={length}
-        onChange={(value) => setLength(value as number)}
-        onChangeEnd={generatePassword}
-        size="lg"
+      <Select
+        label={TRAD.passwordType[locale]}
+        selectedKeys={[type ?? PasswordType.PASSWORD]}
         classNames={{
-          filler: "vui-bg-modern-blue",
-          track: "vui-border-s-modern-blue vui-bg-light-secondary dark:vui-bg-dark-secondary",
-          thumb: "vui-bg-black dark:vui-bg-white",
+          trigger: "vui-bg-light-secondary dark:vui-bg-dark-secondary",
+          popoverContent: "vui-bg-light-secondary dark:vui-bg-dark-secondary",
         }}
-      />
-      <Checkbox color="primary" isSelected={lowercaseLetters} onValueChange={(value) => setLowercaseLetters(value)}>
-        a-z
-      </Checkbox>
-      <Checkbox color="primary" isSelected={capitalLetters} onValueChange={(value) => setCapitalLetters(value)}>
-        A-Z
-      </Checkbox>
-      <Checkbox color="primary" isSelected={numbers} onValueChange={(value) => setNumbers(value)}>
-        0-9
-      </Checkbox>
-      <Checkbox color="primary" isSelected={specialCharacters} onValueChange={(value) => setSpecialCharacters(value)}>
-        {SPECIAL_CHARS}
-      </Checkbox>
-      <Button startContent={<FiRefreshCcw />} onPress={generatePassword} color="success">
-        Regenerate
+      >
+        <SelectItem key={PasswordType.PASSWORD} onPress={() => setType(PasswordType.PASSWORD)}>
+          {TRAD.password[locale]}
+        </SelectItem>
+        <SelectItem key={PasswordType.PASSPHRASE} onPress={() => setType(PasswordType.PASSPHRASE)}>
+          {TRAD.passhprase[locale]}
+        </SelectItem>
+      </Select>
+
+      {type === PasswordType.PASSWORD ? (
+        <div className="vui-bg-light-secondary dark:vui-bg-dark-secondary vui-flex vui-flex-col vui-gap-2 vui-rounded-large vui-p-3">
+          <Slider
+            label={`${TRAD.charNumber[locale]}`}
+            minValue={8}
+            maxValue={128}
+            value={length}
+            onChange={(value) => setLength(value as number)}
+            onChangeEnd={generatePassword}
+            size="lg"
+            classNames={{
+              filler: "vui-bg-modern-blue",
+              track: "vui-border-s-modern-blue vui-bg-light-secondary dark:vui-bg-dark-secondary",
+              thumb: "vui-bg-black dark:vui-bg-white",
+            }}
+          />
+          <Checkbox color="primary" isSelected={lowercaseLetters} onValueChange={(value) => setLowercaseLetters(value)}>
+            a-z
+          </Checkbox>
+          <Checkbox color="primary" isSelected={capitalLetters} onValueChange={(value) => setCapitalLetters(value)}>
+            A-Z
+          </Checkbox>
+          <Checkbox color="primary" isSelected={numbers} onValueChange={(value) => setNumbers(value)}>
+            0-9
+          </Checkbox>
+          <Checkbox color="primary" isSelected={specialCharacters} onValueChange={(value) => setSpecialCharacters(value)}>
+            {SPECIAL_CHARS}
+          </Checkbox>
+        </div>
+      ) : (
+        <div className="vui-bg-light-secondary dark:vui-bg-dark-secondary vui-flex vui-flex-col vui-gap-2 vui-rounded-large vui-p-3">
+          <Slider
+            label={`${TRAD.wordNumber[locale]}`}
+            minValue={4}
+            maxValue={24}
+            value={wordsNumber}
+            onChange={(value) => setWordsNumber(value as number)}
+            onChangeEnd={generatePassword}
+            size="lg"
+            classNames={{
+              filler: "vui-bg-modern-blue",
+              track: "vui-border-s-modern-blue vui-bg-light-secondary dark:vui-bg-dark-secondary",
+              thumb: "vui-bg-black dark:vui-bg-white",
+            }}
+          />
+          <Select
+            label={TRAD.language[locale]}
+            selectedKeys={[language]}
+            classNames={{
+              trigger: "vui-bg-light dark:vui-bg-dark",
+              popoverContent: "vui-bg-light dark:vui-bg-dark",
+            }}
+          >
+            <SelectItem key="fr" onPress={() => setLanguage("fr")}>
+              {TRAD.french[locale]}
+            </SelectItem>
+            <SelectItem key="en" onPress={() => setLanguage("en")}>
+              {TRAD.english[locale]}
+            </SelectItem>
+          </Select>
+        </div>
+      )}
+
+      <Button startContent={<FiRefreshCcw />} onPress={() => (type === PasswordType.PASSWORD ? generatePassword() : generatePassphrase())} color="success">
+        {TRAD.regenerate[locale]}
       </Button>
     </div>
   );
