@@ -30,6 +30,7 @@ type ModalContextType = {
     acceptText?: string;
     declineText?: string;
     validationMessage?: string;
+    placeholder?: string;
     type?: "password" | "confirm" | "validate" | "info";
   }) => Promise<string>;
 };
@@ -49,6 +50,7 @@ const InputModalContextProvider: React.FC<InputModalContextProviderProps> = (pro
     acceptText?: string;
     declineText?: string;
     validationMessage?: string;
+    placeholder?: string;
     type?: "password" | "confirm" | "validate" | "info";
   } | null>();
   const [val, setVal] = useState<string>("");
@@ -62,6 +64,7 @@ const InputModalContextProvider: React.FC<InputModalContextProviderProps> = (pro
     acceptText?: string;
     declineText?: string;
     validationMessage?: string;
+    placeholder?: string;
     type?: "password" | "confirm" | "validate" | "info";
   }): Promise<string> => {
     setContent({
@@ -124,7 +127,7 @@ const InputModalContextProvider: React.FC<InputModalContextProviderProps> = (pro
                 <InputPassword
                   label=""
                   testId="confirm-dialog-input"
-                  placeholder="Type here to validate"
+                  placeholder={content.placeholder}
                   onChange={(value: string) => setVal(value)}
                   value={val}
                   color="vui-bg-light-secondary dark:vui-bg-dark-secondary"
@@ -134,7 +137,7 @@ const InputModalContextProvider: React.FC<InputModalContextProviderProps> = (pro
                 <Input
                   isInvalid={confirmationMessageInvalid}
                   data-test="confirm-dialog-input"
-                  placeholder="Type here to validate"
+                  placeholder={content.placeholder}
                   onValueChange={(value: string) => setVal(value)}
                   value={val}
                   classNames={{

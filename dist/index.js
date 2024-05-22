@@ -900,7 +900,7 @@ var InputModalContextProvider = (props) => {
               {
                 label: "",
                 testId: "confirm-dialog-input",
-                placeholder: "Type here to validate",
+                placeholder: content.placeholder,
                 onChange: (value) => setVal(value),
                 value: val,
                 color: "vui-bg-light-secondary dark:vui-bg-dark-secondary"
@@ -911,7 +911,7 @@ var InputModalContextProvider = (props) => {
               {
                 isInvalid: confirmationMessageInvalid,
                 "data-test": "confirm-dialog-input",
-                placeholder: "Type here to validate",
+                placeholder: content.placeholder,
                 onValueChange: (value) => setVal(value),
                 value: val,
                 classNames: {

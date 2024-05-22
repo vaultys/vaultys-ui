@@ -133,6 +133,7 @@ type ModalContextType = {
         acceptText?: string;
         declineText?: string;
         validationMessage?: string;
+        placeholder?: string;
         type?: "password" | "confirm" | "validate" | "info";
     }) => Promise<string>;
 };
