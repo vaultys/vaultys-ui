@@ -128,64 +128,6 @@ export const Primary: Story = {
           },
         ],
       },
-      {
-        id: "3",
-        selectable: true,
-        items: [
-          {
-            colIndex: 0,
-            title: "My button",
-          },
-          {
-            colIndex: 1,
-          },
-          {
-            colIndex: 2,
-            value: "Value 1",
-            items: ["Value 1", "Value 2", "Value 3"],
-          },
-          {
-            colIndex: 3,
-            value: "hello",
-          },
-          {
-            colIndex: 4,
-          },
-          {
-            colIndex: 5,
-            value: "hello",
-          },
-        ],
-      },
-      {
-        id: "4",
-        selectable: true,
-        items: [
-          {
-            colIndex: 0,
-            title: "My button",
-          },
-          {
-            colIndex: 1,
-          },
-          {
-            colIndex: 2,
-            value: "Value 1",
-            items: ["Value 1", "Value 2", "Value 3"],
-          },
-          {
-            colIndex: 3,
-            value: "hello",
-          },
-          {
-            colIndex: 4,
-          },
-          {
-            colIndex: 5,
-            value: "hello",
-          },
-        ],
-      },
     ],
     configureButton: false,
     selectable: true,

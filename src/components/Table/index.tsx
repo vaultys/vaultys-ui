@@ -382,13 +382,17 @@ export const Table: React.FC<TableProps> = ({
   };
 
   return (
-    <div className="vui-bg-light-secondary dark:vui-bg-dark-secondary w-max vui-min-w-full vui-p-4 vui-rounded-large vui-shadow-small vui-flex vui-flex-col vui-relative vui-min-h-[400px]">
+    <div className="w-max vui-min-w-full vui-flex vui-flex-col vui-relative vui-min-h-[400px] bg-red-400 vui-bg-light-secondary dark:vui-bg-dark-secondary vui-rounded-large vui-shadow-small">
       {rows.length === 0 && emptyTableContent && (
         <div className="vui-absolute vui-top-0 vui-opacity-50 vui-bottom-0 vui-left-0 vui-right-0 vui-flex vui-items-center vui-justify-center vui-text-center">
           {emptyTableContent}
         </div>
       )}
-      <table className="vui-min-w-full vui-h-auto vui-table-auto vui-w-full vui-border-separate vui-border-spacing-y-1" ref={ref} data-test={dataTest}>
+      <table
+        className="vui-table-auto vui-border-separate vui-border-spacing-y-1 vui-bg-light-secondary dark:vui-bg-dark-secondary  vui-p-4 vui-rounded-large "
+        ref={ref}
+        data-test={dataTest}
+      >
         <Header items={getHeaderItems()} />
         <tbody data-test={`${dataTest}-body`}>
           {rows.sort(applySort).map((row: TableRow, index: number) => (

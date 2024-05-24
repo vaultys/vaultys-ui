@@ -642,40 +642,48 @@ var Table = ({
     else
       return numberB - numberA;
   };
-  return /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { className: "vui-bg-light-secondary dark:vui-bg-dark-secondary w-max vui-min-w-full vui-p-4 vui-rounded-large vui-shadow-small vui-flex vui-flex-col vui-relative vui-min-h-[400px]", children: [
+  return /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { className: "w-max vui-min-w-full vui-flex vui-flex-col vui-relative vui-min-h-[400px] bg-red-400 vui-bg-light-secondary dark:vui-bg-dark-secondary vui-rounded-large vui-shadow-small", children: [
     rows.length === 0 && emptyTableContent && /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("div", { className: "vui-absolute vui-top-0 vui-opacity-50 vui-bottom-0 vui-left-0 vui-right-0 vui-flex vui-items-center vui-justify-center vui-text-center", children: emptyTableContent }),
-    /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("table", { className: "vui-min-w-full vui-h-auto vui-table-auto vui-w-full vui-border-separate vui-border-spacing-y-1", ref, "data-test": dataTest, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(Header, { items: getHeaderItems() }),
-      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("tbody", { "data-test": `${dataTest}-body`, children: rows.sort(applySort).map((row, index) => /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
-        Row,
-        {
-          rowIndex: index,
-          showLines,
-          blur,
-          dataTest: `${dataTest}-row-${index}`,
-          id: row.rowId,
-          clickable: row.clickable && typeof row.onClick === "function",
-          warning: row.warning,
-          danger: row.danger,
-          inactiveState: row.inactive,
-          onSelectedClicked: (selected) => {
-            if (selected) {
-              setSelectedIds([...selectedIds, row.id]);
-            } else {
-              setSelectedIds(selectedIds.filter((selectedId) => selectedId !== row.id));
-            }
-          },
-          onRowClicked: () => row.clickable && typeof row.onClick === "function" ? row.onClick() : changeRowInEditMode(row.id),
-          selectable: row.selectable,
-          tableSelectable: selectable,
-          selected: selectedAll,
-          rowItems: getRowItems(row),
-          configurable: configureButton,
-          onConfigureClicked: () => typeof row.onConfigureClicked === "function" && row.onConfigureClicked()
-        },
-        row.id
-      )) })
-    ] })
+    /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(
+      "table",
+      {
+        className: "vui-table-auto vui-border-separate vui-border-spacing-y-1 vui-bg-light-secondary dark:vui-bg-dark-secondary  vui-p-4 vui-rounded-large ",
+        ref,
+        "data-test": dataTest,
+        children: [
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(Header, { items: getHeaderItems() }),
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("tbody", { "data-test": `${dataTest}-body`, children: rows.sort(applySort).map((row, index) => /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
+            Row,
+            {
+              rowIndex: index,
+              showLines,
+              blur,
+              dataTest: `${dataTest}-row-${index}`,
+              id: row.rowId,
+              clickable: row.clickable && typeof row.onClick === "function",
+              warning: row.warning,
+              danger: row.danger,
+              inactiveState: row.inactive,
+              onSelectedClicked: (selected) => {
+                if (selected) {
+                  setSelectedIds([...selectedIds, row.id]);
+                } else {
+                  setSelectedIds(selectedIds.filter((selectedId) => selectedId !== row.id));
+                }
+              },
+              onRowClicked: () => row.clickable && typeof row.onClick === "function" ? row.onClick() : changeRowInEditMode(row.id),
+              selectable: row.selectable,
+              tableSelectable: selectable,
+              selected: selectedAll,
+              rowItems: getRowItems(row),
+              configurable: configureButton,
+              onConfigureClicked: () => typeof row.onConfigureClicked === "function" && row.onConfigureClicked()
+            },
+            row.id
+          )) })
+        ]
+      }
+    )
   ] });
 };
 
