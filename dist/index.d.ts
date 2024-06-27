@@ -107,6 +107,7 @@ declare const SearchBar: React.FC<SearchBarProps>;
 
 interface InputPasswordProps {
     label: string;
+    description?: string;
     onChange?: (value: string) => void;
     valid?: boolean;
     placeholder?: string;

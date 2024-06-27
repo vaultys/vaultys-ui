@@ -795,7 +795,18 @@ var import_react10 = require("@nextui-org/react");
 var import_react11 = require("react");
 var import_bi = require("react-icons/bi");
 var import_jsx_runtime17 = require("react/jsx-runtime");
-var InputPassword = ({ label, onChange, valid = true, placeholder, value, disabled, copyToClipboard = false, color, testId }) => {
+var InputPassword = ({
+  label,
+  description,
+  onChange,
+  valid = true,
+  placeholder,
+  value,
+  disabled,
+  copyToClipboard = false,
+  color,
+  testId
+}) => {
   const [show, setShow] = (0, import_react11.useState)();
   return /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
     import_react10.Input,
@@ -809,6 +820,7 @@ var InputPassword = ({ label, onChange, valid = true, placeholder, value, disabl
         inputWrapper: color,
         label: "vui-text-lg vui-font-bold"
       },
+      description,
       isInvalid: !valid,
       isDisabled: disabled,
       endContent: /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "vui-flex vui-flex-row vui-gap-2 vui-items-center", children: [

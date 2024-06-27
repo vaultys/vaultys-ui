@@ -5,6 +5,7 @@ import { BiCopy, BiHide, BiShow } from "react-icons/bi";
 
 export interface InputPasswordProps {
   label: string;
+  description?: string;
   onChange?: (value: string) => void;
   valid?: boolean;
   placeholder?: string;
@@ -16,7 +17,18 @@ export interface InputPasswordProps {
   testId?: string;
 }
 
-export const InputPassword: React.FC<InputPasswordProps> = ({ label, onChange, valid = true, placeholder, value, disabled, copyToClipboard = false, color, testId }) => {
+export const InputPassword: React.FC<InputPasswordProps> = ({
+  label,
+  description,
+  onChange,
+  valid = true,
+  placeholder,
+  value,
+  disabled,
+  copyToClipboard = false,
+  color,
+  testId,
+}) => {
   const [show, setShow] = useState<boolean>();
   return (
     <Input
@@ -29,6 +41,7 @@ export const InputPassword: React.FC<InputPasswordProps> = ({ label, onChange, v
         inputWrapper: color,
         label: "vui-text-lg vui-font-bold",
       }}
+      description={description}
       isInvalid={!valid}
       isDisabled={disabled}
       endContent={
