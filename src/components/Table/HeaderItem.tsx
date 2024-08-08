@@ -1,7 +1,7 @@
 "use client";
 
 import { ReactElement } from "react";
-import { FaCaretDown } from "react-icons/fa";
+import { FaCaretDown } from "@react-icons/all-files/fa/FaCaretDown";
 
 export enum SortType {
   ASCENDING,
@@ -19,7 +19,16 @@ export interface HeaderItemProps {
   testId?: string;
 }
 
-export const HeaderItem: React.FC<HeaderItemProps> = ({ title, children, sortColumn = false, sortActive, sortType = SortType.ASCENDING, onClick, className, testId }) => {
+export const HeaderItem: React.FC<HeaderItemProps> = ({
+  title,
+  children,
+  sortColumn = false,
+  sortActive,
+  sortType = SortType.ASCENDING,
+  onClick,
+  className,
+  testId,
+}) => {
   return (
     <th
       className={`vui-bg-light dark:vui-bg-dark first:vui-rounded-l-lg rtl:first:vui-rounded-r-lg rtl:first:vui-rounded-l-[unset] last:vui-rounded-r-lg rtl:last:vui-rounded-l-lg rtl:last:vui-rounded-r-[unset] vui-py-2 vui-px-2 ${

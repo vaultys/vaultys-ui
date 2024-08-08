@@ -1,10 +1,19 @@
 "use client";
-import { Button, Checkbox, Select, SelectItem, Slider } from "@nextui-org/react";
+import {
+  Button,
+  Checkbox,
+  Select,
+  SelectItem,
+  Slider,
+} from "@nextui-org/react";
 import { generateMnemonic, setDefaultWordlist } from "bip39";
 import { useEffect, useState } from "react";
-import { BsCopy } from "react-icons/bs";
-import { FaFaceFrown, FaFaceGrin, FaFaceMeh, FaFaceSmile } from "react-icons/fa6";
-import { FiRefreshCcw } from "react-icons/fi";
+import { FaCopy } from "@react-icons/all-files/fa/FaCopy";
+import { FaGrin } from "@react-icons/all-files/fa/FaGrin";
+import { FaSmile } from "@react-icons/all-files/fa/FaSmile";
+import { FaFrown } from "@react-icons/all-files/fa/FaFrown";
+import { FaMeh } from "@react-icons/all-files/fa/FaMeh";
+import { FiRefreshCcw } from "@react-icons/all-files/fi/FiRefreshCcw";
 
 export enum PasswordType {
   PASSWORD,
@@ -31,7 +40,11 @@ export interface PasswordGeneratorProps {
   passwordConfig?: PasswordConfig;
   passphraseConfig?: PassphraseConfig;
   locale?: Locale;
-  onConfigChanged: (config: { passwordType: PasswordType; passwordConfig: PasswordConfig; passphraseConfig: PassphraseConfig }) => void;
+  onConfigChanged: (config: {
+    passwordType: PasswordType;
+    passwordConfig: PasswordConfig;
+    passphraseConfig: PassphraseConfig;
+  }) => void;
 }
 
 const CAPITAL_LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -85,23 +98,44 @@ const TRAD = {
   },
 };
 
-export const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({ passwordType, passwordConfig, passphraseConfig, locale = "fr", onConfigChanged }) => {
+export const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({
+  passwordType,
+  passwordConfig,
+  passphraseConfig,
+  locale = "fr",
+  onConfigChanged,
+}) => {
   const [length, setLength] = useState<number>(passwordConfig?.length ?? 16);
-  const [numbers, setNumbers] = useState<boolean>(passwordConfig?.numbers ?? true);
-  const [capitalLetters, setCapitalLetters] = useState<boolean>(passwordConfig?.capitalLetters ?? true);
-  const [lowercaseLetters, setLowercaseLetters] = useState<boolean>(passwordConfig?.lowercaseLetters ?? true);
-  const [specialCharacters, setSpecialCharacters] = useState<boolean>(passwordConfig?.specialCharacters ?? true);
-  const [type, setType] = useState<PasswordType>(passwordType ?? PasswordType.PASSWORD);
+  const [numbers, setNumbers] = useState<boolean>(
+    passwordConfig?.numbers ?? true,
+  );
+  const [capitalLetters, setCapitalLetters] = useState<boolean>(
+    passwordConfig?.capitalLetters ?? true,
+  );
+  const [lowercaseLetters, setLowercaseLetters] = useState<boolean>(
+    passwordConfig?.lowercaseLetters ?? true,
+  );
+  const [specialCharacters, setSpecialCharacters] = useState<boolean>(
+    passwordConfig?.specialCharacters ?? true,
+  );
+  const [type, setType] = useState<PasswordType>(
+    passwordType ?? PasswordType.PASSWORD,
+  );
   const [robustness, setRobustness] = useState<ROBUSTNESS>(ROBUSTNESS.GOOD);
   const [copied, setCopied] = useState<boolean>(false);
   const [password, setPassword] = useState<string>("");
 
-  const [wordsNumber, setWordsNumber] = useState<number>(passphraseConfig?.wordNumber ?? 12);
-  const [language, setLanguage] = useState<Locale>(passphraseConfig?.language ?? "en");
+  const [wordsNumber, setWordsNumber] = useState<number>(
+    passphraseConfig?.wordNumber ?? 12,
+  );
+  const [language, setLanguage] = useState<Locale>(
+    passphraseConfig?.language ?? "en",
+  );
   const [passphrase, setPassphrase] = useState<string>("");
 
   useEffect(() => {
-    if (!numbers && !capitalLetters && !lowercaseLetters && !specialCharacters) setLowercaseLetters(true);
+    if (!numbers && !capitalLetters && !lowercaseLetters && !specialCharacters)
+      setLowercaseLetters(true);
     else {
       generatePassword();
     }
@@ -109,8 +143,10 @@ export const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({ passwordTy
 
   useEffect(() => {
     if (wordsNumber < 6) setRobustness(ROBUSTNESS.BAD);
-    else if (wordsNumber >= 6 && wordsNumber < 8) setRobustness(ROBUSTNESS.MINIMAL);
-    else if (wordsNumber >= 8 && wordsNumber < 10) setRobustness(ROBUSTNESS.GOOD);
+    else if (wordsNumber >= 6 && wordsNumber < 8)
+      setRobustness(ROBUSTNESS.MINIMAL);
+    else if (wordsNumber >= 8 && wordsNumber < 10)
+      setRobustness(ROBUSTNESS.GOOD);
     else if (wordsNumber >= 10) setRobustness(ROBUSTNESS.ROBUST);
     if (language === "fr") setDefaultWordlist("french");
     else setDefaultWordlist("english");
@@ -124,7 +160,8 @@ export const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({ passwordTy
     if (lowercaseLetters) score += 10;
     if (numbers) score += 10;
     if (specialCharacters) score += 10;
-    if (capitalLetters && lowercaseLetters && numbers && specialCharacters) score += 10;
+    if (capitalLetters && lowercaseLetters && numbers && specialCharacters)
+      score += 10;
     if (score > 40 && score <= 50) setRobustness(ROBUSTNESS.MINIMAL);
     else if (score > 50 && score <= 75) setRobustness(ROBUSTNESS.GOOD);
     else if (score > 75) setRobustness(ROBUSTNESS.ROBUST);
@@ -141,7 +178,9 @@ export const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({ passwordTy
       while (password[index]) {
         index = Math.floor(Math.random() * length);
       }
-      password[index] = LOWERCASE_LETTERS.charAt(Math.floor(Math.random() * LOWERCASE_LETTERS.length));
+      password[index] = LOWERCASE_LETTERS.charAt(
+        Math.floor(Math.random() * LOWERCASE_LETTERS.length),
+      );
     }
     if (capitalLetters) {
       passwordChars += CAPITAL_LETTERS;
@@ -149,7 +188,9 @@ export const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({ passwordTy
       while (password[index]) {
         index = Math.floor(Math.random() * length);
       }
-      password[index] = CAPITAL_LETTERS.charAt(Math.floor(Math.random() * CAPITAL_LETTERS.length));
+      password[index] = CAPITAL_LETTERS.charAt(
+        Math.floor(Math.random() * CAPITAL_LETTERS.length),
+      );
     }
     if (numbers) {
       passwordChars += NUMBERS;
@@ -157,7 +198,9 @@ export const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({ passwordTy
       while (password[index]) {
         index = Math.floor(Math.random() * length);
       }
-      password[index] = NUMBERS.charAt(Math.floor(Math.random() * NUMBERS.length));
+      password[index] = NUMBERS.charAt(
+        Math.floor(Math.random() * NUMBERS.length),
+      );
     }
     if (specialCharacters) {
       passwordChars += SPECIAL_CHARS;
@@ -165,7 +208,9 @@ export const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({ passwordTy
       while (password[index]) {
         index = Math.floor(Math.random() * length);
       }
-      password[index] = SPECIAL_CHARS.charAt(Math.floor(Math.random() * SPECIAL_CHARS.length));
+      password[index] = SPECIAL_CHARS.charAt(
+        Math.floor(Math.random() * SPECIAL_CHARS.length),
+      );
     }
 
     for (let i = 0; i < length; i++) {
@@ -186,6 +231,7 @@ export const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({ passwordTy
   }, [password, passphrase, type]);
 
   useEffect(() => {
+    console.log(onConfigChanged);
     onConfigChanged({
       passwordType: type,
       passphraseConfig: {
@@ -200,18 +246,35 @@ export const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({ passwordTy
         specialCharacters,
       },
     });
-  }, [type, length, lowercaseLetters, capitalLetters, numbers, specialCharacters, wordsNumber, language]);
+  }, [
+    type,
+    length,
+    lowercaseLetters,
+    capitalLetters,
+    numbers,
+    specialCharacters,
+    wordsNumber,
+    language,
+  ]);
 
   const passwordStrength = () => {
     switch (robustness) {
       case ROBUSTNESS.BAD:
-        return <FaFaceFrown className="vui-text-danger vui-w-16 vui-h-16 vui-mx-auto" />;
+        return (
+          <FaFrown className="vui-text-danger vui-w-16 vui-h-16 vui-mx-auto" />
+        );
       case ROBUSTNESS.MINIMAL:
-        return <FaFaceMeh className="vui-text-warning vui-w-16 vui-h-16 vui-mx-auto" />;
+        return (
+          <FaMeh className="vui-text-warning vui-w-16 vui-h-16 vui-mx-auto" />
+        );
       case ROBUSTNESS.GOOD:
-        return <FaFaceSmile className="vui-text-success vui-w-16 vui-h-16 vui-mx-auto" />;
+        return (
+          <FaSmile className="vui-text-success vui-w-16 vui-h-16 vui-mx-auto" />
+        );
       case ROBUSTNESS.ROBUST:
-        return <FaFaceGrin className="vui-text-success vui-w-16 vui-h-16 vui-mx-auto" />;
+        return (
+          <FaGrin className="vui-text-success vui-w-16 vui-h-16 vui-mx-auto" />
+        );
 
       default:
         break;
@@ -222,15 +285,21 @@ export const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({ passwordTy
     <div className="vui-flex vui-flex-col vui-gap-2 vui-w-full vui-bg-light dark:vui-bg-dark vui-p-4 vui-text-black dark:vui-text-white vui-rounded-large">
       <div
         className={`vui-cursor-copy vui-flex vui-flex-row vui-flex-shrink-0 vui-justify-between vui-gap-4 vui-border-2 vui-p-4 vui-rounded-large vui-transition-all vui-duration-1000  ${
-          copied ? "vui-border-success vui-bg-success" : "vui-border-modern-blue"
+          copied
+            ? "vui-border-success vui-bg-success"
+            : "vui-border-modern-blue"
         }`}
         onClick={() => {
-          navigator.clipboard.writeText(type === PasswordType.PASSWORD ? password : passphrase);
+          navigator.clipboard.writeText(
+            type === PasswordType.PASSWORD ? password : passphrase,
+          );
           setCopied(true);
         }}
       >
-        <span className={`vui-grow-0 vui-font-bold vui-break-all vui-w-11/12`}>{type === PasswordType.PASSWORD ? password : passphrase}</span>
-        <BsCopy className="vui-w-6 vui-h-6" />
+        <span className={`vui-grow-0 vui-font-bold vui-break-all vui-w-11/12`}>
+          {type === PasswordType.PASSWORD ? password : passphrase}
+        </span>
+        <FaCopy className="vui-w-6 vui-h-6" />
       </div>
       {passwordStrength()}
       <Select
@@ -241,10 +310,16 @@ export const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({ passwordTy
           popoverContent: "vui-bg-light-secondary dark:vui-bg-dark-secondary",
         }}
       >
-        <SelectItem key={PasswordType.PASSWORD} onPress={() => setType(PasswordType.PASSWORD)}>
+        <SelectItem
+          key={PasswordType.PASSWORD}
+          onPress={() => setType(PasswordType.PASSWORD)}
+        >
           {TRAD.password[locale]}
         </SelectItem>
-        <SelectItem key={PasswordType.PASSPHRASE} onPress={() => setType(PasswordType.PASSPHRASE)}>
+        <SelectItem
+          key={PasswordType.PASSPHRASE}
+          onPress={() => setType(PasswordType.PASSPHRASE)}
+        >
           {TRAD.passhprase[locale]}
         </SelectItem>
       </Select>
@@ -261,20 +336,37 @@ export const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({ passwordTy
             size="lg"
             classNames={{
               filler: "vui-bg-modern-blue",
-              track: "vui-border-s-modern-blue vui-bg-light-secondary dark:vui-bg-dark-secondary",
+              track:
+                "vui-border-s-modern-blue vui-bg-light-secondary dark:vui-bg-dark-secondary",
               thumb: "vui-bg-black dark:vui-bg-white",
             }}
           />
-          <Checkbox color="primary" isSelected={lowercaseLetters} onValueChange={(value) => setLowercaseLetters(value)}>
+          <Checkbox
+            color="primary"
+            isSelected={lowercaseLetters}
+            onValueChange={(value: boolean) => setLowercaseLetters(value)}
+          >
             a-z
           </Checkbox>
-          <Checkbox color="primary" isSelected={capitalLetters} onValueChange={(value) => setCapitalLetters(value)}>
+          <Checkbox
+            color="primary"
+            isSelected={capitalLetters}
+            onValueChange={(value: boolean) => setCapitalLetters(value)}
+          >
             A-Z
           </Checkbox>
-          <Checkbox color="primary" isSelected={numbers} onValueChange={(value) => setNumbers(value)}>
+          <Checkbox
+            color="primary"
+            isSelected={numbers}
+            onValueChange={(value: boolean) => setNumbers(value)}
+          >
             0-9
           </Checkbox>
-          <Checkbox color="primary" isSelected={specialCharacters} onValueChange={(value) => setSpecialCharacters(value)}>
+          <Checkbox
+            color="primary"
+            isSelected={specialCharacters}
+            onValueChange={(value: boolean) => setSpecialCharacters(value)}
+          >
             {SPECIAL_CHARS}
           </Checkbox>
         </div>
@@ -290,7 +382,8 @@ export const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({ passwordTy
             size="lg"
             classNames={{
               filler: "vui-bg-modern-blue",
-              track: "vui-border-s-modern-blue vui-bg-light-secondary dark:vui-bg-dark-secondary",
+              track:
+                "vui-border-s-modern-blue vui-bg-light-secondary dark:vui-bg-dark-secondary",
               thumb: "vui-bg-black dark:vui-bg-white",
             }}
           />
@@ -312,7 +405,15 @@ export const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({ passwordTy
         </div>
       )}
 
-      <Button startContent={<FiRefreshCcw />} onPress={() => (type === PasswordType.PASSWORD ? generatePassword() : generatePassphrase())} color="success">
+      <Button
+        startContent={<FiRefreshCcw />}
+        onPress={() =>
+          type === PasswordType.PASSWORD
+            ? generatePassword()
+            : generatePassphrase()
+        }
+        color="success"
+      >
         {TRAD.regenerate[locale]}
       </Button>
     </div>

@@ -9,6 +9,6 @@ type Story = StoryObj<typeof Loader>;
 export const Primary: Story = {
   args: {
     message: "Starting the application",
-    img: "https://site.vaultys.com/hubfs/walletid-min.png",
+    img: "https://docs.vaultys.com/img/SmartLinkUser.png",
   },
 };

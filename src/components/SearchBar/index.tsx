@@ -1,6 +1,6 @@
 "use client";
 import { KeyboardEventHandler, MouseEventHandler } from "react";
-import { BsSearch } from "react-icons/bs";
+import { BsSearch } from "@react-icons/all-files/bs/BsSearch";
 
 export interface SearchBarProps {
   onKeyUp?: Function;
@@ -10,9 +10,17 @@ export interface SearchBarProps {
   value?: string;
 }
 
-export const SearchBar: React.FC<SearchBarProps> = ({ onKeyUp, onClick, className, onChange, value }) => {
+export const SearchBar: React.FC<SearchBarProps> = ({
+  onKeyUp,
+  onClick,
+  className,
+  onChange,
+  value,
+}) => {
   return (
-    <div className={`vui-relative vui-flex vui-flex-row vui-gap-2 vui-items-center vui-shadow-lg ${className}`}>
+    <div
+      className={`vui-relative vui-flex vui-flex-row vui-gap-2 vui-items-center vui-shadow-lg ${className}`}
+    >
       <BsSearch className="vui-absolute vui-ml-5 vui-z-20 vui-w-6 vui-h-6" />
       <input
         data-test="search"

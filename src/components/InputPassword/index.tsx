@@ -1,7 +1,9 @@
 "use client";
 import { Input } from "@nextui-org/react";
 import { useState } from "react";
-import { BiCopy, BiHide, BiShow } from "react-icons/bi";
+import { BiCopy } from "@react-icons/all-files/bi/BiCopy";
+import { BiHide } from "@react-icons/all-files/bi/BiHide";
+import { BiShow } from "@react-icons/all-files/bi/BiShow";
 
 export interface InputPasswordProps {
   label: string;
@@ -56,8 +58,16 @@ export const InputPassword: React.FC<InputPasswordProps> = ({
               }}
             />
           )}
-          <button className="focus:vui-outline-none" type="button" onClick={() => setShow(!show)}>
-            {show ? <BiShow className="vui-text-xl vui-cursor-pointer" /> : <BiHide className="vui-text-xl vui-cursor-pointer" />}
+          <button
+            className="focus:vui-outline-none"
+            type="button"
+            onClick={() => setShow(!show)}
+          >
+            {show ? (
+              <BiShow className="vui-text-xl vui-cursor-pointer" />
+            ) : (
+              <BiHide className="vui-text-xl vui-cursor-pointer" />
+            )}
           </button>
         </div>
       }
