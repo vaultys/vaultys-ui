@@ -6,5 +6,8 @@ const meta: Meta<typeof PasswordGenerator> = {
 export default meta;
 type Story = StoryObj<typeof PasswordGenerator>;
 export const Primary: Story = {
-  args: {},
+  args: {
+    onConfigChanged: () => {},
+    locale: "fr",
+  },
 };

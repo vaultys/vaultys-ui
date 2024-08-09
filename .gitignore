@@ -134,7 +134,6 @@ out
 .DS_Store
 public/js/vaultysid.min.js.map
 public/js/vaultysid.min.js.LICENSE.txt
-.npmrc
 cypress/screenshots
 cypress/video
 .env.e2e.test
