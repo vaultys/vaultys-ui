@@ -8,7 +8,8 @@ import {
 } from "@nextui-org/react";
 import { generateMnemonic, setDefaultWordlist } from "bip39";
 import { useEffect, useState } from "react";
-import { FaCopy } from "@react-icons/all-files/fa/FaCopy";
+import { BiCopy } from "@react-icons/all-files/bi/BiCopy";
+import { BiCheck } from "@react-icons/all-files/bi/BiCheck";
 import { FaGrin } from "@react-icons/all-files/fa/FaGrin";
 import { FaSmile } from "@react-icons/all-files/fa/FaSmile";
 import { FaFrown } from "@react-icons/all-files/fa/FaFrown";
@@ -63,6 +64,10 @@ const TRAD = {
   charNumber: {
     fr: "Nombre de charactères",
     en: "Character number",
+  },
+  copied: {
+    fr: "Copié",
+    en: "Copied",
   },
   wordNumber: {
     fr: "Nombre de mots",
@@ -284,7 +289,7 @@ export const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({
   return (
     <div className="vui-flex vui-flex-col vui-gap-2 vui-w-full vui-bg-light dark:vui-bg-dark vui-p-4 vui-text-black dark:vui-text-white vui-rounded-large">
       <div
-        className={`vui-cursor-copy vui-flex vui-flex-row vui-flex-shrink-0 vui-justify-between vui-gap-4 vui-border-2 vui-p-4 vui-rounded-large vui-transition-all vui-duration-1000  ${
+        className={`vui-cursor-pointer vui-flex vui-flex-row vui-flex-shrink-0 vui-justify-between vui-gap-4 vui-border-2 vui-p-4 vui-rounded-large vui-transition-all vui-duration-200  ${
           copied
             ? "vui-border-success vui-bg-success"
             : "vui-border-modern-blue"
@@ -294,12 +299,19 @@ export const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({
             type === PasswordType.PASSWORD ? password : passphrase,
           );
           setCopied(true);
+          setTimeout(() => setCopied(false), 1000);
         }}
       >
-        <span className={`vui-grow-0 vui-font-bold vui-break-all vui-w-11/12`}>
+        <span className="vui-grow-0 vui-font-bold vui-break-all vui-w-11/12 vui-font-monospace">
           {type === PasswordType.PASSWORD ? password : passphrase}
         </span>
-        <FaCopy className="vui-w-6 vui-h-6" />
+        {copied ? (
+          <>
+            {TRAD.copied[locale]} <BiCheck className="vui-w-6 vui-h-6" />
+          </>
+        ) : (
+          <BiCopy className="vui-w-6 vui-h-6" />
+        )}
       </div>
       {passwordStrength()}
       <Select
