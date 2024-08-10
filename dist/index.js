@@ -384,7 +384,7 @@ var require_BiCopy = __commonJS({
   "node_modules/.pnpm/@react-icons+all-files@4.1.0_react@18.3.1/node_modules/@react-icons/all-files/bi/BiCopy.js"(exports2, module2) {
     "use strict";
     var GenIcon2 = (init_esm(), __toCommonJS(esm_exports)).GenIcon;
-    module2.exports.BiCopy = function BiCopy2(props) {
+    module2.exports.BiCopy = function BiCopy3(props) {
       return GenIcon2({ "tag": "svg", "attr": { "viewBox": "0 0 24 24" }, "child": [{ "tag": "path", "attr": { "d": "M20,2H10C8.897,2,8,2.897,8,4v4H4c-1.103,0-2,0.897-2,2v10c0,1.103,0.897,2,2,2h10c1.103,0,2-0.897,2-2v-4h4 c1.103,0,2-0.897,2-2V4C22,2.897,21.103,2,20,2z M4,20V10h10l0.002,10H4z M20,14h-4v-4c0-1.103-0.897-2-2-2h-4V4h10V14z" } }] })(props);
     };
   }
@@ -412,13 +412,13 @@ var require_BiShow = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@react-icons+all-files@4.1.0_react@18.3.1/node_modules/@react-icons/all-files/fa/FaCopy.js
-var require_FaCopy = __commonJS({
-  "node_modules/.pnpm/@react-icons+all-files@4.1.0_react@18.3.1/node_modules/@react-icons/all-files/fa/FaCopy.js"(exports2, module2) {
+// node_modules/.pnpm/@react-icons+all-files@4.1.0_react@18.3.1/node_modules/@react-icons/all-files/bi/BiCheck.js
+var require_BiCheck = __commonJS({
+  "node_modules/.pnpm/@react-icons+all-files@4.1.0_react@18.3.1/node_modules/@react-icons/all-files/bi/BiCheck.js"(exports2, module2) {
     "use strict";
     var GenIcon2 = (init_esm(), __toCommonJS(esm_exports)).GenIcon;
-    module2.exports.FaCopy = function FaCopy2(props) {
-      return GenIcon2({ "tag": "svg", "attr": { "viewBox": "0 0 448 512" }, "child": [{ "tag": "path", "attr": { "d": "M320 448v40c0 13.255-10.745 24-24 24H24c-13.255 0-24-10.745-24-24V120c0-13.255 10.745-24 24-24h72v296c0 30.879 25.121 56 56 56h168zm0-344V0H152c-13.255 0-24 10.745-24 24v368c0 13.255 10.745 24 24 24h272c13.255 0 24-10.745 24-24V128H344c-13.2 0-24-10.8-24-24zm120.971-31.029L375.029 7.029A24 24 0 0 0 358.059 0H352v96h96v-6.059a24 24 0 0 0-7.029-16.97z" } }] })(props);
+    module2.exports.BiCheck = function BiCheck2(props) {
+      return GenIcon2({ "tag": "svg", "attr": { "viewBox": "0 0 24 24" }, "child": [{ "tag": "path", "attr": { "d": "M10 15.586L6.707 12.293 5.293 13.707 10 18.414 19.707 8.707 18.293 7.293z" } }] })(props);
     };
   }
 });
@@ -1125,23 +1125,25 @@ var Table = ({
 // src/components/TextIcon/index.tsx
 var import_invert_color = __toESM(require("invert-color"));
 var import_jsx_runtime11 = require("react/jsx-runtime");
-var TextIcon = ({ text = "Te", backgroundColor = "#FFFFFF", className = "" }) => {
+var TextIcon = ({
+  text = "Te",
+  backgroundColor = "#FFFFFF",
+  className = ""
+}) => {
   if (!text) {
     text = "0x";
   }
   const fill = (0, import_invert_color.default)(backgroundColor, true);
-  const padding = "0.3rem";
   const t = text.split(" ");
   let displayText = "";
   if (t.length > 1)
     displayText = t[0][0] + t[1][0];
   else
     displayText = text.slice(0, 2);
-  const textSize = 80;
-  const textWidth = displayText.length * textSize * 0.5;
-  const textX = 64 - textWidth * 0.5;
-  const textY = 90;
-  return /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("div", { style: { backgroundColor, fill, padding }, className, children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("svg", { viewBox: "0 0 128 128", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("text", { fontSize: textSize, fontFamily: "monospace", x: textX, y: textY, children: displayText.slice(0, 2).toLocaleUpperCase() }) }) });
+  const textSize = 65;
+  const textX = 11;
+  const textY = 73;
+  return /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("div", { style: { backgroundColor, fill }, className, children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("svg", { className: "vui-m-0 vui-p-0", viewBox: "0 0 100 100", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("text", { fontSize: textSize, fontFamily: "monospace", x: textX, y: textY, children: displayText.slice(0, 2).toLocaleUpperCase() }) }) });
 };
 
 // src/components/QrCodeElement/index.tsx
@@ -1558,7 +1560,8 @@ var SelectLanguage = ({ languages, onLanguageClicked, currentValue, size = "3xl"
 var import_react17 = require("@nextui-org/react");
 var import_bip39 = require("bip39");
 var import_react18 = require("react");
-var import_FaCopy = __toESM(require_FaCopy());
+var import_BiCopy2 = __toESM(require_BiCopy());
+var import_BiCheck = __toESM(require_BiCheck());
 var import_FaGrin = __toESM(require_FaGrin());
 var import_FaSmile = __toESM(require_FaSmile());
 var import_FaFrown = __toESM(require_FaFrown());
@@ -1578,6 +1581,10 @@ var TRAD = {
   charNumber: {
     fr: "Nombre de charact\xE8res",
     en: "Character number"
+  },
+  copied: {
+    fr: "Copi\xE9",
+    en: "Copied"
   },
   wordNumber: {
     fr: "Nombre de mots",
@@ -1748,6 +1755,7 @@ var PasswordGenerator = ({
     setCopied(false);
   }, [password, passphrase, type]);
   (0, import_react18.useEffect)(() => {
+    console.log(onConfigChanged);
     onConfigChanged({
       passwordType: type,
       passphraseConfig: {
@@ -1790,16 +1798,21 @@ var PasswordGenerator = ({
     /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(
       "div",
       {
-        className: `vui-cursor-copy vui-flex vui-flex-row vui-flex-shrink-0 vui-justify-between vui-gap-4 vui-border-2 vui-p-4 vui-rounded-large vui-transition-all vui-duration-1000  ${copied ? "vui-border-success vui-bg-success" : "vui-border-modern-blue"}`,
+        className: `vui-cursor-pointer vui-flex vui-flex-row vui-flex-shrink-0 vui-justify-between vui-gap-4 vui-border-2 vui-p-4 vui-rounded-large vui-transition-all vui-duration-200  ${copied ? "vui-border-success vui-bg-success" : "vui-border-modern-blue"}`,
         onClick: () => {
           navigator.clipboard.writeText(
             type === 0 /* PASSWORD */ ? password : passphrase
           );
           setCopied(true);
+          setTimeout(() => setCopied(false), 1e3);
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("span", { className: `vui-grow-0 vui-font-bold vui-break-all vui-w-11/12`, children: type === 0 /* PASSWORD */ ? password : passphrase }),
-          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(import_FaCopy.FaCopy, { className: "vui-w-6 vui-h-6" })
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("span", { className: "vui-grow-0 vui-font-bold vui-break-all vui-w-11/12 vui-font-monospace", children: type === 0 /* PASSWORD */ ? password : passphrase }),
+          copied ? /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(import_jsx_runtime21.Fragment, { children: [
+            TRAD.copied[locale],
+            " ",
+            /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(import_BiCheck.BiCheck, { className: "vui-w-6 vui-h-6" })
+          ] }) : /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(import_BiCopy2.BiCopy, { className: "vui-w-6 vui-h-6" })
         ]
       }
     ),
