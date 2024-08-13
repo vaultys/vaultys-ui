@@ -17,15 +17,7 @@
     "isolatedModules": true,
     "noEmit": false,
     "noImplicitAny": false,
-    "jsx": "react-jsx",
-    "paths": {
-      "@root/*": ["./src/*"]
-    },
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ]
+    "jsx": "react-jsx"
   },
   "include": ["src", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]

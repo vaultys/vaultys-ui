@@ -112,10 +112,9 @@ interface InputPasswordProps {
     valid?: boolean;
     placeholder?: string;
     value?: string;
-    className?: string;
     disabled?: boolean;
     copyToClipboard?: boolean;
-    color?: string;
+    dark?: boolean;
     testId?: string;
 }
 declare const InputPassword: React.FC<InputPasswordProps>;

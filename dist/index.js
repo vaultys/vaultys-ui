@@ -262,10 +262,8 @@ function IconBase(props) {
     var attr = props.attr, size = props.size, title = props.title, svgProps = __rest(props, ["attr", "size", "title"]);
     var computedSize = size || conf.size || "1em";
     var className;
-    if (conf.className)
-      className = conf.className;
-    if (props.className)
-      className = (className ? className + " " : "") + props.className;
+    if (conf.className) className = conf.className;
+    if (props.className) className = (className ? className + " " : "") + props.className;
     return import_react2.default.createElement("svg", __assign({
       stroke: "currentColor",
       fill: "currentColor",
@@ -294,9 +292,7 @@ var init_iconBase = __esm({
       __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
           s = arguments[i];
-          for (var p in s)
-            if (Object.prototype.hasOwnProperty.call(s, p))
-              t[p] = s[p];
+          for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
         }
         return t;
       };
@@ -304,14 +300,10 @@ var init_iconBase = __esm({
     };
     __rest = function(s, e) {
       var t = {};
-      for (var p in s)
-        if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
-          t[p] = s[p];
-      if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-          if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
-            t[p[i]] = s[p[i]];
-        }
+      for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0) t[p] = s[p];
+      if (s != null && typeof Object.getOwnPropertySymbols === "function") for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+        if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i])) t[p[i]] = s[p[i]];
+      }
       return t;
     };
   }
@@ -525,8 +517,7 @@ var RowItemButton = ({ title, onClick, disabled = false }) => {
       disabled,
       onClick: (e) => {
         e.stopPropagation();
-        if (!disabled)
-          onClick();
+        if (!disabled) onClick();
       },
       children: title
     }
@@ -703,8 +694,7 @@ var Row = ({
             testId: `${dataTest}-select`,
             type: 4 /* CHECKBOX */,
             onChange: (value) => {
-              if (!selectable)
-                return;
+              if (!selectable) return;
               typeof onSelectedClicked === "function" && onSelectedClicked(!isSelected);
               setIsSelected(!isSelected);
             },
@@ -824,8 +814,7 @@ var Table = ({
     }
   }, [unselectAll]);
   (0, import_react8.useEffect)(() => {
-    if (rowInEditMode)
-      setEditMode(true);
+    if (rowInEditMode) setEditMode(true);
     updateValues();
   }, [rowInEditMode]);
   (0, import_react8.useEffect)(() => {
@@ -856,8 +845,7 @@ var Table = ({
     }
   };
   const changeSort = (index) => {
-    if (currentSortIndex === index)
-      toggleSortType();
+    if (currentSortIndex === index) toggleSortType();
     else {
       setCurrentSortIndex(index);
       setCurrentSortType(0 /* ASCENDING */);
@@ -868,8 +856,7 @@ var Table = ({
   };
   const changeRowInEditMode = (rowId) => __async(void 0, null, function* () {
     const currentRow = rows.find((row) => row.id === rowInEditMode);
-    if ((currentRow == null ? void 0 : currentRow.id) === rowId)
-      return;
+    if ((currentRow == null ? void 0 : currentRow.id) === rowId) return;
     const update = values.reduce((res, element) => {
       const col = cols.find((col2) => col2.jsonFieldName === element.jsonFieldName);
       (col == null ? void 0 : col.inputType) === "date" && element.value ? res[element.jsonFieldName] = new Date(element.value).toISOString() : res[element.jsonFieldName] = element.value;
@@ -887,8 +874,7 @@ var Table = ({
     let res = false;
     row == null ? void 0 : row.items.forEach((rowItem) => {
       const newValue = values.find((value) => value.jsonFieldName === cols[rowItem.colIndex].jsonFieldName);
-      if (newValue && rowItem.value !== newValue.value)
-        res = true;
+      if (newValue && rowItem.value !== newValue.value) res = true;
     });
     return res;
   };
@@ -921,8 +907,7 @@ var Table = ({
         }
       ) })
     );
-    if (configureButton)
-      headerItems.push(/* @__PURE__ */ (0, import_jsx_runtime10.jsx)(HeaderItem, {}));
+    if (configureButton) headerItems.push(/* @__PURE__ */ (0, import_jsx_runtime10.jsx)(HeaderItem, {}));
     return headerItems;
   };
   const getRowItems = (row) => {
@@ -1036,10 +1021,8 @@ var Table = ({
     let valueA = rowA.items[currentSortIndex].value;
     let valueB = rowB.items[currentSortIndex].value;
     if (typeof valueA === "string" && typeof valueB === "string") {
-      if (!valueA)
-        valueA = "";
-      if (!valueB)
-        valueB = "";
+      if (!valueA) valueA = "";
+      if (!valueB) valueB = "";
       return stringSort(valueA, valueB);
     }
     if (typeof valueA === "boolean" && typeof valueB === "boolean") {
@@ -1057,8 +1040,7 @@ var Table = ({
     if (!stringB || stringB.trim() === "") {
       return currentSortType === 1 /* DESCENDING */ ? -1 : 1;
     }
-    if (stringA === stringB)
-      return 0;
+    if (stringA === stringB) return 0;
     if (currentSortType === 1 /* DESCENDING */) {
       return stringB.toLowerCase() < stringA.toLowerCase() ? -1 : 1;
     } else {
@@ -1066,16 +1048,12 @@ var Table = ({
     }
   };
   const booleanSort = (booleanA, booleanB) => {
-    if (currentSortType === 1 /* DESCENDING */)
-      return Number(booleanA) - Number(booleanB);
-    else
-      return Number(booleanB) - Number(booleanA);
+    if (currentSortType === 1 /* DESCENDING */) return Number(booleanA) - Number(booleanB);
+    else return Number(booleanB) - Number(booleanA);
   };
   const numberSort = (numberA, numberB) => {
-    if (currentSortType === 0 /* ASCENDING */)
-      return numberA - numberB;
-    else
-      return numberB - numberA;
+    if (currentSortType === 0 /* ASCENDING */) return numberA - numberB;
+    else return numberB - numberA;
   };
   return /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { className: "w-max vui-min-w-full vui-flex vui-flex-col vui-relative vui-min-h-[400px] bg-red-400 vui-bg-light-secondary dark:vui-bg-dark-secondary vui-rounded-large vui-shadow-small", children: [
     rows.length === 0 && emptyTableContent && /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("div", { className: "vui-absolute vui-top-0 vui-opacity-50 vui-bottom-0 vui-left-0 vui-right-0 vui-flex vui-items-center vui-justify-center vui-text-center", children: emptyTableContent }),
@@ -1136,10 +1114,8 @@ var TextIcon = ({
   const fill = (0, import_invert_color.default)(backgroundColor, true);
   const t = text.split(" ");
   let displayText = "";
-  if (t.length > 1)
-    displayText = t[0][0] + t[1][0];
-  else
-    displayText = text.slice(0, 2);
+  if (t.length > 1) displayText = t[0][0] + t[1][0];
+  else displayText = text.slice(0, 2);
   const textSize = 65;
   const textX = 11;
   const textY = 73;
@@ -1228,8 +1204,7 @@ var SearchBar = ({
             className: "vui-w-full vui-rounded-xl md:vui-min-w-min vui-m-0 vui-py-2 vui-pl-12 vui-bg-transparent focus-visible:vui-outline-none focus-visible:vui-opacity-100 vui-text-xl",
             onKeyUp,
             onChange: (e) => {
-              if (typeof onChange === "function")
-                onChange(e.target.value);
+              if (typeof onChange === "function") onChange(e.target.value);
             },
             onClick
           }
@@ -1246,18 +1221,7 @@ var import_BiCopy = __toESM(require_BiCopy());
 var import_BiHide = __toESM(require_BiHide());
 var import_BiShow = __toESM(require_BiShow());
 var import_jsx_runtime17 = require("react/jsx-runtime");
-var InputPassword = ({
-  label,
-  description,
-  onChange,
-  valid = true,
-  placeholder,
-  value,
-  disabled,
-  copyToClipboard = false,
-  color,
-  testId
-}) => {
+var InputPassword = ({ label, description, onChange, valid = true, dark = false, placeholder, value, disabled, copyToClipboard = false, testId }) => {
   const [show, setShow] = (0, import_react13.useState)();
   return /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
     import_react12.Input,
@@ -1268,13 +1232,13 @@ var InputPassword = ({
       placeholder,
       onValueChange: (value2) => onChange && onChange(value2),
       classNames: {
-        inputWrapper: color,
-        label: "vui-text-lg vui-font-bold"
+        inputWrapper: dark ? "bg-default-800 text-white" : "bg-default-000 text-black",
+        label: `vui-text-lg vui-font-bold`
       },
       description,
       isInvalid: !valid,
       isDisabled: disabled,
-      endContent: /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "vui-flex vui-flex-row vui-gap-2 vui-items-center", children: [
+      endContent: /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: `vui-flex vui-flex-row vui-gap-2 vui-items-center ${dark ? "vui-text-white" : "vui-text-black"}`, children: [
         copyToClipboard && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
           import_BiCopy.BiCopy,
           {
@@ -1286,15 +1250,7 @@ var InputPassword = ({
             }
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
-          "button",
-          {
-            className: "focus:vui-outline-none",
-            type: "button",
-            onClick: () => setShow(!show),
-            children: show ? /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(import_BiShow.BiShow, { className: "vui-text-xl vui-cursor-pointer" }) : /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(import_BiHide.BiHide, { className: "vui-text-xl vui-cursor-pointer" })
-          }
-        )
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { className: "focus:vui-outline-none", type: "button", onClick: () => setShow(!show), children: show ? /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(import_BiShow.BiShow, { className: "vui-text-xl vui-cursor-pointer" }) : /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(import_BiHide.BiHide, { className: "vui-text-xl vui-cursor-pointer" }) })
       ] }),
       type: show ? "text" : "password"
     }
@@ -1341,8 +1297,7 @@ var InputModalContextProvider = (props) => {
   };
   const handleOk = () => {
     if ((content == null ? void 0 : content.type) === "confirm") {
-      if (val !== content.validationMessage)
-        return setConfirmationMessageInvalid(true);
+      if (val !== content.validationMessage) return setConfirmationMessageInvalid(true);
       else {
         setVal("");
         resolver.current && resolver.current(true);
@@ -1374,17 +1329,7 @@ var InputModalContextProvider = (props) => {
           /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_react15.ModalHeader, { className: "vui-flex vui-flex-col vui-items-center", children: content.title }),
           /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(import_react15.ModalBody, { className: "vui-items-center vui-gap-8", children: [
             /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { children: content.message }),
-            content.type === "password" && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
-              InputPassword,
-              {
-                label: "",
-                testId: "confirm-dialog-input",
-                placeholder: content.placeholder,
-                onChange: (value) => setVal(value),
-                value: val,
-                color: "vui-bg-light-secondary dark:vui-bg-dark-secondary"
-              }
-            ),
+            content.type === "password" && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(InputPassword, { label: "", testId: "confirm-dialog-input", placeholder: content.placeholder, onChange: (value) => setVal(value), value: val }),
             content.type === "confirm" && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
               import_react15.Input,
               {
@@ -1421,8 +1366,7 @@ var Loader = ({ message, img }) => {
       /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("img", { className: "vui-h-20", src: img }),
       message
     ] }) });
-  } else
-    return /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(import_jsx_runtime19.Fragment, {});
+  } else return /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(import_jsx_runtime19.Fragment, {});
 };
 
 // src/components/SelectLanguage/index.tsx
@@ -1619,83 +1563,50 @@ var TRAD = {
     en: "English"
   }
 };
-var PasswordGenerator = ({
-  passwordType,
-  passwordConfig,
-  passphraseConfig,
-  locale = "fr",
-  onConfigChanged
-}) => {
+var PasswordGenerator = ({ passwordType, passwordConfig, passphraseConfig, locale = "fr", onConfigChanged }) => {
   var _a, _b, _c, _d, _e, _f, _g;
+  if (locale !== "fr" && locale !== "en") {
+    locale = "en";
+  }
   const [length, setLength] = (0, import_react18.useState)((_a = passwordConfig == null ? void 0 : passwordConfig.length) != null ? _a : 16);
-  const [numbers, setNumbers] = (0, import_react18.useState)(
-    (_b = passwordConfig == null ? void 0 : passwordConfig.numbers) != null ? _b : true
-  );
-  const [capitalLetters, setCapitalLetters] = (0, import_react18.useState)(
-    (_c = passwordConfig == null ? void 0 : passwordConfig.capitalLetters) != null ? _c : true
-  );
-  const [lowercaseLetters, setLowercaseLetters] = (0, import_react18.useState)(
-    (_d = passwordConfig == null ? void 0 : passwordConfig.lowercaseLetters) != null ? _d : true
-  );
-  const [specialCharacters, setSpecialCharacters] = (0, import_react18.useState)(
-    (_e = passwordConfig == null ? void 0 : passwordConfig.specialCharacters) != null ? _e : true
-  );
-  const [type, setType] = (0, import_react18.useState)(
-    passwordType != null ? passwordType : 0 /* PASSWORD */
-  );
+  const [numbers, setNumbers] = (0, import_react18.useState)((_b = passwordConfig == null ? void 0 : passwordConfig.numbers) != null ? _b : true);
+  const [capitalLetters, setCapitalLetters] = (0, import_react18.useState)((_c = passwordConfig == null ? void 0 : passwordConfig.capitalLetters) != null ? _c : true);
+  const [lowercaseLetters, setLowercaseLetters] = (0, import_react18.useState)((_d = passwordConfig == null ? void 0 : passwordConfig.lowercaseLetters) != null ? _d : true);
+  const [specialCharacters, setSpecialCharacters] = (0, import_react18.useState)((_e = passwordConfig == null ? void 0 : passwordConfig.specialCharacters) != null ? _e : true);
+  const [type, setType] = (0, import_react18.useState)(passwordType != null ? passwordType : 0 /* PASSWORD */);
   const [robustness, setRobustness] = (0, import_react18.useState)(2 /* GOOD */);
   const [copied, setCopied] = (0, import_react18.useState)(false);
   const [password, setPassword] = (0, import_react18.useState)("");
-  const [wordsNumber, setWordsNumber] = (0, import_react18.useState)(
-    (_f = passphraseConfig == null ? void 0 : passphraseConfig.wordNumber) != null ? _f : 12
-  );
-  const [language, setLanguage] = (0, import_react18.useState)(
-    (_g = passphraseConfig == null ? void 0 : passphraseConfig.language) != null ? _g : "en"
-  );
+  const [wordsNumber, setWordsNumber] = (0, import_react18.useState)((_f = passphraseConfig == null ? void 0 : passphraseConfig.wordNumber) != null ? _f : 12);
+  const [language, setLanguage] = (0, import_react18.useState)((_g = passphraseConfig == null ? void 0 : passphraseConfig.language) != null ? _g : "en");
   const [passphrase, setPassphrase] = (0, import_react18.useState)("");
   (0, import_react18.useEffect)(() => {
-    if (!numbers && !capitalLetters && !lowercaseLetters && !specialCharacters)
-      setLowercaseLetters(true);
+    if (!numbers && !capitalLetters && !lowercaseLetters && !specialCharacters) setLowercaseLetters(true);
     else {
       generatePassword();
     }
   }, [numbers, capitalLetters, lowercaseLetters, specialCharacters]);
   (0, import_react18.useEffect)(() => {
-    if (wordsNumber < 6)
-      setRobustness(0 /* BAD */);
-    else if (wordsNumber >= 6 && wordsNumber < 8)
-      setRobustness(1 /* MINIMAL */);
-    else if (wordsNumber >= 8 && wordsNumber < 10)
-      setRobustness(2 /* GOOD */);
-    else if (wordsNumber >= 10)
-      setRobustness(3 /* ROBUST */);
-    if (language === "fr")
-      (0, import_bip39.setDefaultWordlist)("french");
-    else
-      (0, import_bip39.setDefaultWordlist)("english");
+    if (wordsNumber < 6) setRobustness(0 /* BAD */);
+    else if (wordsNumber >= 6 && wordsNumber < 8) setRobustness(1 /* MINIMAL */);
+    else if (wordsNumber >= 8 && wordsNumber < 10) setRobustness(2 /* GOOD */);
+    else if (wordsNumber >= 10) setRobustness(3 /* ROBUST */);
+    if (language === "fr") (0, import_bip39.setDefaultWordlist)("french");
+    else (0, import_bip39.setDefaultWordlist)("english");
     generatePassphrase();
   }, [wordsNumber, language]);
   (0, import_react18.useEffect)(() => {
     let score = 0;
     score += length * 2;
-    if (capitalLetters)
-      score += 10;
-    if (lowercaseLetters)
-      score += 10;
-    if (numbers)
-      score += 10;
-    if (specialCharacters)
-      score += 10;
-    if (capitalLetters && lowercaseLetters && numbers && specialCharacters)
-      score += 10;
-    if (score > 40 && score <= 50)
-      setRobustness(1 /* MINIMAL */);
-    else if (score > 50 && score <= 75)
-      setRobustness(2 /* GOOD */);
-    else if (score > 75)
-      setRobustness(3 /* ROBUST */);
-    else
-      setRobustness(0 /* BAD */);
+    if (capitalLetters) score += 10;
+    if (lowercaseLetters) score += 10;
+    if (numbers) score += 10;
+    if (specialCharacters) score += 10;
+    if (capitalLetters && lowercaseLetters && numbers && specialCharacters) score += 10;
+    if (score > 40 && score <= 50) setRobustness(1 /* MINIMAL */);
+    else if (score > 50 && score <= 75) setRobustness(2 /* GOOD */);
+    else if (score > 75) setRobustness(3 /* ROBUST */);
+    else setRobustness(0 /* BAD */);
   }, [numbers, capitalLetters, lowercaseLetters, specialCharacters, length]);
   const generatePassword = () => {
     let passwordChars = "";
@@ -1706,9 +1617,7 @@ var PasswordGenerator = ({
       while (password2[index]) {
         index = Math.floor(Math.random() * length);
       }
-      password2[index] = LOWERCASE_LETTERS.charAt(
-        Math.floor(Math.random() * LOWERCASE_LETTERS.length)
-      );
+      password2[index] = LOWERCASE_LETTERS.charAt(Math.floor(Math.random() * LOWERCASE_LETTERS.length));
     }
     if (capitalLetters) {
       passwordChars += CAPITAL_LETTERS;
@@ -1716,9 +1625,7 @@ var PasswordGenerator = ({
       while (password2[index]) {
         index = Math.floor(Math.random() * length);
       }
-      password2[index] = CAPITAL_LETTERS.charAt(
-        Math.floor(Math.random() * CAPITAL_LETTERS.length)
-      );
+      password2[index] = CAPITAL_LETTERS.charAt(Math.floor(Math.random() * CAPITAL_LETTERS.length));
     }
     if (numbers) {
       passwordChars += NUMBERS;
@@ -1726,9 +1633,7 @@ var PasswordGenerator = ({
       while (password2[index]) {
         index = Math.floor(Math.random() * length);
       }
-      password2[index] = NUMBERS.charAt(
-        Math.floor(Math.random() * NUMBERS.length)
-      );
+      password2[index] = NUMBERS.charAt(Math.floor(Math.random() * NUMBERS.length));
     }
     if (specialCharacters) {
       passwordChars += SPECIAL_CHARS;
@@ -1736,14 +1641,11 @@ var PasswordGenerator = ({
       while (password2[index]) {
         index = Math.floor(Math.random() * length);
       }
-      password2[index] = SPECIAL_CHARS.charAt(
-        Math.floor(Math.random() * SPECIAL_CHARS.length)
-      );
+      password2[index] = SPECIAL_CHARS.charAt(Math.floor(Math.random() * SPECIAL_CHARS.length));
     }
     for (let i = 0; i < length; i++) {
       const randomIndex = Math.floor(Math.random() * passwordChars.length);
-      if (!password2[i])
-        password2[i] = passwordChars.charAt(randomIndex);
+      if (!password2[i]) password2[i] = passwordChars.charAt(randomIndex);
     }
     setPassword(password2.join(""));
   };
@@ -1770,16 +1672,7 @@ var PasswordGenerator = ({
         specialCharacters
       }
     });
-  }, [
-    type,
-    length,
-    lowercaseLetters,
-    capitalLetters,
-    numbers,
-    specialCharacters,
-    wordsNumber,
-    language
-  ]);
+  }, [type, length, lowercaseLetters, capitalLetters, numbers, specialCharacters, wordsNumber, language]);
   const passwordStrength = () => {
     switch (robustness) {
       case 0 /* BAD */:
@@ -1798,21 +1691,19 @@ var PasswordGenerator = ({
     /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(
       "div",
       {
-        className: `vui-cursor-pointer vui-flex vui-flex-row vui-flex-shrink-0 vui-justify-between vui-gap-4 vui-border-2 vui-p-4 vui-rounded-large vui-transition-all vui-duration-200  ${copied ? "vui-border-success vui-bg-success" : "vui-border-modern-blue"}`,
+        className: `vui-cursor-pointer vui-flex vui-flex-row vui-justify-between vui-items-center vui-gap-4 vui-border-2 vui-p-2 vui-rounded-large vui-transition-all vui-duration-200  ${copied ? "vui-border-success vui-bg-success" : "vui-border-modern-blue"}`,
         onClick: () => {
-          navigator.clipboard.writeText(
-            type === 0 /* PASSWORD */ ? password : passphrase
-          );
+          navigator.clipboard.writeText(type === 0 /* PASSWORD */ ? password : passphrase);
           setCopied(true);
           setTimeout(() => setCopied(false), 1e3);
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("span", { className: "vui-grow-0 vui-font-bold vui-break-all vui-w-11/12 vui-font-monospace", children: type === 0 /* PASSWORD */ ? password : passphrase }),
-          copied ? /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(import_jsx_runtime21.Fragment, { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("div", { className: "vui-font-bold vui-break-all vui-text-lg vui-font-monospace", children: type === 0 /* PASSWORD */ ? password : passphrase }),
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("div", { className: "vui-flex-shrink-0 vui-flex vui-flex-row vui-items-center gap-1", children: copied ? /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(import_jsx_runtime21.Fragment, { children: [
             TRAD.copied[locale],
             " ",
-            /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(import_BiCheck.BiCheck, { className: "vui-w-6 vui-h-6" })
-          ] }) : /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(import_BiCopy2.BiCopy, { className: "vui-w-6 vui-h-6" })
+            /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(import_BiCheck.BiCheck, {})
+          ] }) : /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(import_BiCopy2.BiCopy, {}) })
         ]
       }
     ),
@@ -1827,22 +1718,8 @@ var PasswordGenerator = ({
           popoverContent: "vui-bg-light-secondary dark:vui-bg-dark-secondary"
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
-            import_react17.SelectItem,
-            {
-              onPress: () => setType(0 /* PASSWORD */),
-              children: TRAD.password[locale]
-            },
-            0 /* PASSWORD */
-          ),
-          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
-            import_react17.SelectItem,
-            {
-              onPress: () => setType(1 /* PASSPHRASE */),
-              children: TRAD.passhprase[locale]
-            },
-            1 /* PASSPHRASE */
-          )
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(import_react17.SelectItem, { onPress: () => setType(0 /* PASSWORD */), children: TRAD.password[locale] }, 0 /* PASSWORD */),
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(import_react17.SelectItem, { onPress: () => setType(1 /* PASSPHRASE */), children: TRAD.passhprase[locale] }, 1 /* PASSPHRASE */)
         ]
       }
     ),
@@ -1864,42 +1741,10 @@ var PasswordGenerator = ({
           }
         }
       ),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
-        import_react17.Checkbox,
-        {
-          color: "primary",
-          isSelected: lowercaseLetters,
-          onValueChange: (value) => setLowercaseLetters(value),
-          children: "a-z"
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
-        import_react17.Checkbox,
-        {
-          color: "primary",
-          isSelected: capitalLetters,
-          onValueChange: (value) => setCapitalLetters(value),
-          children: "A-Z"
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
-        import_react17.Checkbox,
-        {
-          color: "primary",
-          isSelected: numbers,
-          onValueChange: (value) => setNumbers(value),
-          children: "0-9"
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
-        import_react17.Checkbox,
-        {
-          color: "primary",
-          isSelected: specialCharacters,
-          onValueChange: (value) => setSpecialCharacters(value),
-          children: SPECIAL_CHARS
-        }
-      )
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(import_react17.Checkbox, { color: "primary", isSelected: lowercaseLetters, onValueChange: (value) => setLowercaseLetters(value), children: "a-z" }),
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(import_react17.Checkbox, { color: "primary", isSelected: capitalLetters, onValueChange: (value) => setCapitalLetters(value), children: "A-Z" }),
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(import_react17.Checkbox, { color: "primary", isSelected: numbers, onValueChange: (value) => setNumbers(value), children: "0-9" }),
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(import_react17.Checkbox, { color: "primary", isSelected: specialCharacters, onValueChange: (value) => setSpecialCharacters(value), children: SPECIAL_CHARS })
     ] }) : /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("div", { className: "vui-bg-light-secondary dark:vui-bg-dark-secondary vui-flex vui-flex-col vui-gap-2 vui-rounded-large vui-p-3", children: [
       /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
         import_react17.Slider,
@@ -1934,15 +1779,7 @@ var PasswordGenerator = ({
         }
       )
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
-      import_react17.Button,
-      {
-        startContent: /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(import_FiRefreshCcw.FiRefreshCcw, {}),
-        onPress: () => type === 0 /* PASSWORD */ ? generatePassword() : generatePassphrase(),
-        color: "success",
-        children: TRAD.regenerate[locale]
-      }
-    )
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(import_react17.Button, { startContent: /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(import_FiRefreshCcw.FiRefreshCcw, {}), onPress: () => type === 0 /* PASSWORD */ ? generatePassword() : generatePassphrase(), color: "success", children: TRAD.regenerate[locale] })
   ] });
 };
 // Annotate the CommonJS export names for ESM import in node:

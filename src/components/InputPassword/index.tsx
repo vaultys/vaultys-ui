@@ -12,25 +12,13 @@ export interface InputPasswordProps {
   valid?: boolean;
   placeholder?: string;
   value?: string;
-  className?: string;
   disabled?: boolean;
   copyToClipboard?: boolean;
-  color?: string;
+  dark?: boolean;
   testId?: string;
 }
 
-export const InputPassword: React.FC<InputPasswordProps> = ({
-  label,
-  description,
-  onChange,
-  valid = true,
-  placeholder,
-  value,
-  disabled,
-  copyToClipboard = false,
-  color,
-  testId,
-}) => {
+export const InputPassword: React.FC<InputPasswordProps> = ({ label, description, onChange, valid = true, dark = false, placeholder, value, disabled, copyToClipboard = false, testId }) => {
   const [show, setShow] = useState<boolean>();
   return (
     <Input
@@ -40,14 +28,14 @@ export const InputPassword: React.FC<InputPasswordProps> = ({
       placeholder={placeholder}
       onValueChange={(value: string) => onChange && onChange(value)}
       classNames={{
-        inputWrapper: color,
-        label: "vui-text-lg vui-font-bold",
+        inputWrapper: dark ? "bg-default-800 text-white" : "bg-default-000 text-black",
+        label: `vui-text-lg vui-font-bold`,
       }}
       description={description}
       isInvalid={!valid}
       isDisabled={disabled}
       endContent={
-        <div className="vui-flex vui-flex-row vui-gap-2 vui-items-center">
+        <div className={`vui-flex vui-flex-row vui-gap-2 vui-items-center ${dark ? "vui-text-white" : "vui-text-black"}`}>
           {copyToClipboard && (
             <BiCopy
               className="vui-text-xl vui-cursor-pointer"
@@ -58,16 +46,8 @@ export const InputPassword: React.FC<InputPasswordProps> = ({
               }}
             />
           )}
-          <button
-            className="focus:vui-outline-none"
-            type="button"
-            onClick={() => setShow(!show)}
-          >
-            {show ? (
-              <BiShow className="vui-text-xl vui-cursor-pointer" />
-            ) : (
-              <BiHide className="vui-text-xl vui-cursor-pointer" />
-            )}
+          <button className="focus:vui-outline-none" type="button" onClick={() => setShow(!show)}>
+            {show ? <BiShow className="vui-text-xl vui-cursor-pointer" /> : <BiHide className="vui-text-xl vui-cursor-pointer" />}
           </button>
         </div>
       }

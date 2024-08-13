@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from "@storybook/react";
-import "../../../dist/index.css";
+
 import { InputPassword } from ".";
 const meta: Meta<typeof InputPassword> = {
   title: "",
@@ -14,5 +14,6 @@ export const Primary: Story = {
     placeholder: "Enter you password",
     disabled: false,
     copyToClipboard: false,
+    dark: false,
   },
 };

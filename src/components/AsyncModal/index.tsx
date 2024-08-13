@@ -123,16 +123,7 @@ const InputModalContextProvider: React.FC<InputModalContextProviderProps> = (pro
             <ModalBody className="vui-items-center vui-gap-8">
               <div>{content.message}</div>
 
-              {content.type === "password" && (
-                <InputPassword
-                  label=""
-                  testId="confirm-dialog-input"
-                  placeholder={content.placeholder}
-                  onChange={(value: string) => setVal(value)}
-                  value={val}
-                  color="vui-bg-light-secondary dark:vui-bg-dark-secondary"
-                />
-              )}
+              {content.type === "password" && <InputPassword label="" testId="confirm-dialog-input" placeholder={content.placeholder} onChange={(value: string) => setVal(value)} value={val} />}
               {content.type === "confirm" && (
                 <Input
                   isInvalid={confirmationMessageInvalid}

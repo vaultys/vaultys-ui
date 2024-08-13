@@ -1,5 +1,4 @@
 import { Meta, StoryObj } from "@storybook/react";
-import "../../../dist/index.css";
 import { Loader } from ".";
 const meta: Meta<typeof Loader> = {
   component: Loader,

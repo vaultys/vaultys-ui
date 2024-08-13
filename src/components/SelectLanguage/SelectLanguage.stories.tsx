@@ -1,5 +1,4 @@
 import { Meta, StoryObj } from "@storybook/react";
-import "../../../dist/index.css";
 import { SelectLanguage } from ".";
 const meta: Meta<typeof SelectLanguage> = {
   component: SelectLanguage,
