@@ -1,11 +1,5 @@
 "use client";
-import {
-  Button,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownTrigger,
-} from "@nextui-org/react";
+import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/react";
 import { IoMdArrowDropdown } from "@react-icons/all-files/io/IoMdArrowDropdown";
 
 export interface RowItemDropdownProps {
@@ -14,13 +8,9 @@ export interface RowItemDropdownProps {
   onChange: (value: string) => void;
 }
 
-export const RowItemDropdown: React.FC<RowItemDropdownProps> = ({
-  value,
-  items,
-  onChange,
-}) => {
+export const RowItemDropdown: React.FC<RowItemDropdownProps> = ({ value, items, onChange }) => {
   return (
-    <Dropdown className="vui-bg-light dark:vui-bg-dark">
+    <Dropdown className="bg-light dark:bg-dark">
       <DropdownTrigger>
         <Button endContent={<IoMdArrowDropdown />} variant="bordered">
           {value}

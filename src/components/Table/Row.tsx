@@ -55,13 +55,11 @@ export const Row: React.FC<RowProps> = ({
     <tr
       data-test={dataTest}
       id={id}
-      className={`${rowIndex && rowIndex % 2 !== 0 && showLines && "vui-brightness-95 dark:vui-brightness-110"} ${
-        isSelected
-          ? "vui-bg-primary/20 vui-text-primary dark:vui-bg-secondary/20 dark:vui-text-secondary"
-          : `${danger ? "vui-bg-danger" : warning ? "vui-bg-warning" : `vui-bg-light-secondary dark:vui-bg-dark-secondary`}`
-      } ${inactiveState && "vui-text-gray-500"}
-      ${blur && "vui-blur-sm"} hover:vui-blur-0
-       hover:vui-brightness-75 dark:hover:vui-brightness-125 vui-h-12 ${clickable && "vui-cursor-pointer"}`}
+      className={`${rowIndex && rowIndex % 2 !== 0 && showLines && "brightness-95 dark:brightness-110"} ${
+        isSelected ? "bg-primary/20 text-primary dark:bg-secondary/20 dark:text-secondary" : `${danger ? "bg-danger" : warning ? "bg-warning" : `bg-light-secondary dark:bg-dark-secondary`}`
+      } ${inactiveState && "text-gray-500"}
+      ${blur && "blur-sm"} hover:blur-0
+       hover:brightness-75 dark:hover:brightness-125 h-12 ${clickable && "cursor-pointer"}`}
       onClick={() => {
         typeof onRowClicked === "function" && onRowClicked();
       }}
@@ -75,8 +73,7 @@ export const Row: React.FC<RowProps> = ({
           type={ColumnType.CHECKBOX}
           onChange={(value) => {
             if (!selectable) return;
-            typeof onSelectedClicked === "function" &&
-              onSelectedClicked(!isSelected);
+            typeof onSelectedClicked === "function" && onSelectedClicked(!isSelected);
             setIsSelected(!isSelected);
           }}
           value={isSelected}
@@ -84,13 +81,9 @@ export const Row: React.FC<RowProps> = ({
       )}
 
       {configurable && (
-        <RowItem
-          type={ColumnType.CUSTOM}
-          id={`${id}-config`}
-          testId={`${dataTest}-configure`}
-        >
+        <RowItem type={ColumnType.CUSTOM} id={`${id}-config`} testId={`${dataTest}-configure`}>
           <BsGearFill
-            className="vui-w-6 vui-h-6 vui-cursor-pointer"
+            className="w-6 h-6 cursor-pointer"
             onClick={(e: any) => {
               e.stopPropagation();
               typeof onConfigureClicked === "function" && onConfigureClicked();

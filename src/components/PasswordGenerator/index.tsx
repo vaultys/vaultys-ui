@@ -218,13 +218,13 @@ export const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({ passwordTy
   const passwordStrength = () => {
     switch (robustness) {
       case ROBUSTNESS.BAD:
-        return <FaFrown className="vui-text-danger vui-w-16 vui-h-16 vui-mx-auto" />;
+        return <FaFrown className="text-danger w-16 h-16 mx-auto" />;
       case ROBUSTNESS.MINIMAL:
-        return <FaMeh className="vui-text-warning vui-w-16 vui-h-16 vui-mx-auto" />;
+        return <FaMeh className="text-warning w-16 h-16 mx-auto" />;
       case ROBUSTNESS.GOOD:
-        return <FaSmile className="vui-text-success vui-w-16 vui-h-16 vui-mx-auto" />;
+        return <FaSmile className="text-success w-16 h-16 mx-auto" />;
       case ROBUSTNESS.ROBUST:
-        return <FaGrin className="vui-text-success vui-w-16 vui-h-16 vui-mx-auto" />;
+        return <FaGrin className="text-success w-16 h-16 mx-auto" />;
 
       default:
         break;
@@ -232,10 +232,10 @@ export const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({ passwordTy
   };
 
   return (
-    <div className="vui-flex vui-flex-col vui-gap-2 vui-w-full vui-bg-light dark:vui-bg-dark vui-p-4 vui-text-black dark:vui-text-white vui-rounded-large">
+    <div className="flex flex-col gap-2 w-full bg-light dark:bg-dark p-4 text-black dark:text-white rounded-large">
       <div
-        className={`vui-cursor-pointer vui-flex vui-flex-row vui-justify-between vui-items-center vui-gap-4 vui-border-2 vui-p-2 vui-rounded-large vui-transition-all vui-duration-200  ${
-          copied ? "vui-border-success vui-bg-success" : "vui-border-modern-blue"
+        className={`cursor-pointer flex flex-row justify-between items-center gap-4 border-2 p-2 rounded-large transition-all duration-200  ${
+          copied ? "border-success bg-success" : "border-modern-blue"
         }`}
         onClick={() => {
           navigator.clipboard.writeText(type === PasswordType.PASSWORD ? password : passphrase);
@@ -243,8 +243,8 @@ export const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({ passwordTy
           setTimeout(() => setCopied(false), 1000);
         }}
       >
-        <div className="vui-font-bold vui-break-all vui-text-lg vui-font-monospace">{type === PasswordType.PASSWORD ? password : passphrase}</div>
-        <div className="vui-flex-shrink-0 vui-flex vui-flex-row vui-items-center gap-1">
+        <div className="font-bold break-all text-lg font-monospace">{type === PasswordType.PASSWORD ? password : passphrase}</div>
+        <div className="flex-shrink-0 flex flex-row items-center gap-1">
           {copied ? (
             <>
               {TRAD.copied[locale]} <BiCheck />
@@ -259,8 +259,8 @@ export const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({ passwordTy
         label={TRAD.passwordType[locale]}
         selectedKeys={[type ?? PasswordType.PASSWORD]}
         classNames={{
-          trigger: "vui-bg-light-secondary dark:vui-bg-dark-secondary",
-          popoverContent: "vui-bg-light-secondary dark:vui-bg-dark-secondary",
+          trigger: "bg-light-secondary dark:bg-dark-secondary",
+          popoverContent: "bg-light-secondary dark:bg-dark-secondary",
         }}
       >
         <SelectItem key={PasswordType.PASSWORD} onPress={() => setType(PasswordType.PASSWORD)}>
@@ -272,7 +272,7 @@ export const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({ passwordTy
       </Select>
 
       {type === PasswordType.PASSWORD ? (
-        <div className="vui-bg-light-secondary dark:vui-bg-dark-secondary vui-flex vui-flex-col vui-gap-2 vui-rounded-large vui-p-3">
+        <div className="bg-light-secondary dark:bg-dark-secondary flex flex-col gap-2 rounded-large p-3">
           <Slider
             label={`${TRAD.charNumber[locale]}`}
             minValue={8}
@@ -282,9 +282,9 @@ export const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({ passwordTy
             onChangeEnd={generatePassword}
             size="lg"
             classNames={{
-              filler: "vui-bg-modern-blue",
-              track: "vui-border-s-modern-blue vui-bg-light-secondary dark:vui-bg-dark-secondary",
-              thumb: "vui-bg-black dark:vui-bg-white",
+              filler: "bg-modern-blue",
+              track: "border-s-modern-blue bg-light-secondary dark:bg-dark-secondary",
+              thumb: "bg-black dark:bg-white",
             }}
           />
           <Checkbox color="primary" isSelected={lowercaseLetters} onValueChange={(value: boolean) => setLowercaseLetters(value)}>
@@ -301,7 +301,7 @@ export const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({ passwordTy
           </Checkbox>
         </div>
       ) : (
-        <div className="vui-bg-light-secondary dark:vui-bg-dark-secondary vui-flex vui-flex-col vui-gap-2 vui-rounded-large vui-p-3">
+        <div className="bg-light-secondary dark:bg-dark-secondary flex flex-col gap-2 rounded-large p-3">
           <Slider
             label={`${TRAD.wordNumber[locale]}`}
             minValue={4}
@@ -311,17 +311,17 @@ export const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({ passwordTy
             onChangeEnd={generatePassword}
             size="lg"
             classNames={{
-              filler: "vui-bg-modern-blue",
-              track: "vui-border-s-modern-blue vui-bg-light-secondary dark:vui-bg-dark-secondary",
-              thumb: "vui-bg-black dark:vui-bg-white",
+              filler: "bg-modern-blue",
+              track: "border-s-modern-blue bg-light-secondary dark:bg-dark-secondary",
+              thumb: "bg-black dark:bg-white",
             }}
           />
           <Select
             label={TRAD.language[locale]}
             selectedKeys={[language]}
             classNames={{
-              trigger: "vui-bg-light dark:vui-bg-dark",
-              popoverContent: "vui-bg-light dark:vui-bg-dark",
+              trigger: "bg-light dark:bg-dark",
+              popoverContent: "bg-light dark:bg-dark",
             }}
           >
             <SelectItem key="fr" onPress={() => setLanguage("fr")}>

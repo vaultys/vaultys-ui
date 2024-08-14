@@ -14,11 +14,11 @@ export interface InputPasswordProps {
   value?: string;
   disabled?: boolean;
   copyToClipboard?: boolean;
-  dark?: boolean;
+  color?: string;
   testId?: string;
 }
 
-export const InputPassword: React.FC<InputPasswordProps> = ({ label, description, onChange, valid = true, dark = false, placeholder, value, disabled, copyToClipboard = false, testId }) => {
+export const InputPassword: React.FC<InputPasswordProps> = ({ label, description, onChange, valid = true, color, placeholder, value, disabled, copyToClipboard = false, testId }) => {
   const [show, setShow] = useState<boolean>();
   return (
     <Input
@@ -28,17 +28,17 @@ export const InputPassword: React.FC<InputPasswordProps> = ({ label, description
       placeholder={placeholder}
       onValueChange={(value: string) => onChange && onChange(value)}
       classNames={{
-        inputWrapper: dark ? "bg-default-800 text-white" : "bg-default-000 text-black",
-        label: `vui-text-lg vui-font-bold`,
+        inputWrapper: color,
+        label: `text-lg font-bold`,
       }}
       description={description}
       isInvalid={!valid}
       isDisabled={disabled}
       endContent={
-        <div className={`vui-flex vui-flex-row vui-gap-2 vui-items-center ${dark ? "vui-text-white" : "vui-text-black"}`}>
+        <div className="flex flex-row gap-2 items-center">
           {copyToClipboard && (
             <BiCopy
-              className="vui-text-xl vui-cursor-pointer"
+              className="text-xl cursor-pointer dark:text-white"
               onClick={() => {
                 if (value) {
                   navigator.clipboard.writeText(value);
@@ -46,8 +46,8 @@ export const InputPassword: React.FC<InputPasswordProps> = ({ label, description
               }}
             />
           )}
-          <button className="focus:vui-outline-none" type="button" onClick={() => setShow(!show)}>
-            {show ? <BiShow className="vui-text-xl vui-cursor-pointer" /> : <BiHide className="vui-text-xl vui-cursor-pointer" />}
+          <button className="focus:outline-none" type="button" onClick={() => setShow(!show)}>
+            {show ? <BiShow className="text-xl cursor-pointer dark:text-white" /> : <BiHide className="text-xl cursor-pointer dark:text-white" />}
           </button>
         </div>
       }

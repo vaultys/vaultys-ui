@@ -15,7 +15,7 @@ export const RowItemEditText: React.FC<RowItemEditTextProps> = ({ editMode, valu
       {maxLines > 1 ? (
         <textarea
           rows={maxLines}
-          className={`vui-w-full vui-bg-transparent vui-rounded-lg vui-p-1 vui-border vui-outline-none ${editMode ? "" : "vui-border-transparent"}`}
+          className={`w-full bg-transparent rounded-lg p-1 border outline-none ${editMode ? "" : "border-transparent"}`}
           value={value}
           onChange={(e) => onChange(e.target.value)}
           onClick={() => onClick()}
@@ -23,7 +23,7 @@ export const RowItemEditText: React.FC<RowItemEditTextProps> = ({ editMode, valu
       ) : (
         <input
           type={inputType}
-          className={`vui-w-full vui-bg-transparent vui-rounded-lg vui-p-1 vui-border vui-outline-none vui-text-ellipsis vui-truncate ... ${editMode ? "" : "vui-border-transparent"}`}
+          className={`w-full bg-transparent rounded-lg p-1 border outline-none text-ellipsis truncate ... ${editMode ? "" : "border-transparent"}`}
           value={value}
           onChange={(e) => onChange(e.target.value)}
           onClick={() => onClick()}

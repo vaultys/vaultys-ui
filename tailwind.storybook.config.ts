@@ -2,8 +2,8 @@ import type { Config } from "tailwindcss";
 import { nextui } from "@nextui-org/react";
 
 const config: Config = {
-  darkMode: ["class", 'html[class~="dark"]'],
-  content: ["./src/components/**/*.{js,ts,jsx,tsx,mdx}", "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}"],
+  darkMode: "class",
+  content: ["./src/components/**/*.{js,ts,jsx,tsx,mdx}", "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx,mjs}"],
   theme: {
     fontFamily: {
       montserrat: ["Montserrat", "sans-serif"],
@@ -30,10 +30,6 @@ const config: Config = {
       },
     },
   },
-  plugins: [
-    nextui({
-      prefix: "vui-",
-    }),
-  ],
+  plugins: [nextui()],
 };
 export default config;

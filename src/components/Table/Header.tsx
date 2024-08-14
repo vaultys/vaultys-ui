@@ -7,7 +7,7 @@ export interface HeaderProps {
 
 export const Header: React.FC<HeaderProps> = ({ items }) => {
   return (
-    <thead className="[&>tr]:first:vui-rounded-large vui-sticky vui-top-5 z-20 [&>tr]:first:vui-shadow-small">
+    <thead className="[&>tr]:first:rounded-large sticky top-5 z-20 [&>tr]:first:shadow-small">
       <tr>{items}</tr>
     </thead>
   );

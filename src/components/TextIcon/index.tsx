@@ -7,11 +7,7 @@ export interface TextIconProps {
   className?: string;
 }
 
-export const TextIcon: React.FC<TextIconProps> = ({
-  text = "Te",
-  backgroundColor = "#FFFFFF",
-  className = "",
-}) => {
+export const TextIcon: React.FC<TextIconProps> = ({ text = "Te", backgroundColor = "#FFFFFF", className = "" }) => {
   if (!text) {
     text = "0x";
   }
@@ -27,7 +23,7 @@ export const TextIcon: React.FC<TextIconProps> = ({
 
   return (
     <div style={{ backgroundColor, fill }} className={className}>
-      <svg className="vui-m-0 vui-p-0" viewBox="0 0 100 100">
+      <svg className="m-0 p-0" viewBox="0 0 100 100">
         <text fontSize={textSize} fontFamily="monospace" x={textX} y={textY}>
           {displayText.slice(0, 2).toLocaleUpperCase()}
         </text>

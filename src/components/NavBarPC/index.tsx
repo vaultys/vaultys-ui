@@ -9,9 +9,9 @@ export interface NavBarProps {
 
 export const NavBar: React.FC<NavBarProps> = ({ children, startContent, endContent }) => {
   return (
-    <nav className="vui-z-30 vui-shadow vui-bg-light-secondary dark:vui-bg-dark-secondary vui-w-full vui-flex vui-flex-row vui-gap-4 vui-items-center vui-px-4 vui-py-2">
+    <nav className="z-30 shadow bg-light-secondary dark:bg-dark-secondary w-full flex flex-row gap-4 items-center px-4 py-2">
       {startContent}
-      <div className="vui-flex vui-flex-row vui-items-center vui-grow">
+      <div className="flex flex-row items-center grow">
         {React.Children.map(children, (child, index) => {
           return <div key={index}>{child}</div>;
         })}

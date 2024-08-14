@@ -12,9 +12,9 @@ export const Loader: React.FC<LoaderProps> = ({ message, img }) => {
 
   if (show) {
     return (
-      <div className="vui-p-5 vui-flex vui-flex-row vui-items-center vui-justify-center">
-        <div className="vui-flex vui-flex-col vui-items-center vui-gap-5 vui-animate-pulse">
-          <img className="vui-h-20" src={img} />
+      <div className="p-5 flex flex-row items-center justify-center">
+        <div className="flex flex-col items-center gap-5 animate-pulse">
+          <img className="h-20" src={img} />
           {message}
         </div>
       </div>
