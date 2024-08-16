@@ -69,22 +69,21 @@ const TRAD = {
     },
 };
 export const PasswordGenerator = ({ passwordType, passwordConfig, passphraseConfig, locale = "fr", onConfigChanged }) => {
-    var _a, _b, _c, _d, _e, _f, _g;
     // forcing to english if non translated locale
     if (locale !== "fr" && locale !== "en") {
         locale = "en";
     }
-    const [length, setLength] = useState((_a = passwordConfig === null || passwordConfig === void 0 ? void 0 : passwordConfig.length) !== null && _a !== void 0 ? _a : 16);
-    const [numbers, setNumbers] = useState((_b = passwordConfig === null || passwordConfig === void 0 ? void 0 : passwordConfig.numbers) !== null && _b !== void 0 ? _b : true);
-    const [capitalLetters, setCapitalLetters] = useState((_c = passwordConfig === null || passwordConfig === void 0 ? void 0 : passwordConfig.capitalLetters) !== null && _c !== void 0 ? _c : true);
-    const [lowercaseLetters, setLowercaseLetters] = useState((_d = passwordConfig === null || passwordConfig === void 0 ? void 0 : passwordConfig.lowercaseLetters) !== null && _d !== void 0 ? _d : true);
-    const [specialCharacters, setSpecialCharacters] = useState((_e = passwordConfig === null || passwordConfig === void 0 ? void 0 : passwordConfig.specialCharacters) !== null && _e !== void 0 ? _e : true);
-    const [type, setType] = useState(passwordType !== null && passwordType !== void 0 ? passwordType : PasswordType.PASSWORD);
+    const [length, setLength] = useState(passwordConfig?.length ?? 16);
+    const [numbers, setNumbers] = useState(passwordConfig?.numbers ?? true);
+    const [capitalLetters, setCapitalLetters] = useState(passwordConfig?.capitalLetters ?? true);
+    const [lowercaseLetters, setLowercaseLetters] = useState(passwordConfig?.lowercaseLetters ?? true);
+    const [specialCharacters, setSpecialCharacters] = useState(passwordConfig?.specialCharacters ?? true);
+    const [type, setType] = useState(passwordType ?? PasswordType.PASSWORD);
     const [robustness, setRobustness] = useState(ROBUSTNESS.GOOD);
     const [copied, setCopied] = useState(false);
     const [password, setPassword] = useState("");
-    const [wordsNumber, setWordsNumber] = useState((_f = passphraseConfig === null || passphraseConfig === void 0 ? void 0 : passphraseConfig.wordNumber) !== null && _f !== void 0 ? _f : 12);
-    const [language, setLanguage] = useState((_g = passphraseConfig === null || passphraseConfig === void 0 ? void 0 : passphraseConfig.language) !== null && _g !== void 0 ? _g : "en");
+    const [wordsNumber, setWordsNumber] = useState(passphraseConfig?.wordNumber ?? 12);
+    const [language, setLanguage] = useState(passphraseConfig?.language ?? "en");
     const [passphrase, setPassphrase] = useState("");
     useEffect(() => {
         if (!numbers && !capitalLetters && !lowercaseLetters && !specialCharacters)
@@ -214,7 +213,7 @@ export const PasswordGenerator = ({ passwordType, passwordConfig, passphraseConf
                     navigator.clipboard.writeText(type === PasswordType.PASSWORD ? password : passphrase);
                     setCopied(true);
                     setTimeout(() => setCopied(false), 1000);
-                }, children: [_jsx("div", { className: "font-bold break-all text-lg font-monospace", children: type === PasswordType.PASSWORD ? password : passphrase }), _jsx("div", { className: "flex-shrink-0 flex flex-row items-center gap-1", children: copied ? (_jsxs(_Fragment, { children: [TRAD.copied[locale], " ", _jsx(BiCheck, {})] })) : (_jsx(BiCopy, {})) })] }), passwordStrength(), _jsxs(Select, { label: TRAD.passwordType[locale], selectedKeys: [type !== null && type !== void 0 ? type : PasswordType.PASSWORD], classNames: {
+                }, children: [_jsx("div", { className: "font-bold break-all text-lg font-monospace", children: type === PasswordType.PASSWORD ? password : passphrase }), _jsx("div", { className: "flex-shrink-0 flex flex-row items-center gap-1", children: copied ? (_jsxs(_Fragment, { children: [TRAD.copied[locale], " ", _jsx(BiCheck, {})] })) : (_jsx(BiCopy, {})) })] }), passwordStrength(), _jsxs(Select, { label: TRAD.passwordType[locale], selectedKeys: [type ?? PasswordType.PASSWORD], classNames: {
                     trigger: "bg-light-secondary dark:bg-dark-secondary",
                     popoverContent: "bg-light-secondary dark:bg-dark-secondary",
                 }, children: [_jsx(SelectItem, { onPress: () => setType(PasswordType.PASSWORD), children: TRAD.password[locale] }, PasswordType.PASSWORD), _jsx(SelectItem, { onPress: () => setType(PasswordType.PASSPHRASE), children: TRAD.passhprase[locale] }, PasswordType.PASSPHRASE)] }), type === PasswordType.PASSWORD ? (_jsxs("div", { className: "bg-light-secondary dark:bg-dark-secondary flex flex-col gap-2 rounded-large p-3", children: [_jsx(Slider, { label: `${TRAD.charNumber[locale]}`, minValue: 8, maxValue: 128, value: length, onChange: (value) => setLength(value), onChangeEnd: generatePassword, size: "lg", classNames: {

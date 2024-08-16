@@ -1,13 +1,4 @@
 "use client";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { useEffect, useRef, useState } from "react";
 import { Header } from "./Header";
@@ -32,11 +23,10 @@ export var ColumnType;
     ColumnType[ColumnType["DROPDOWN"] = 7] = "DROPDOWN";
 })(ColumnType || (ColumnType = {}));
 export const Table = ({ cols, rows, setSelectedRows, refresh, configureButton = false, selectable = true, dataTest, blur = false, unselectAll, emptyTableContent, showLines, }) => {
-    var _a;
     const [selectedAll, setSelectedAll] = useState(false);
     const [editMode, setEditMode] = useState(false);
     const [rowInEditMode, setRowInEditMode] = useState();
-    const [currentSortIndex, setCurrentSortIndex] = useState(cols.indexOf((_a = cols.find((col) => col.sort)) !== null && _a !== void 0 ? _a : cols[0]));
+    const [currentSortIndex, setCurrentSortIndex] = useState(cols.indexOf(cols.find((col) => col.sort) ?? cols[0]));
     const [currentSortType, setCurrentSortType] = useState(SortType.ASCENDING);
     const [selectedIds, setSelectedIds] = useState([]);
     const [values, setValues] = useState([]);
@@ -70,17 +60,14 @@ export const Table = ({ cols, rows, setSelectedRows, refresh, configureButton = 
         }
     }, [editMode]);
     const updateValues = () => {
-        var _a;
         let values = [];
-        (_a = rows
-            .find((row) => row.id === rowInEditMode)) === null || _a === void 0 ? void 0 : _a.items.forEach((rowItem) => {
-            var _a;
-            return cols[rowItem.colIndex].type === ColumnType.EDIT_TEXT &&
-                values.push({
-                    jsonFieldName: (_a = cols[rowItem.colIndex].jsonFieldName) !== null && _a !== void 0 ? _a : "",
-                    value: rowItem.value,
-                });
-        });
+        rows
+            .find((row) => row.id === rowInEditMode)
+            ?.items.forEach((rowItem) => cols[rowItem.colIndex].type === ColumnType.EDIT_TEXT &&
+            values.push({
+                jsonFieldName: cols[rowItem.colIndex].jsonFieldName ?? "",
+                value: rowItem.value,
+            }));
         setValues(values);
     };
     const handleClickOutside = (event) => {
@@ -99,26 +86,26 @@ export const Table = ({ cols, rows, setSelectedRows, refresh, configureButton = 
     const toggleSortType = () => {
         setCurrentSortType(currentSortType === SortType.ASCENDING ? SortType.DESCENDING : SortType.ASCENDING);
     };
-    const changeRowInEditMode = (rowId) => __awaiter(void 0, void 0, void 0, function* () {
+    const changeRowInEditMode = async (rowId) => {
         const currentRow = rows.find((row) => row.id === rowInEditMode);
-        if ((currentRow === null || currentRow === void 0 ? void 0 : currentRow.id) === rowId)
+        if (currentRow?.id === rowId)
             return;
         const update = values.reduce((res, element) => {
             const col = cols.find((col) => col.jsonFieldName === element.jsonFieldName);
-            (col === null || col === void 0 ? void 0 : col.inputType) === "date" && element.value ? (res[element.jsonFieldName] = new Date(element.value).toISOString()) : (res[element.jsonFieldName] = element.value);
+            col?.inputType === "date" && element.value ? (res[element.jsonFieldName] = new Date(element.value).toISOString()) : (res[element.jsonFieldName] = element.value);
             return res;
         }, {});
-        if (Object.keys(update).length !== 0 && typeof (currentRow === null || currentRow === void 0 ? void 0 : currentRow.onUpdate) === "function" && needUpdate()) {
-            yield currentRow.onUpdate(update);
+        if (Object.keys(update).length !== 0 && typeof currentRow?.onUpdate === "function" && needUpdate()) {
+            await currentRow.onUpdate(update);
             typeof refresh === "function" && refresh();
         }
         setValues([]);
         setRowInEditMode(rowId);
-    });
+    };
     const needUpdate = () => {
         const row = rows.find((row) => row.id === rowInEditMode);
         let res = false;
-        row === null || row === void 0 ? void 0 : row.items.forEach((rowItem) => {
+        row?.items.forEach((rowItem) => {
             const newValue = values.find((value) => value.jsonFieldName === cols[rowItem.colIndex].jsonFieldName);
             if (newValue && rowItem.value !== newValue.value)
                 res = true;
@@ -146,24 +133,23 @@ export const Table = ({ cols, rows, setSelectedRows, refresh, configureButton = 
         return rowItems;
     };
     const getRowItem = (rowId, rowItem) => {
-        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
         switch (cols[rowItem.colIndex].type) {
             case ColumnType.BUTTON:
-                return (_jsx(RowItem, { testId: `row-${rows.indexOf((_a = rows.find((row) => row.id === rowId)) !== null && _a !== void 0 ? _a : rows[0])}-item-${rowItem.colIndex}`, id: rowItem.id, disabled: rowItem.disabled, type: ColumnType.BUTTON, onClick: () => typeof rowItem.onClick === "function" && rowItem.onClick(), title: rowItem.title }, `${rowId}-${rowItem.colIndex}`));
+                return (_jsx(RowItem, { testId: `row-${rows.indexOf(rows.find((row) => row.id === rowId) ?? rows[0])}-item-${rowItem.colIndex}`, id: rowItem.id, disabled: rowItem.disabled, type: ColumnType.BUTTON, onClick: () => typeof rowItem.onClick === "function" && rowItem.onClick(), title: rowItem.title }, `${rowId}-${rowItem.colIndex}`));
             case ColumnType.CUSTOM:
-                return (_jsx(RowItem, { testId: `row-${rows.indexOf((_b = rows.find((row) => row.id === rowId)) !== null && _b !== void 0 ? _b : rows[0])}-item-${rowItem.colIndex}`, type: ColumnType.CUSTOM, id: rowItem.id, children: rowItem.children }, `${rowId}-${rowItem.colIndex}`));
+                return (_jsx(RowItem, { testId: `row-${rows.indexOf(rows.find((row) => row.id === rowId) ?? rows[0])}-item-${rowItem.colIndex}`, type: ColumnType.CUSTOM, id: rowItem.id, children: rowItem.children }, `${rowId}-${rowItem.colIndex}`));
             case ColumnType.EDIT_TEXT:
-                return (_jsx(RowItem, { testId: `row-${rows.indexOf((_c = rows.find((row) => row.id === rowId)) !== null && _c !== void 0 ? _c : rows[0])}-item-${rowItem.colIndex}`, id: rowItem.id, inputType: cols[rowItem.colIndex].inputType, maxLines: cols[rowItem.colIndex].maxLines, type: ColumnType.EDIT_TEXT, editMode: rowId === rowInEditMode, onClick: () => typeof rowItem.onClick === "function" && rowItem.onClick(), onChange: (newValue) => setValues(values.map((value) => cols[rowItem.colIndex].jsonFieldName === value.jsonFieldName ? { jsonFieldName: value.jsonFieldName, value: newValue } : value)), value: (_e = (_d = values === null || values === void 0 ? void 0 : values.find((value) => value.jsonFieldName === cols[rowItem.colIndex].jsonFieldName && rowInEditMode === rowId)) === null || _d === void 0 ? void 0 : _d.value) !== null && _e !== void 0 ? _e : rowItem.value }, `${rowId}-${rowItem.colIndex}`));
+                return (_jsx(RowItem, { testId: `row-${rows.indexOf(rows.find((row) => row.id === rowId) ?? rows[0])}-item-${rowItem.colIndex}`, id: rowItem.id, inputType: cols[rowItem.colIndex].inputType, maxLines: cols[rowItem.colIndex].maxLines, type: ColumnType.EDIT_TEXT, editMode: rowId === rowInEditMode, onClick: () => typeof rowItem.onClick === "function" && rowItem.onClick(), onChange: (newValue) => setValues(values.map((value) => cols[rowItem.colIndex].jsonFieldName === value.jsonFieldName ? { jsonFieldName: value.jsonFieldName, value: newValue } : value)), value: values?.find((value) => value.jsonFieldName === cols[rowItem.colIndex].jsonFieldName && rowInEditMode === rowId)?.value ?? rowItem.value }, `${rowId}-${rowItem.colIndex}`));
             case ColumnType.CHECKBOX:
-                return (_jsx(RowItem, { testId: `row-${rows.indexOf((_f = rows.find((row) => row.id === rowId)) !== null && _f !== void 0 ? _f : rows[0])}-item-${rowItem.colIndex}`, id: rowItem.id, type: ColumnType.CHECKBOX, value: rowItem.value, onChange: (value) => typeof rowItem.onChange === "function" && rowItem.onChange(value) }, `${rowId}-${rowItem.colIndex}`));
+                return (_jsx(RowItem, { testId: `row-${rows.indexOf(rows.find((row) => row.id === rowId) ?? rows[0])}-item-${rowItem.colIndex}`, id: rowItem.id, type: ColumnType.CHECKBOX, value: rowItem.value, onChange: (value) => typeof rowItem.onChange === "function" && rowItem.onChange(value) }, `${rowId}-${rowItem.colIndex}`));
             case ColumnType.SWITCH:
-                return (_jsx(RowItem, { testId: `row-${rows.indexOf((_g = rows.find((row) => row.id === rowId)) !== null && _g !== void 0 ? _g : rows[0])}-item-${rowItem.colIndex}`, id: rowItem.id, type: ColumnType.SWITCH, value: rowItem.value, onChange: (value) => typeof rowItem.onChange === "function" && rowItem.onChange(value), disabled: rowItem.disabled }, `${rowId}-${rowItem.colIndex}`));
+                return (_jsx(RowItem, { testId: `row-${rows.indexOf(rows.find((row) => row.id === rowId) ?? rows[0])}-item-${rowItem.colIndex}`, id: rowItem.id, type: ColumnType.SWITCH, value: rowItem.value, onChange: (value) => typeof rowItem.onChange === "function" && rowItem.onChange(value), disabled: rowItem.disabled }, `${rowId}-${rowItem.colIndex}`));
             case ColumnType.DROPDOWN:
-                return (_jsx(RowItem, { testId: `row-${rows.indexOf((_h = rows.find((row) => row.id === rowId)) !== null && _h !== void 0 ? _h : rows[0])}-item-${rowItem.colIndex}`, id: rowItem.id, value: rowItem.value, type: ColumnType.DROPDOWN, items: rowItem.items, onChange: (value) => typeof rowItem.onChange === "function" && rowItem.onChange(value) }, `${rowId}-${rowItem.colIndex}`));
+                return (_jsx(RowItem, { testId: `row-${rows.indexOf(rows.find((row) => row.id === rowId) ?? rows[0])}-item-${rowItem.colIndex}`, id: rowItem.id, value: rowItem.value, type: ColumnType.DROPDOWN, items: rowItem.items, onChange: (value) => typeof rowItem.onChange === "function" && rowItem.onChange(value) }, `${rowId}-${rowItem.colIndex}`));
             case ColumnType.TEXT:
-                return (_jsx(RowItem, { testId: `row-${rows.indexOf((_j = rows.find((row) => row.id === rowId)) !== null && _j !== void 0 ? _j : rows[0])}-item-${rowItem.colIndex}`, type: ColumnType.TEXT, value: rowItem.value, id: rowItem.id }, `${rowId}-${rowItem.colIndex}`));
+                return (_jsx(RowItem, { testId: `row-${rows.indexOf(rows.find((row) => row.id === rowId) ?? rows[0])}-item-${rowItem.colIndex}`, type: ColumnType.TEXT, value: rowItem.value, id: rowItem.id }, `${rowId}-${rowItem.colIndex}`));
             default:
-                return _jsx("div", { "data-test": `row-${rows.indexOf((_k = rows.find((row) => row.id === rowId)) !== null && _k !== void 0 ? _k : rows[0])}-item-${rowItem.colIndex}` }, `${rowId}-${rowItem.colIndex}`);
+                return _jsx("div", { "data-test": `row-${rows.indexOf(rows.find((row) => row.id === rowId) ?? rows[0])}-item-${rowItem.colIndex}` }, `${rowId}-${rowItem.colIndex}`);
         }
     };
     const applySort = (rowA, rowB) => {

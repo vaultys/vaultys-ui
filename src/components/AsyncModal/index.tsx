@@ -1,5 +1,5 @@
 import React, { useContext, useRef, useState } from "react";
-import { Button, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from "@nextui-org/react";
+import { Button, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@nextui-org/react";
 import { InputPassword } from "../InputPassword";
 
 type UseModalShowReturnType = {
@@ -42,7 +42,6 @@ type InputModalContextProviderProps = {
 const InputModalContext = React.createContext<ModalContextType>({} as ModalContextType);
 
 const InputModalContextProvider: React.FC<InputModalContextProviderProps> = (props) => {
-  const { onOpen, onClose, isOpen } = useDisclosure();
   const [content, setContent] = useState<{
     title: string;
     message: string | JSX.Element;
@@ -56,6 +55,14 @@ const InputModalContextProvider: React.FC<InputModalContextProviderProps> = (pro
   const [val, setVal] = useState<string>("");
   const [confirmationMessageInvalid, setConfirmationMessageInvalid] = useState<boolean>(false);
   const resolver = useRef<Function>();
+
+  const [isOpen, setIsOpen] = useState(false);
+  const onOpen = () => {
+    setIsOpen(true);
+  };
+  const onClose = () => {
+    setIsOpen(false);
+  };
 
   const handleShow = (props: {
     title: string;

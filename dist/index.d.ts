@@ -1,3 +1,4 @@
+export * from "./components/AsyncModal";
 export * from "./components/Table";
 export * from "./components/TextIcon";
 export * from "./components/QrCodeElement";
@@ -6,7 +7,6 @@ export * from "./components/NavButton";
 export * from "./components/NavBarPC";
 export * from "./components/SearchBar";
 export * from "./components/InputPassword";
-export * from "./components/AsyncModal";
 export * from "./components/Loader";
 export * from "./components/SelectLanguage";
 export * from "./components/PasswordGenerator";
