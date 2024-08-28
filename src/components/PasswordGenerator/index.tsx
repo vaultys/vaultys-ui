@@ -52,7 +52,7 @@ const enum ROBUSTNESS {
 
 const TRAD = {
   charNumber: {
-    fr: "Nombre de charactères",
+    fr: "Nombre de caractères",
     en: "Character number",
   },
   copied: {
@@ -283,7 +283,7 @@ export const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({ passwordTy
             size="lg"
             classNames={{
               filler: "bg-modern-blue",
-              track: "border-s-modern-blue bg-light-secondary dark:bg-dark-secondary",
+              track: "border-s-modern-blue bg-slate-200 dark:bg-slate-700",
               thumb: "bg-black dark:bg-white",
             }}
           />
