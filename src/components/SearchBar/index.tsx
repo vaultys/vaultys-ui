@@ -12,7 +12,7 @@ export interface SearchBarProps {
 
 export const SearchBar: React.FC<SearchBarProps> = ({ onKeyUp, onClick, className, onChange, value }) => {
   return (
-    <div className={`relative flex flex-row gap-2 items-center shadow-lg ${className}`}>
+    <div className={`relative flex flex-row gap-2 items-center shadow ${className}`}>
       <BsSearch className="absolute ml-5 z-20 w-6 h-6" />
       <input
         data-test="search"
