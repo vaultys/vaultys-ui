@@ -136,7 +136,7 @@ export const Table: React.FC<TableProps> = ({
           values.push({
             jsonFieldName: cols[rowItem.colIndex].jsonFieldName ?? "",
             value: rowItem.value as string,
-          }),
+          })
       );
     setValues(values);
   };
@@ -191,7 +191,16 @@ export const Table: React.FC<TableProps> = ({
   const getHeaderItems = () => {
     const headerItems: ReactElement[] = [];
     cols.forEach((col: TableColumn, i: number) => {
-      headerItems.push(<HeaderItem title={col.name} onClick={() => changeSort(i)} sortActive={currentSortIndex === i} sortColumn={col.sort} sortType={currentSortType} testId={`col-${i}`} />);
+      headerItems.push(
+        <HeaderItem
+          title={col.name}
+          onClick={() => changeSort(i)}
+          sortActive={currentSortIndex === i}
+          sortColumn={col.sort}
+          sortType={currentSortType}
+          testId={`col-${i}`}
+        />
+      );
     });
     selectable &&
       headerItems.push(
@@ -203,7 +212,7 @@ export const Table: React.FC<TableProps> = ({
             }}
             isSelected={selectedAll}
           />
-        </HeaderItem>,
+        </HeaderItem>
       );
     if (configureButton) headerItems.push(<HeaderItem />);
     return headerItems;
@@ -258,11 +267,14 @@ export const Table: React.FC<TableProps> = ({
             onChange={(newValue) =>
               setValues(
                 values.map((value: { jsonFieldName: string; value: string }) =>
-                  cols[rowItem.colIndex].jsonFieldName === value.jsonFieldName ? { jsonFieldName: value.jsonFieldName, value: newValue as string } : value,
-                ),
+                  cols[rowItem.colIndex].jsonFieldName === value.jsonFieldName ? { jsonFieldName: value.jsonFieldName, value: newValue as string } : value
+                )
               )
             }
-            value={values?.find((value: { jsonFieldName: string; value: string }) => value.jsonFieldName === cols[rowItem.colIndex].jsonFieldName && rowInEditMode === rowId)?.value ?? rowItem.value}
+            value={
+              values?.find((value: { jsonFieldName: string; value: string }) => value.jsonFieldName === cols[rowItem.colIndex].jsonFieldName && rowInEditMode === rowId)
+                ?.value ?? rowItem.value
+            }
           />
         );
 
@@ -316,7 +328,9 @@ export const Table: React.FC<TableProps> = ({
         );
 
       default:
-        return <div data-test={`row-${rows.indexOf(rows.find((row) => row.id === rowId) ?? rows[0])}-item-${rowItem.colIndex}`} key={`${rowId}-${rowItem.colIndex}`}></div>;
+        return (
+          <div data-test={`row-${rows.indexOf(rows.find((row) => row.id === rowId) ?? rows[0])}-item-${rowItem.colIndex}`} key={`${rowId}-${rowItem.colIndex}`}></div>
+        );
     }
   };
 
@@ -368,8 +382,10 @@ export const Table: React.FC<TableProps> = ({
   };
 
   return (
-    <div className="w-max min-w-full flex flex-col relative min-h-[400px] bg-red-400 bg-light-secondary dark:bg-dark-secondary rounded-large shadow-small">
-      {rows.length === 0 && emptyTableContent && <div className="absolute top-0 opacity-50 bottom-0 left-0 right-0 flex items-center justify-center text-center">{emptyTableContent}</div>}
+    <div className="w-max min-w-full flex flex-col relative min-h-[400px] bg-light-secondary dark:bg-dark-secondary rounded-large shadow-small">
+      {rows.length === 0 && emptyTableContent && (
+        <div className="absolute top-0 opacity-50 bottom-0 left-0 right-0 flex items-center justify-center text-center">{emptyTableContent}</div>
+      )}
       <table className="table-auto border-separate border-spacing-y-1 bg-light-secondary dark:bg-dark-secondary  p-4 rounded-large " ref={ref} data-test={dataTest}>
         <Header items={getHeaderItems()} />
         <tbody data-test={`${dataTest}-body`}>
