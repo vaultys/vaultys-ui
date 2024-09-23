@@ -124,13 +124,16 @@ const InputModalContextProvider: React.FC<InputModalContextProviderProps> = (pro
           classNames={{
             base: "bg-light dark:bg-dark text-black dark:text-white",
           }}
+          placement="center"
         >
           <ModalContent>
             <ModalHeader className="flex flex-col items-center">{content.title}</ModalHeader>
             <ModalBody className="items-center gap-8">
               <div>{content.message}</div>
 
-              {content.type === "password" && <InputPassword label="" testId="confirm-dialog-input" placeholder={content.placeholder} onChange={(value: string) => setVal(value)} value={val} />}
+              {content.type === "password" && (
+                <InputPassword label="" testId="confirm-dialog-input" placeholder={content.placeholder} onChange={(value: string) => setVal(value)} value={val} />
+              )}
               {content.type === "confirm" && (
                 <Input
                   isInvalid={confirmationMessageInvalid}
