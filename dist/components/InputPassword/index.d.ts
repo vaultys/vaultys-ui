@@ -1,4 +1,3 @@
-/// <reference types="react" />
 export interface InputPasswordProps {
     label: string;
     description?: string;

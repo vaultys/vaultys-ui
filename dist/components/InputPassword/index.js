@@ -5,11 +5,12 @@ import { useState } from "react";
 import { BiCopy } from "@react-icons/all-files/bi/BiCopy";
 import { BiHide } from "@react-icons/all-files/bi/BiHide";
 import { BiShow } from "@react-icons/all-files/bi/BiShow";
-export const InputPassword = ({ label, description, onChange, valid = true, color, placeholder, value, disabled, copyToClipboard = false, testId }) => {
+export const InputPassword = ({ label, description, onChange, valid = true, color, placeholder, value, disabled, copyToClipboard = false, testId, }) => {
     const [show, setShow] = useState();
     return (_jsx(Input, { "data-test": testId, label: label, value: value, placeholder: placeholder, onValueChange: (value) => onChange && onChange(value), classNames: {
             inputWrapper: color,
             label: `text-lg font-bold`,
+            input: `font-mono`,
         }, description: description, isInvalid: !valid, isDisabled: disabled, endContent: _jsxs("div", { className: "flex flex-row gap-2 items-center", children: [copyToClipboard && (_jsx(BiCopy, { className: "text-xl cursor-pointer dark:text-white", onClick: () => {
                         if (value) {
                             navigator.clipboard.writeText(value);

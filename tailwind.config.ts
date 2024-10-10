@@ -7,7 +7,7 @@ const config: Config = {
   theme: {
     fontFamily: {
       montserrat: ["Montserrat", "sans-serif"],
-      monospace: ["monospace"],
+      mono: ["monospace"],
     },
     extend: {
       colors: {

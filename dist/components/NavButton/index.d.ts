@@ -1,4 +1,3 @@
-/// <reference types="react" />
 export interface NavButtonProps {
     title: string;
     current: boolean;

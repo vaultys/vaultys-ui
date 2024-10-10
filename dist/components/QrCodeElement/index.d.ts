@@ -1,4 +1,3 @@
-/// <reference types="react" />
 export interface QrCodeElementProps {
     text: string;
     className?: string;

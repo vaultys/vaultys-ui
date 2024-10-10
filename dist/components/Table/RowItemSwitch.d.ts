@@ -1,4 +1,3 @@
-/// <reference types="react" />
 export interface RowItemSwitchProps {
     check: boolean;
     name?: string;

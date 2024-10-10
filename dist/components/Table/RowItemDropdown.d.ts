@@ -1,4 +1,3 @@
-/// <reference types="react" />
 export interface RowItemDropdownProps {
     value: string;
     items: string[];

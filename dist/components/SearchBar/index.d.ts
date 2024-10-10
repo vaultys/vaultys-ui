@@ -1,4 +1,3 @@
-/// <reference types="react" />
 export interface SearchBarProps {
     onKeyUp?: Function;
     onClick?: Function;

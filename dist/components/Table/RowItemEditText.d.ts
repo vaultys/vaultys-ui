@@ -1,4 +1,3 @@
-/// <reference types="react" />
 export interface RowItemEditTextProps {
     editMode: boolean;
     value: string;

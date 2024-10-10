@@ -1,4 +1,3 @@
-/// <reference types="react" />
 export interface LoaderProps {
     message: string;
     img: string;

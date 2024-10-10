@@ -1,4 +1,3 @@
-/// <reference types="react" />
 export interface RowItemButtonProps {
     title: string;
     onClick: () => void;

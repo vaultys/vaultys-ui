@@ -1,4 +1,3 @@
-/// <reference types="react" />
 export declare enum PasswordType {
     PASSWORD = 0,
     PASSPHRASE = 1

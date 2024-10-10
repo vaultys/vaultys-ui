@@ -243,7 +243,7 @@ export const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({ passwordTy
           setTimeout(() => setCopied(false), 1000);
         }}
       >
-        <div className="font-bold break-all text-lg font-monospace">{type === PasswordType.PASSWORD ? password : passphrase}</div>
+        <div className="font-bold break-all text-lg font-mono">{type === PasswordType.PASSWORD ? password : passphrase}</div>
         <div className="flex-shrink-0 flex flex-row items-center gap-1">
           {copied ? (
             <>

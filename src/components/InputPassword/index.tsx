@@ -18,7 +18,18 @@ export interface InputPasswordProps {
   testId?: string;
 }
 
-export const InputPassword: React.FC<InputPasswordProps> = ({ label, description, onChange, valid = true, color, placeholder, value, disabled, copyToClipboard = false, testId }) => {
+export const InputPassword: React.FC<InputPasswordProps> = ({
+  label,
+  description,
+  onChange,
+  valid = true,
+  color,
+  placeholder,
+  value,
+  disabled,
+  copyToClipboard = false,
+  testId,
+}) => {
   const [show, setShow] = useState<boolean>();
   return (
     <Input
@@ -30,6 +41,7 @@ export const InputPassword: React.FC<InputPasswordProps> = ({ label, description
       classNames={{
         inputWrapper: color,
         label: `text-lg font-bold`,
+        input: `font-mono`,
       }}
       description={description}
       isInvalid={!valid}

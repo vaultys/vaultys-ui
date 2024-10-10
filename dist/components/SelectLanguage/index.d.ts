@@ -1,4 +1,3 @@
-/// <reference types="react" />
 export interface SelectLanguageProps {
     languages: string[];
     onLanguageClicked: (language: string) => void;
