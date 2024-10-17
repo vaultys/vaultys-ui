@@ -33,6 +33,7 @@ export const InputPassword: React.FC<InputPasswordProps> = ({
   const [show, setShow] = useState<boolean>();
   return (
     <Input
+      autoComplete="off"
       data-test={testId}
       label={label}
       value={value}

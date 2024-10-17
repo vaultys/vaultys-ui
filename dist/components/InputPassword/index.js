@@ -7,7 +7,7 @@ import { BiHide } from "@react-icons/all-files/bi/BiHide";
 import { BiShow } from "@react-icons/all-files/bi/BiShow";
 export const InputPassword = ({ label, description, onChange, valid = true, color, placeholder, value, disabled, copyToClipboard = false, testId, }) => {
     const [show, setShow] = useState();
-    return (_jsx(Input, { "data-test": testId, label: label, value: value, placeholder: placeholder, onValueChange: (value) => onChange && onChange(value), classNames: {
+    return (_jsx(Input, { autoComplete: "off", "data-test": testId, label: label, value: value, placeholder: placeholder, onValueChange: (value) => onChange && onChange(value), classNames: {
             inputWrapper: color,
             label: `text-lg font-bold`,
             input: `font-mono`,
