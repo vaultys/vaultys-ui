@@ -4,9 +4,5 @@ const meta = {
 };
 export default meta;
 export const Primary = {
-    args: {
-        defaultHide: false,
-        className: "",
-        placeholder: "Search",
-    },
+    args: {},
 };

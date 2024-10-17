@@ -6,5 +6,9 @@ const meta: Meta<typeof SearchBar> = {
 export default meta;
 type Story = StoryObj<typeof SearchBar>;
 export const Primary: Story = {
-  args: {},
+  args: {
+    defaultHide: false,
+    className: "",
+    placeholder: "Search",
+  },
 };
