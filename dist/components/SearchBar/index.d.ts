@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 export interface SearchBarProps {
     onKeyUp?: Function;
     onClick?: Function;
@@ -6,5 +7,6 @@ export interface SearchBarProps {
     value?: string;
     placeholder?: string;
     defaultHide?: boolean;
+    children?: ReactNode;
 }
 export declare const SearchBar: React.FC<SearchBarProps>;

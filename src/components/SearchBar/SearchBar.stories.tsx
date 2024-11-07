@@ -10,5 +10,11 @@ export const Primary: Story = {
     defaultHide: false,
     className: "",
     placeholder: "Search",
+    children: (
+      <div className="flex flex-col gap-1">
+        <span>User 1</span>
+        <span>User 2</span>
+      </div>
+    ),
   },
 };
