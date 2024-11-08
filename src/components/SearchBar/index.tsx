@@ -18,7 +18,6 @@ export const SearchBar: React.FC<SearchBarProps> = ({ onKeyUp, onClick, classNam
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const childRef = useRef<HTMLInputElement>(null);
-  const chevronUpRef = useRef<HTMLDivElement>(null);
 
   const handleSearchIconClick = () => {
     if (defaultHide) setHide(!hide);
