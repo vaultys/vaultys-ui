@@ -47,7 +47,9 @@ export const SearchBar: React.FC<SearchBarProps> = ({ onKeyUp, onClick, classNam
 
   return (
     <div
-      className={`${className} group shadow relative transition-all duration-300 hover:transition-none delay-300 ease-in-out  ${!hide && isFocused && "!rounded-b-none"}`}
+      className={`${className} group shadow relative transition-all duration-300 hover:transition-none delay-300 ease-in-out  ${
+        !hide && children && isFocused && "!rounded-b-none"
+      }`}
     >
       <div className={`relative flex flex-row gap-2 items-center   ${hide ? "justify-end" : ""} overflow-hidden `}>
         <BsSearch className="absolute z-20 w-5 h-5 m-2 md:w-6 md:h-6 cursor-pointer" onClick={handleSearchIconClick} />
