@@ -8,5 +8,6 @@ export interface SearchBarProps {
     placeholder?: string;
     defaultHide?: boolean;
     children?: ReactNode;
+    closeOnSelect?: boolean;
 }
 export declare const SearchBar: React.FC<SearchBarProps>;

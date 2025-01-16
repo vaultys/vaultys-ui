@@ -2,7 +2,7 @@
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { useEffect, useRef, useState } from "react";
 import { BsSearch } from "@react-icons/all-files/bs/BsSearch";
-export const SearchBar = ({ onKeyUp, onClick, className, onChange, value, placeholder, defaultHide = false, children }) => {
+export const SearchBar = ({ onKeyUp, onClick, className, onChange, value, placeholder, defaultHide = false, children, closeOnSelect = false, }) => {
     const [hide, setHide] = useState(defaultHide);
     const [isFocused, setIsFocused] = useState(false);
     const inputRef = useRef(null);
@@ -33,7 +33,7 @@ export const SearchBar = ({ onKeyUp, onClick, className, onChange, value, placeh
                             if (typeof onChange === "function")
                                 onChange(e.target.value);
                         }, onClick: onClick, onFocus: () => setIsFocused(true) })] }), _jsx("div", { ref: childRef, className: `w-full  ${className} !rounded-t-none absolute delay-0 z-40 overflow-y-auto transition-max-height duration-300 ease-in-out overflow-hidden ${!hide && isFocused ? "max-h-96" : "max-h-0"}`, onClick: () => {
-                    console.log("children clicked");
-                    setIsFocused(false);
+                    if (closeOnSelect)
+                        setIsFocused(false);
                 }, children: children })] }));
 };

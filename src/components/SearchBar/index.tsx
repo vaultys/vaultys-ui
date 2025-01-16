@@ -11,9 +11,20 @@ export interface SearchBarProps {
   placeholder?: string;
   defaultHide?: boolean;
   children?: ReactNode;
+  closeOnSelect?: boolean;
 }
 
-export const SearchBar: React.FC<SearchBarProps> = ({ onKeyUp, onClick, className, onChange, value, placeholder, defaultHide = false, children }) => {
+export const SearchBar: React.FC<SearchBarProps> = ({
+  onKeyUp,
+  onClick,
+  className,
+  onChange,
+  value,
+  placeholder,
+  defaultHide = false,
+  children,
+  closeOnSelect = false,
+}) => {
   const [hide, setHide] = useState<boolean>(defaultHide);
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -76,8 +87,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({ onKeyUp, onClick, classNam
           !hide && isFocused ? "max-h-96" : "max-h-0"
         }`}
         onClick={() => {
-          console.log("children clicked");
-          setIsFocused(false);
+          if (closeOnSelect) setIsFocused(false);
         }}
       >
         {children}
