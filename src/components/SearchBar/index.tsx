@@ -51,7 +51,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({ onKeyUp, onClick, classNam
       }`}
     >
       <div className={`relative flex flex-row gap-2 items-center   ${hide ? "justify-end" : ""} overflow-hidden `}>
-        <BsSearch className="text-red-500 absolute z-20 w-5 h-5 m-2 md:w-6 md:h-6 cursor-pointer" onClick={handleSearchIconClick} />
+        <BsSearch className="absolute z-20 w-5 h-5 m-2 md:w-6 md:h-6 cursor-pointer" onClick={handleSearchIconClick} />
         <input
           ref={inputRef}
           placeholder={placeholder}
