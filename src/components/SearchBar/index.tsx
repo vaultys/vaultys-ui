@@ -51,7 +51,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({ onKeyUp, onClick, classNam
       }`}
     >
       <div className={`relative flex flex-row gap-2 items-center   ${hide ? "justify-end" : ""} overflow-hidden `}>
-        <BsSearch className="absolute z-20 w-5 h-5 m-2 md:w-6 md:h-6 cursor-pointer" onClick={handleSearchIconClick} />
+        <BsSearch className="text-red-500 absolute z-20 w-5 h-5 m-2 md:w-6 md:h-6 cursor-pointer" onClick={handleSearchIconClick} />
         <input
           ref={inputRef}
           placeholder={placeholder}
@@ -75,6 +75,10 @@ export const SearchBar: React.FC<SearchBarProps> = ({ onKeyUp, onClick, classNam
         className={`w-full  ${className} !rounded-t-none absolute delay-0 z-40 overflow-y-auto transition-max-height duration-300 ease-in-out overflow-hidden ${
           !hide && isFocused ? "max-h-96" : "max-h-0"
         }`}
+        onClick={() => {
+          console.log("children clicked");
+          setIsFocused(false);
+        }}
       >
         {children}
       </div>

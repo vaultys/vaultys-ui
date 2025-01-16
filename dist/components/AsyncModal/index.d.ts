@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactElement } from "react";
 type UseModalShowReturnType = {
     show: boolean;
     setShow: (value: boolean) => void;
@@ -8,7 +8,7 @@ declare const useModalShow: () => UseModalShowReturnType;
 type ModalContextType = {
     show: (props: {
         title: string;
-        message: string | JSX.Element;
+        message: string | ReactElement;
         className?: string;
         acceptText?: string;
         declineText?: string;

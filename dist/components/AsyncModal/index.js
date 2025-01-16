@@ -18,7 +18,7 @@ const InputModalContextProvider = (props) => {
     const [content, setContent] = useState();
     const [val, setVal] = useState("");
     const [confirmationMessageInvalid, setConfirmationMessageInvalid] = useState(false);
-    const resolver = useRef();
+    const resolver = useRef(null);
     const [isOpen, setIsOpen] = useState(false);
     const onOpen = () => {
         setIsOpen(true);

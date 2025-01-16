@@ -18,7 +18,9 @@ export const RowItemDropdown: React.FC<RowItemDropdownProps> = ({ value, items, 
       </DropdownTrigger>
       <DropdownMenu>
         {items.map((item) => (
-          <DropdownItem onPress={() => onChange(item)}>{item}</DropdownItem>
+          <DropdownItem key={item} onPress={() => onChange(item)}>
+            {item}
+          </DropdownItem>
         ))}
       </DropdownMenu>
     </Dropdown>
