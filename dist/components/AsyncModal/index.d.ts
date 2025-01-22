@@ -15,6 +15,7 @@ type ModalContextType = {
         validationMessage?: string;
         placeholder?: string;
         type?: "password" | "confirm" | "validate" | "info";
+        customContent?: ReactElement;
     }) => Promise<string>;
 };
 type InputModalContextProviderProps = {
