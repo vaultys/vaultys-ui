@@ -1,9 +1,9 @@
 import type { Config } from "tailwindcss";
-import { nextui } from "@nextui-org/react";
+const { heroui } = require("@heroui/react");
 
 const config: Config = {
   darkMode: "class",
-  content: ["./src/components/**/*.{js,ts,jsx,tsx,mdx}", "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx,mjs}"],
+  content: ["./src/components/**/*.{js,ts,jsx,tsx,mdx}", "./node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx,mjs}"],
   theme: {
     fontFamily: {
       montserrat: ["Montserrat", "sans-serif"],
@@ -30,6 +30,6 @@ const config: Config = {
       },
     },
   },
-  plugins: [nextui()],
+  plugins: [heroui()],
 };
 export default config;
