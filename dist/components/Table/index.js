@@ -14,7 +14,7 @@ import { Header } from "./Header";
 import { Row } from "./Row";
 import { HeaderItem } from "./HeaderItem";
 import { RowItem } from "./RowItem";
-import { Checkbox } from "@nextui-org/react";
+import { Checkbox } from "@heroui/react";
 export var SortType;
 (function (SortType) {
     SortType[SortType["ASCENDING"] = 0] = "ASCENDING";

@@ -1,26 +1,6 @@
 import React, { ReactElement, useContext, useRef, useState } from "react";
-import { Button, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@nextui-org/react";
+import { Button, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@heroui/react";
 import { InputPassword } from "../InputPassword";
-
-type UseModalShowReturnType = {
-  show: boolean;
-  setShow: (value: boolean) => void;
-  onHide: () => void;
-};
-
-const useModalShow = (): UseModalShowReturnType => {
-  const [show, setShow] = useState(false);
-
-  const handleOnHide = () => {
-    setShow(false);
-  };
-
-  return {
-    show,
-    setShow,
-    onHide: handleOnHide,
-  };
-};
 
 type ModalContextType = {
   show: (props: {
@@ -36,13 +16,9 @@ type ModalContextType = {
   }) => Promise<string>;
 };
 
-type InputModalContextProviderProps = {
-  children: React.ReactNode;
-};
-
 const InputModalContext = React.createContext<ModalContextType>({} as ModalContextType);
 
-const InputModalContextProvider: React.FC<InputModalContextProviderProps> = (props) => {
+function InputModalContextProvider(props) {
   const [content, setContent] = useState<{
     title: string;
     message: string | ReactElement;
@@ -165,8 +141,8 @@ const InputModalContextProvider: React.FC<InputModalContextProviderProps> = (pro
       )}
     </InputModalContext.Provider>
   );
-};
+}
 
 const useInputModalContext = (): ModalContextType => useContext(InputModalContext);
 
-export { useModalShow, useInputModalContext, InputModalContextProvider };
+export { useInputModalContext, InputModalContextProvider };

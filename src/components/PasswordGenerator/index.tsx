@@ -1,5 +1,5 @@
 "use client";
-import { Button, Checkbox, Select, SelectItem, Slider } from "@nextui-org/react";
+import { Button, Checkbox, Select, SelectItem, Slider } from "@heroui/react";
 import { generateMnemonic, setDefaultWordlist } from "bip39";
 import { useEffect, useState } from "react";
 import { BiCopy } from "@react-icons/all-files/bi/BiCopy";

@@ -5,7 +5,7 @@ import { BsXCircle } from "@react-icons/all-files/bs/BsXCircle";
 import { BsCreditCard } from "@react-icons/all-files/bs/BsCreditCard";
 import { BsFileText } from "@react-icons/all-files/bs/BsFileText";
 import { BsMap } from "@react-icons/all-files/bs/BsMap";
-import { Button, Input, Select, Checkbox, Modal, Textarea, ModalHeader, ModalBody, ModalFooter, ModalContent, SelectItem } from "@nextui-org/react";
+import { Button, Input, Select, Checkbox, Modal, Textarea, ModalHeader, ModalBody, ModalFooter, ModalContent, SelectItem } from "@heroui/react";
 const fieldTypes = [
     { value: "text", label: "Text" },
     { value: "password", label: "Password" },

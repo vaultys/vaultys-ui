@@ -1,20 +1,9 @@
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import React, { useContext, useRef, useState } from "react";
-import { Button, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@nextui-org/react";
+import { Button, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@heroui/react";
 import { InputPassword } from "../InputPassword";
-const useModalShow = () => {
-    const [show, setShow] = useState(false);
-    const handleOnHide = () => {
-        setShow(false);
-    };
-    return {
-        show,
-        setShow,
-        onHide: handleOnHide,
-    };
-};
 const InputModalContext = React.createContext({});
-const InputModalContextProvider = (props) => {
+function InputModalContextProvider(props) {
     const [content, setContent] = useState();
     const [val, setVal] = useState("");
     const [confirmationMessageInvalid, setConfirmationMessageInvalid] = useState(false);
@@ -61,6 +50,6 @@ const InputModalContextProvider = (props) => {
                 }, placement: "center", children: _jsxs(ModalContent, { children: [_jsx(ModalHeader, { className: "flex flex-col items-center", children: content.title }), _jsxs(ModalBody, { className: "items-center gap-8", children: [_jsx("div", { children: content.message }), content.customContent && _jsx("div", { children: content.customContent }), content.type === "password" && (_jsx(InputPassword, { label: "", testId: "confirm-dialog-input", placeholder: content.placeholder, onChange: (value) => setVal(value), value: val })), content.type === "confirm" && (_jsx(Input, { isInvalid: confirmationMessageInvalid, "data-test": "confirm-dialog-input", placeholder: content.placeholder, onValueChange: (value) => setVal(value), value: val, classNames: {
                                         inputWrapper: "bg-light-secondary dark:bg-dark-secondary",
                                     } }))] }), _jsxs(ModalFooter, { children: [_jsx(Button, { color: "success", className: "text-white", onPress: () => handleOk(), "data-test": "confirm-dialog-accept", children: _jsx("span", { className: "text-ellipsis truncate ...", children: content.acceptText }) }), content.type !== "info" && (_jsx(Button, { color: "danger", className: "text-white", onPress: () => handleCancel(), "data-test": "confirm-dialog-deny", children: _jsx("span", { className: "text-ellipsis truncate ...", children: content.declineText }) }))] })] }) }))] }));
-};
+}
 const useInputModalContext = () => useContext(InputModalContext);
-export { useModalShow, useInputModalContext, InputModalContextProvider };
+export { useInputModalContext, InputModalContextProvider };

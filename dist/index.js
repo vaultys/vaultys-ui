@@ -1,3 +1,4 @@
+export * from "./components/ConfirmModal";
 export * from "./components/AsyncModal";
 export * from "./components/Table";
 export * from "./components/TextIcon";

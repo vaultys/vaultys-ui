@@ -6,7 +6,7 @@ import { RowItemSpan } from "./RowItemSpan";
 import { RowItemSwitch } from "./RowItemSwitch";
 import { ColumnType } from ".";
 import { RowItemDropdown } from "./RowItemDropdown";
-import { Checkbox } from "@nextui-org/react";
+import { Checkbox } from "@heroui/react";
 
 export interface RowItemProps {
   type: ColumnType;
@@ -25,7 +25,22 @@ export interface RowItemProps {
   testId?: string;
 }
 
-export const RowItem: React.FC<RowItemProps> = ({ type, value, title, editMode, items, onChange, onClick, className, children, disabled = false, maxLines, inputType = "text", id, testId }) => {
+export const RowItem: React.FC<RowItemProps> = ({
+  type,
+  value,
+  title,
+  editMode,
+  items,
+  onChange,
+  onClick,
+  className,
+  children,
+  disabled = false,
+  maxLines,
+  inputType = "text",
+  id,
+  testId,
+}) => {
   const getChild = () => {
     switch (type) {
       case ColumnType.BUTTON:

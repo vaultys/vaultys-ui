@@ -1,6 +1,6 @@
 "use client";
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
-import { Input } from "@nextui-org/react";
+import { Input } from "@heroui/react";
 import { useState } from "react";
 import { BiCopy } from "@react-icons/all-files/bi/BiCopy";
 import { BiHide } from "@react-icons/all-files/bi/BiHide";

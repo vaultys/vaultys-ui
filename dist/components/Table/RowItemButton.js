@@ -1,6 +1,6 @@
 "use client";
 import { jsx as _jsx } from "react/jsx-runtime";
-import { Button } from "@nextui-org/react";
+import { Button } from "@heroui/react";
 export const RowItemButton = ({ title, onClick, disabled = false }) => {
     return (_jsx(Button, { color: "primary", disabled: disabled, onClick: (e) => {
             e.stopPropagation();

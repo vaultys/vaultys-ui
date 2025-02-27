@@ -6,8 +6,8 @@ import { RowItemSpan } from "./RowItemSpan";
 import { RowItemSwitch } from "./RowItemSwitch";
 import { ColumnType } from ".";
 import { RowItemDropdown } from "./RowItemDropdown";
-import { Checkbox } from "@nextui-org/react";
-export const RowItem = ({ type, value, title, editMode, items, onChange, onClick, className, children, disabled = false, maxLines, inputType = "text", id, testId }) => {
+import { Checkbox } from "@heroui/react";
+export const RowItem = ({ type, value, title, editMode, items, onChange, onClick, className, children, disabled = false, maxLines, inputType = "text", id, testId, }) => {
     const getChild = () => {
         var _a;
         switch (type) {

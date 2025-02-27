@@ -1,6 +1,6 @@
 "use client";
 
-import { Switch } from "@nextui-org/react";
+import { Switch } from "@heroui/react";
 
 export interface RowItemSwitchProps {
   check: boolean;
