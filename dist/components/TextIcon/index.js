@@ -42,11 +42,7 @@ export const TextIcon = (_a) => {
                 return value.substring(0, 2).toUpperCase();
             }
         }, name: text, style: { backgroundColor: bgColor }, className: className }, props, { classNames: {
-            base: "",
-            fallback: "",
-            icon: "",
-            img: "",
-            name: "",
+            name: "text-black font-bold",
         } })));
 };
 export default TextIcon;

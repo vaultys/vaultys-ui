@@ -44,11 +44,7 @@ export const TextIcon: React.FC<TextIconProps> = ({ text = "Te", backgroundColor
       className={className}
       {...props}
       classNames={{
-        base: "",
-        fallback: "",
-        icon: "",
-        img: "",
-        name: "",
+        name: "text-black font-bold",
       }}
     />
   );
