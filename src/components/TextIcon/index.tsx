@@ -1,34 +1,56 @@
 "use client";
-import invert from "invert-color";
+import { Avatar, AvatarProps } from "@heroui/react";
 
-export interface TextIconProps {
+// Generate a consistent color from text
+const stringToColor = (text: string): string => {
+  let hash = 0;
+  for (let i = 0; i < text.length; i++) {
+    hash = text.charCodeAt(i) + ((hash << 5) - hash);
+  }
+
+  // Generate HSL color with fixed saturation and lightness
+  const h = Math.abs(hash % 360);
+  return `hsl(${h}, 70%, 60%)`;
+};
+
+export interface TextIconProps extends Omit<AvatarProps, "backgroundColor"> {
   text?: string;
   backgroundColor?: string;
   className?: string;
 }
 
-export const TextIcon: React.FC<TextIconProps> = ({ text = "Te", backgroundColor = "#FFFFFF", className = "" }) => {
-  if (!text) {
-    text = "0x";
-  }
-  const fill = invert(backgroundColor, true);
-  const t = text.split(" ");
-  let displayText = "";
-  if (t.length > 1) displayText = t[0][0] + t[1][0];
-  else displayText = text.slice(0, 2);
-
-  const textSize = 65;
-  const textX = 11;
-  const textY = 73;
+export const TextIcon: React.FC<TextIconProps> = ({ text = "Te", backgroundColor, className = "", ...props }) => {
+  // Use provided backgroundColor or generate one from text
+  const bgColor = backgroundColor || stringToColor(text);
 
   return (
-    <div style={{ backgroundColor, fill }} className={className}>
-      <svg className="m-0 p-0" viewBox="0 0 100 100">
-        <text fontSize={textSize} fontFamily="monospace" x={textX} y={textY}>
-          {displayText.slice(0, 2).toLocaleUpperCase()}
-        </text>
-      </svg>
-    </div>
+    <Avatar
+      getInitials={(value) => {
+        if (!value) return "";
+        const nameParts = value.trim().split(/\s+/).filter(Boolean);
+        if (nameParts.length > 1) {
+          // Get initials (first letter of each part)
+          return nameParts
+            .map((part) => part[0].toUpperCase())
+            .join("")
+            .substring(0, 2);
+        } else {
+          // If not possible, just take the first two letters
+          return value.substring(0, 2).toUpperCase();
+        }
+      }}
+      name={text}
+      style={{ backgroundColor: bgColor }}
+      className={className}
+      {...props}
+      classNames={{
+        base: "",
+        fallback: "",
+        icon: "",
+        img: "",
+        name: "",
+      }}
+    />
   );
 };
 

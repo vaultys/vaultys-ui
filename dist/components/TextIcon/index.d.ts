@@ -1,4 +1,5 @@
-export interface TextIconProps {
+import { AvatarProps } from "@heroui/react";
+export interface TextIconProps extends Omit<AvatarProps, "backgroundColor"> {
     text?: string;
     backgroundColor?: string;
     className?: string;

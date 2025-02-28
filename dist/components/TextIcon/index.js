@@ -1,20 +1,52 @@
 "use client";
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
 import { jsx as _jsx } from "react/jsx-runtime";
-import invert from "invert-color";
-export const TextIcon = ({ text = "Te", backgroundColor = "#FFFFFF", className = "" }) => {
-    if (!text) {
-        text = "0x";
+import { Avatar } from "@heroui/react";
+// Generate a consistent color from text
+const stringToColor = (text) => {
+    let hash = 0;
+    for (let i = 0; i < text.length; i++) {
+        hash = text.charCodeAt(i) + ((hash << 5) - hash);
     }
-    const fill = invert(backgroundColor, true);
-    const t = text.split(" ");
-    let displayText = "";
-    if (t.length > 1)
-        displayText = t[0][0] + t[1][0];
-    else
-        displayText = text.slice(0, 2);
-    const textSize = 65;
-    const textX = 11;
-    const textY = 73;
-    return (_jsx("div", { style: { backgroundColor, fill }, className: className, children: _jsx("svg", { className: "m-0 p-0", viewBox: "0 0 100 100", children: _jsx("text", { fontSize: textSize, fontFamily: "monospace", x: textX, y: textY, children: displayText.slice(0, 2).toLocaleUpperCase() }) }) }));
+    // Generate HSL color with fixed saturation and lightness
+    const h = Math.abs(hash % 360);
+    return `hsl(${h}, 70%, 60%)`;
+};
+export const TextIcon = (_a) => {
+    var { text = "Te", backgroundColor, className = "" } = _a, props = __rest(_a, ["text", "backgroundColor", "className"]);
+    // Use provided backgroundColor or generate one from text
+    const bgColor = backgroundColor || stringToColor(text);
+    return (_jsx(Avatar, Object.assign({ getInitials: (value) => {
+            if (!value)
+                return "";
+            const nameParts = value.trim().split(/\s+/).filter(Boolean);
+            if (nameParts.length > 1) {
+                // Get initials (first letter of each part)
+                return nameParts
+                    .map((part) => part[0].toUpperCase())
+                    .join("")
+                    .substring(0, 2);
+            }
+            else {
+                // If not possible, just take the first two letters
+                return value.substring(0, 2).toUpperCase();
+            }
+        }, name: text, style: { backgroundColor: bgColor }, className: className }, props, { classNames: {
+            base: "",
+            fallback: "",
+            icon: "",
+            img: "",
+            name: "",
+        } })));
 };
 export default TextIcon;
