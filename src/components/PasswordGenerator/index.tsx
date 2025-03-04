@@ -1,14 +1,14 @@
 "use client";
-import { Button, Checkbox, Select, SelectItem, Slider } from "@heroui/react";
+import { Button, Checkbox, Progress, Select, SelectItem, Slider, Chip, Tooltip, Switch } from "@heroui/react";
 import { generateMnemonic, setDefaultWordlist } from "bip39";
 import { useEffect, useState } from "react";
 import { BiCopy } from "@react-icons/all-files/bi/BiCopy";
 import { BiCheck } from "@react-icons/all-files/bi/BiCheck";
-import { FaGrin } from "@react-icons/all-files/fa/FaGrin";
-import { FaSmile } from "@react-icons/all-files/fa/FaSmile";
-import { FaFrown } from "@react-icons/all-files/fa/FaFrown";
-import { FaMeh } from "@react-icons/all-files/fa/FaMeh";
 import { FiRefreshCcw } from "@react-icons/all-files/fi/FiRefreshCcw";
+import { RiLockPasswordFill } from "@react-icons/all-files/ri/RiLockPasswordFill";
+import { BiKey } from "@react-icons/all-files/bi/BiKey";
+import { BsInfoCircleFill } from "@react-icons/all-files/bs/BsInfoCircleFill";
+import PasswordEntropy from "@rabbit-company/password-entropy";
 
 export enum PasswordType {
   PASSWORD,
@@ -75,7 +75,7 @@ const TRAD = {
     fr: "Mot de passe",
     en: "Password",
   },
-  passhprase: {
+  passphrase: {
     fr: "Phrase de passe",
     en: "Passphrase",
   },
@@ -91,6 +91,38 @@ const TRAD = {
     fr: "Anglais",
     en: "English",
   },
+  passwordStrength: {
+    fr: "Force du mot de passe",
+    en: "Password strength",
+  },
+  veryWeak: {
+    fr: "Très faible",
+    en: "Very weak",
+  },
+  weak: {
+    fr: "Faible",
+    en: "Weak",
+  },
+  strong: {
+    fr: "Fort",
+    en: "Strong",
+  },
+  veryStrong: {
+    fr: "Très fort",
+    en: "Very strong",
+  },
+  options: {
+    fr: "Options",
+    en: "Options",
+  },
+  clickToCopy: {
+    fr: "Cliquer pour copier",
+    en: "Click to copy",
+  },
+  infoTooltip: {
+    fr: "Plus vous utilisez de types de caractères et plus votre mot de passe est long, plus il est sécurisé.",
+    en: "The more character types you use and the longer your password is, the more secure it will be.",
+  },
 };
 
 export const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({ passwordType, passwordConfig, passphraseConfig, locale = "fr", onConfigChanged }) => {
@@ -105,6 +137,7 @@ export const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({ passwordTy
   const [specialCharacters, setSpecialCharacters] = useState<boolean>(passwordConfig?.specialCharacters ?? true);
   const [type, setType] = useState<PasswordType>(passwordType ?? PasswordType.PASSWORD);
   const [robustness, setRobustness] = useState<ROBUSTNESS>(ROBUSTNESS.GOOD);
+  const [entropy, setEntropy] = useState<number>(75);
   const [copied, setCopied] = useState<boolean>(false);
   const [password, setPassword] = useState<string>("");
 
@@ -117,31 +150,19 @@ export const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({ passwordTy
     else {
       generatePassword();
     }
-  }, [numbers, capitalLetters, lowercaseLetters, specialCharacters]);
+  }, [numbers, capitalLetters, lowercaseLetters, specialCharacters, length]);
 
   useEffect(() => {
+    if (language === "fr") setDefaultWordlist("french");
+    else setDefaultWordlist("english");
     if (wordsNumber < 6) setRobustness(ROBUSTNESS.BAD);
     else if (wordsNumber >= 6 && wordsNumber < 8) setRobustness(ROBUSTNESS.MINIMAL);
     else if (wordsNumber >= 8 && wordsNumber < 10) setRobustness(ROBUSTNESS.GOOD);
     else if (wordsNumber >= 10) setRobustness(ROBUSTNESS.ROBUST);
-    if (language === "fr") setDefaultWordlist("french");
-    else setDefaultWordlist("english");
+    setEntropy(wordsNumber * 11);
+
     generatePassphrase();
   }, [wordsNumber, language]);
-
-  useEffect(() => {
-    let score = 0;
-    score += length * 2;
-    if (capitalLetters) score += 10;
-    if (lowercaseLetters) score += 10;
-    if (numbers) score += 10;
-    if (specialCharacters) score += 10;
-    if (capitalLetters && lowercaseLetters && numbers && specialCharacters) score += 10;
-    if (score > 40 && score <= 50) setRobustness(ROBUSTNESS.MINIMAL);
-    else if (score > 50 && score <= 75) setRobustness(ROBUSTNESS.GOOD);
-    else if (score > 75) setRobustness(ROBUSTNESS.ROBUST);
-    else setRobustness(ROBUSTNESS.BAD);
-  }, [numbers, capitalLetters, lowercaseLetters, specialCharacters, length]);
 
   const generatePassword = () => {
     let passwordChars = "";
@@ -198,7 +219,6 @@ export const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({ passwordTy
   }, [password, passphrase, type]);
 
   useEffect(() => {
-    console.log(onConfigChanged);
     onConfigChanged({
       passwordType: type,
       passphraseConfig: {
@@ -215,128 +235,174 @@ export const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({ passwordTy
     });
   }, [type, length, lowercaseLetters, capitalLetters, numbers, specialCharacters, wordsNumber, language]);
 
-  const passwordStrength = () => {
+  const getStrengthInfo = () => {
     switch (robustness) {
       case ROBUSTNESS.BAD:
-        return <FaFrown className="text-danger w-16 h-16 mx-auto" />;
+        return {
+          label: TRAD.veryWeak[locale],
+          color: "danger",
+        };
       case ROBUSTNESS.MINIMAL:
-        return <FaMeh className="text-warning w-16 h-16 mx-auto" />;
+        return {
+          label: TRAD.weak[locale],
+          color: "warning",
+        };
       case ROBUSTNESS.GOOD:
-        return <FaSmile className="text-success w-16 h-16 mx-auto" />;
+        return {
+          label: TRAD.strong[locale],
+          color: "success",
+        };
       case ROBUSTNESS.ROBUST:
-        return <FaGrin className="text-success w-16 h-16 mx-auto" />;
-
+        return {
+          label: TRAD.veryStrong[locale],
+          color: "primary",
+        };
       default:
-        break;
+        return {
+          label: "",
+          color: "",
+        };
     }
   };
 
-  return (
-    <div className="flex flex-col gap-2 w-full bg-light dark:bg-dark p-4 text-black dark:text-white rounded-large">
-      <div
-        className={`cursor-pointer flex flex-row justify-between items-center gap-4 border-2 p-2 rounded-large transition-all duration-200  ${
-          copied ? "border-success bg-success" : "border-modern-blue"
-        }`}
-        onClick={() => {
-          navigator.clipboard.writeText(type === PasswordType.PASSWORD ? password : passphrase);
-          setCopied(true);
-          setTimeout(() => setCopied(false), 1000);
-        }}
-      >
-        <div className="font-bold break-all text-lg font-mono">{type === PasswordType.PASSWORD ? password : passphrase}</div>
-        <div className="flex-shrink-0 flex flex-row items-center gap-1">
-          {copied ? (
-            <>
-              {TRAD.copied[locale]} <BiCheck />
-            </>
-          ) : (
-            <BiCopy />
-          )}
-        </div>
-      </div>
-      {passwordStrength()}
-      <Select
-        label={TRAD.passwordType[locale]}
-        selectedKeys={[type ?? PasswordType.PASSWORD]}
-        classNames={{
-          trigger: "bg-light-secondary dark:bg-dark-secondary",
-          popoverContent: "bg-light-secondary dark:bg-dark-secondary",
-        }}
-      >
-        <SelectItem key={PasswordType.PASSWORD} onPress={() => setType(PasswordType.PASSWORD)}>
-          {TRAD.password[locale]}
-        </SelectItem>
-        <SelectItem key={PasswordType.PASSPHRASE} onPress={() => setType(PasswordType.PASSPHRASE)}>
-          {TRAD.passhprase[locale]}
-        </SelectItem>
-      </Select>
+  useEffect(() => {
+    setEntropy(PasswordEntropy.calculate(password));
+  }, [password]);
 
-      {type === PasswordType.PASSWORD ? (
-        <div className="bg-light-secondary dark:bg-dark-secondary flex flex-col gap-2 rounded-large p-3">
-          <Slider
-            label={`${TRAD.charNumber[locale]}`}
-            minValue={8}
-            maxValue={128}
-            value={length}
-            onChange={(value) => setLength(value as number)}
-            onChangeEnd={generatePassword}
-            size="lg"
-            classNames={{
-              filler: "bg-modern-blue",
-              track: "border-s-modern-blue bg-slate-200 dark:bg-slate-700",
-              thumb: "bg-black dark:bg-white",
-            }}
-          />
-          <Checkbox color="primary" isSelected={lowercaseLetters} onValueChange={(value: boolean) => setLowercaseLetters(value)}>
-            a-z
-          </Checkbox>
-          <Checkbox color="primary" isSelected={capitalLetters} onValueChange={(value: boolean) => setCapitalLetters(value)}>
-            A-Z
-          </Checkbox>
-          <Checkbox color="primary" isSelected={numbers} onValueChange={(value: boolean) => setNumbers(value)}>
-            0-9
-          </Checkbox>
-          <Checkbox color="primary" isSelected={specialCharacters} onValueChange={(value: boolean) => setSpecialCharacters(value)}>
-            {SPECIAL_CHARS}
-          </Checkbox>
+  useEffect(() => {
+    if (entropy < 36) return setRobustness(ROBUSTNESS.BAD);
+    else if (entropy < 60) return setRobustness(ROBUSTNESS.MINIMAL);
+    else if (entropy < 120) return setRobustness(ROBUSTNESS.GOOD);
+    else return setRobustness(ROBUSTNESS.ROBUST);
+  }, [entropy]);
+
+  return (
+    <div className="flex flex-col gap-4 w-full p-4 rounded-lg bg-background shadow-sm">
+      <Switch isSelected={type === PasswordType.PASSWORD} onValueChange={() => setType(type === PasswordType.PASSWORD ? PasswordType.PASSPHRASE : PasswordType.PASSWORD)}>
+        <div className="flex flex-row gap-2 items-center">
+          {type === PasswordType.PASSWORD ? <RiLockPasswordFill /> : <BiKey />}
+          {type === PasswordType.PASSWORD ? TRAD.password[locale] : TRAD.passphrase[locale]}
         </div>
-      ) : (
-        <div className="bg-light-secondary dark:bg-dark-secondary flex flex-col gap-2 rounded-large p-3">
-          <Slider
-            label={`${TRAD.wordNumber[locale]}`}
-            minValue={4}
-            maxValue={24}
-            value={wordsNumber}
-            onChange={(value) => setWordsNumber(value as number)}
-            onChangeEnd={generatePassword}
-            size="lg"
-            classNames={{
-              filler: "bg-modern-blue",
-              track: "border-s-modern-blue bg-light-secondary dark:bg-dark-secondary",
-              thumb: "bg-black dark:bg-white",
-            }}
-          />
-          <Select
-            label={TRAD.language[locale]}
-            selectedKeys={[language]}
-            classNames={{
-              trigger: "bg-light dark:bg-dark",
-              popoverContent: "bg-light dark:bg-dark",
+      </Switch>
+
+      <div className="relative">
+        <Tooltip content={TRAD.clickToCopy[locale]}>
+          <div
+            className={`cursor-pointer flex flex-row justify-between items-center gap-4 p-4 border rounded-lg transition-colors ${
+              copied ? "border-success bg-success bg-opacity-10" : "border-default-200 hover:bg-default-100"
+            }`}
+            onClick={() => {
+              navigator.clipboard.writeText(type === PasswordType.PASSWORD ? password : passphrase);
+              setCopied(true);
+              setTimeout(() => setCopied(false), 1500);
             }}
           >
-            <SelectItem key="fr" onPress={() => setLanguage("fr")}>
-              {TRAD.french[locale]}
-            </SelectItem>
-            <SelectItem key="en" onPress={() => setLanguage("en")}>
-              {TRAD.english[locale]}
-            </SelectItem>
-          </Select>
-        </div>
-      )}
+            <div className="font-mono text-lg break-all">{type === PasswordType.PASSWORD ? password : passphrase}</div>
+            <div className="flex-shrink-0 flex items-center gap-1 text-sm">
+              {copied ? (
+                <span className="flex items-center gap-1 text-success">
+                  {TRAD.copied[locale]} <BiCheck size={18} />
+                </span>
+              ) : (
+                <BiCopy size={18} className="text-default-500" />
+              )}
+            </div>
+          </div>
+        </Tooltip>
+      </div>
 
-      <Button startContent={<FiRefreshCcw />} onPress={() => (type === PasswordType.PASSWORD ? generatePassword() : generatePassphrase())} color="success">
-        {TRAD.regenerate[locale]}
-      </Button>
+      <div className="space-y-2">
+        <div className="flex justify-between items-center text-sm">
+          <div className="flex items-center gap-2">
+            <span className="font-medium">{TRAD.passwordStrength[locale]}</span>
+            <Tooltip content={TRAD.infoTooltip[locale]}>
+              <Button isIconOnly size="sm" variant="light">
+                <BsInfoCircleFill className="text-default-400" />
+              </Button>
+            </Tooltip>
+          </div>
+          <Chip size="sm" color={getStrengthInfo().color as "danger" | "warning" | "success" | "primary"} variant="flat">
+            {getStrengthInfo().label}
+          </Chip>
+        </div>
+        <Progress
+          size="md"
+          aria-label="Password strength"
+          classNames={{
+            indicator: `${entropy <= 35 ? "bg-danger" : ""} ${entropy > 35 && entropy <= 59 ? "bg-warning" : ""} ${entropy > 59 && entropy < 120 ? "bg-success" : ""} ${
+              entropy >= 120 ? "bg-primary" : ""
+            }`,
+          }}
+          value={entropy}
+          maxValue={120}
+          minValue={0}
+          showValueLabel={false}
+        />
+      </div>
+
+      <div className="border border-default-200 rounded-lg p-4 bg-default-50">
+        <h4 className="text-sm font-medium mb-3">{TRAD.options[locale]}</h4>
+
+        {type === PasswordType.PASSWORD ? (
+          <div className="flex flex-col gap-4">
+            <Slider
+              label={`${TRAD.charNumber[locale]} (${length})`}
+              minValue={8}
+              maxValue={128}
+              value={length}
+              onChange={(value) => setLength(value as number)}
+              onChangeEnd={generatePassword}
+              size="sm"
+              classNames={{
+                filler: "bg-primary",
+              }}
+            />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2">
+              <Checkbox color="primary" isSelected={lowercaseLetters} onValueChange={(value: boolean) => setLowercaseLetters(value)}>
+                a-z
+              </Checkbox>
+              <Checkbox color="primary" isSelected={capitalLetters} onValueChange={(value: boolean) => setCapitalLetters(value)}>
+                A-Z
+              </Checkbox>
+              <Checkbox color="primary" isSelected={numbers} onValueChange={(value: boolean) => setNumbers(value)}>
+                0-9
+              </Checkbox>
+              <Checkbox color="primary" isSelected={specialCharacters} onValueChange={(value: boolean) => setSpecialCharacters(value)}>
+                {SPECIAL_CHARS}
+              </Checkbox>
+            </div>
+          </div>
+        ) : (
+          <div className="flex flex-col gap-4">
+            <Slider
+              label={`${TRAD.wordNumber[locale]} (${wordsNumber})`}
+              minValue={4}
+              maxValue={24}
+              value={wordsNumber}
+              onChange={(value) => setWordsNumber(value as number)}
+              onChangeEnd={generatePassphrase}
+              size="sm"
+              classNames={{
+                filler: "bg-primary",
+              }}
+            />
+            <Select label={TRAD.language[locale]} selectedKeys={[language]} size="sm" className="max-w-xs">
+              <SelectItem key="fr" onPress={() => setLanguage("fr")}>
+                {TRAD.french[locale]}
+              </SelectItem>
+              <SelectItem key="en" onPress={() => setLanguage("en")}>
+                {TRAD.english[locale]}
+              </SelectItem>
+            </Select>
+          </div>
+        )}
+      </div>
+
+      <div className="flex justify-end mt-2">
+        <Button startContent={<FiRefreshCcw />} onPress={() => (type === PasswordType.PASSWORD ? generatePassword() : generatePassphrase())} color="primary" size="sm">
+          {TRAD.regenerate[locale]}
+        </Button>
+      </div>
     </div>
   );
 };

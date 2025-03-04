@@ -1,15 +1,15 @@
 "use client";
-import { jsx as _jsx, Fragment as _Fragment, jsxs as _jsxs } from "react/jsx-runtime";
-import { Button, Checkbox, Select, SelectItem, Slider } from "@heroui/react";
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import { Button, Checkbox, Progress, Select, SelectItem, Slider, Chip, Tooltip, Switch } from "@heroui/react";
 import { generateMnemonic, setDefaultWordlist } from "bip39";
 import { useEffect, useState } from "react";
 import { BiCopy } from "@react-icons/all-files/bi/BiCopy";
 import { BiCheck } from "@react-icons/all-files/bi/BiCheck";
-import { FaGrin } from "@react-icons/all-files/fa/FaGrin";
-import { FaSmile } from "@react-icons/all-files/fa/FaSmile";
-import { FaFrown } from "@react-icons/all-files/fa/FaFrown";
-import { FaMeh } from "@react-icons/all-files/fa/FaMeh";
 import { FiRefreshCcw } from "@react-icons/all-files/fi/FiRefreshCcw";
+import { RiLockPasswordFill } from "@react-icons/all-files/ri/RiLockPasswordFill";
+import { BiKey } from "@react-icons/all-files/bi/BiKey";
+import { BsInfoCircleFill } from "@react-icons/all-files/bs/BsInfoCircleFill";
+import PasswordEntropy from "@rabbit-company/password-entropy";
 export var PasswordType;
 (function (PasswordType) {
     PasswordType[PasswordType["PASSWORD"] = 0] = "PASSWORD";
@@ -51,7 +51,7 @@ const TRAD = {
         fr: "Mot de passe",
         en: "Password",
     },
-    passhprase: {
+    passphrase: {
         fr: "Phrase de passe",
         en: "Passphrase",
     },
@@ -67,6 +67,38 @@ const TRAD = {
         fr: "Anglais",
         en: "English",
     },
+    passwordStrength: {
+        fr: "Force du mot de passe",
+        en: "Password strength",
+    },
+    veryWeak: {
+        fr: "Très faible",
+        en: "Very weak",
+    },
+    weak: {
+        fr: "Faible",
+        en: "Weak",
+    },
+    strong: {
+        fr: "Fort",
+        en: "Strong",
+    },
+    veryStrong: {
+        fr: "Très fort",
+        en: "Very strong",
+    },
+    options: {
+        fr: "Options",
+        en: "Options",
+    },
+    clickToCopy: {
+        fr: "Cliquer pour copier",
+        en: "Click to copy",
+    },
+    infoTooltip: {
+        fr: "Plus vous utilisez de types de caractères et plus votre mot de passe est long, plus il est sécurisé.",
+        en: "The more character types you use and the longer your password is, the more secure it will be.",
+    },
 };
 export const PasswordGenerator = ({ passwordType, passwordConfig, passphraseConfig, locale = "fr", onConfigChanged }) => {
     var _a, _b, _c, _d, _e, _f, _g;
@@ -81,6 +113,7 @@ export const PasswordGenerator = ({ passwordType, passwordConfig, passphraseConf
     const [specialCharacters, setSpecialCharacters] = useState((_e = passwordConfig === null || passwordConfig === void 0 ? void 0 : passwordConfig.specialCharacters) !== null && _e !== void 0 ? _e : true);
     const [type, setType] = useState(passwordType !== null && passwordType !== void 0 ? passwordType : PasswordType.PASSWORD);
     const [robustness, setRobustness] = useState(ROBUSTNESS.GOOD);
+    const [entropy, setEntropy] = useState(75);
     const [copied, setCopied] = useState(false);
     const [password, setPassword] = useState("");
     const [wordsNumber, setWordsNumber] = useState((_f = passphraseConfig === null || passphraseConfig === void 0 ? void 0 : passphraseConfig.wordNumber) !== null && _f !== void 0 ? _f : 12);
@@ -92,8 +125,12 @@ export const PasswordGenerator = ({ passwordType, passwordConfig, passphraseConf
         else {
             generatePassword();
         }
-    }, [numbers, capitalLetters, lowercaseLetters, specialCharacters]);
+    }, [numbers, capitalLetters, lowercaseLetters, specialCharacters, length]);
     useEffect(() => {
+        if (language === "fr")
+            setDefaultWordlist("french");
+        else
+            setDefaultWordlist("english");
         if (wordsNumber < 6)
             setRobustness(ROBUSTNESS.BAD);
         else if (wordsNumber >= 6 && wordsNumber < 8)
@@ -102,34 +139,9 @@ export const PasswordGenerator = ({ passwordType, passwordConfig, passphraseConf
             setRobustness(ROBUSTNESS.GOOD);
         else if (wordsNumber >= 10)
             setRobustness(ROBUSTNESS.ROBUST);
-        if (language === "fr")
-            setDefaultWordlist("french");
-        else
-            setDefaultWordlist("english");
+        setEntropy(wordsNumber * 11);
         generatePassphrase();
     }, [wordsNumber, language]);
-    useEffect(() => {
-        let score = 0;
-        score += length * 2;
-        if (capitalLetters)
-            score += 10;
-        if (lowercaseLetters)
-            score += 10;
-        if (numbers)
-            score += 10;
-        if (specialCharacters)
-            score += 10;
-        if (capitalLetters && lowercaseLetters && numbers && specialCharacters)
-            score += 10;
-        if (score > 40 && score <= 50)
-            setRobustness(ROBUSTNESS.MINIMAL);
-        else if (score > 50 && score <= 75)
-            setRobustness(ROBUSTNESS.GOOD);
-        else if (score > 75)
-            setRobustness(ROBUSTNESS.ROBUST);
-        else
-            setRobustness(ROBUSTNESS.BAD);
-    }, [numbers, capitalLetters, lowercaseLetters, specialCharacters, length]);
     const generatePassword = () => {
         let passwordChars = "";
         let password = [];
@@ -180,7 +192,6 @@ export const PasswordGenerator = ({ passwordType, passwordConfig, passphraseConf
         setCopied(false);
     }, [password, passphrase, type]);
     useEffect(() => {
-        console.log(onConfigChanged);
         onConfigChanged({
             passwordType: type,
             passphraseConfig: {
@@ -196,37 +207,57 @@ export const PasswordGenerator = ({ passwordType, passwordConfig, passphraseConf
             },
         });
     }, [type, length, lowercaseLetters, capitalLetters, numbers, specialCharacters, wordsNumber, language]);
-    const passwordStrength = () => {
+    const getStrengthInfo = () => {
         switch (robustness) {
             case ROBUSTNESS.BAD:
-                return _jsx(FaFrown, { className: "text-danger w-16 h-16 mx-auto" });
+                return {
+                    label: TRAD.veryWeak[locale],
+                    color: "danger",
+                };
             case ROBUSTNESS.MINIMAL:
-                return _jsx(FaMeh, { className: "text-warning w-16 h-16 mx-auto" });
+                return {
+                    label: TRAD.weak[locale],
+                    color: "warning",
+                };
             case ROBUSTNESS.GOOD:
-                return _jsx(FaSmile, { className: "text-success w-16 h-16 mx-auto" });
+                return {
+                    label: TRAD.strong[locale],
+                    color: "success",
+                };
             case ROBUSTNESS.ROBUST:
-                return _jsx(FaGrin, { className: "text-success w-16 h-16 mx-auto" });
+                return {
+                    label: TRAD.veryStrong[locale],
+                    color: "primary",
+                };
             default:
-                break;
+                return {
+                    label: "",
+                    color: "",
+                };
         }
     };
-    return (_jsxs("div", { className: "flex flex-col gap-2 w-full bg-light dark:bg-dark p-4 text-black dark:text-white rounded-large", children: [_jsxs("div", { className: `cursor-pointer flex flex-row justify-between items-center gap-4 border-2 p-2 rounded-large transition-all duration-200  ${copied ? "border-success bg-success" : "border-modern-blue"}`, onClick: () => {
-                    navigator.clipboard.writeText(type === PasswordType.PASSWORD ? password : passphrase);
-                    setCopied(true);
-                    setTimeout(() => setCopied(false), 1000);
-                }, children: [_jsx("div", { className: "font-bold break-all text-lg font-mono", children: type === PasswordType.PASSWORD ? password : passphrase }), _jsx("div", { className: "flex-shrink-0 flex flex-row items-center gap-1", children: copied ? (_jsxs(_Fragment, { children: [TRAD.copied[locale], " ", _jsx(BiCheck, {})] })) : (_jsx(BiCopy, {})) })] }), passwordStrength(), _jsxs(Select, { label: TRAD.passwordType[locale], selectedKeys: [type !== null && type !== void 0 ? type : PasswordType.PASSWORD], classNames: {
-                    trigger: "bg-light-secondary dark:bg-dark-secondary",
-                    popoverContent: "bg-light-secondary dark:bg-dark-secondary",
-                }, children: [_jsx(SelectItem, { onPress: () => setType(PasswordType.PASSWORD), children: TRAD.password[locale] }, PasswordType.PASSWORD), _jsx(SelectItem, { onPress: () => setType(PasswordType.PASSPHRASE), children: TRAD.passhprase[locale] }, PasswordType.PASSPHRASE)] }), type === PasswordType.PASSWORD ? (_jsxs("div", { className: "bg-light-secondary dark:bg-dark-secondary flex flex-col gap-2 rounded-large p-3", children: [_jsx(Slider, { label: `${TRAD.charNumber[locale]}`, minValue: 8, maxValue: 128, value: length, onChange: (value) => setLength(value), onChangeEnd: generatePassword, size: "lg", classNames: {
-                            filler: "bg-modern-blue",
-                            track: "border-s-modern-blue bg-slate-200 dark:bg-slate-700",
-                            thumb: "bg-black dark:bg-white",
-                        } }), _jsx(Checkbox, { color: "primary", isSelected: lowercaseLetters, onValueChange: (value) => setLowercaseLetters(value), children: "a-z" }), _jsx(Checkbox, { color: "primary", isSelected: capitalLetters, onValueChange: (value) => setCapitalLetters(value), children: "A-Z" }), _jsx(Checkbox, { color: "primary", isSelected: numbers, onValueChange: (value) => setNumbers(value), children: "0-9" }), _jsx(Checkbox, { color: "primary", isSelected: specialCharacters, onValueChange: (value) => setSpecialCharacters(value), children: SPECIAL_CHARS })] })) : (_jsxs("div", { className: "bg-light-secondary dark:bg-dark-secondary flex flex-col gap-2 rounded-large p-3", children: [_jsx(Slider, { label: `${TRAD.wordNumber[locale]}`, minValue: 4, maxValue: 24, value: wordsNumber, onChange: (value) => setWordsNumber(value), onChangeEnd: generatePassword, size: "lg", classNames: {
-                            filler: "bg-modern-blue",
-                            track: "border-s-modern-blue bg-light-secondary dark:bg-dark-secondary",
-                            thumb: "bg-black dark:bg-white",
-                        } }), _jsxs(Select, { label: TRAD.language[locale], selectedKeys: [language], classNames: {
-                            trigger: "bg-light dark:bg-dark",
-                            popoverContent: "bg-light dark:bg-dark",
-                        }, children: [_jsx(SelectItem, { onPress: () => setLanguage("fr"), children: TRAD.french[locale] }, "fr"), _jsx(SelectItem, { onPress: () => setLanguage("en"), children: TRAD.english[locale] }, "en")] })] })), _jsx(Button, { startContent: _jsx(FiRefreshCcw, {}), onPress: () => (type === PasswordType.PASSWORD ? generatePassword() : generatePassphrase()), color: "success", children: TRAD.regenerate[locale] })] }));
+    useEffect(() => {
+        setEntropy(PasswordEntropy.calculate(password));
+    }, [password]);
+    useEffect(() => {
+        if (entropy < 36)
+            return setRobustness(ROBUSTNESS.BAD);
+        else if (entropy < 60)
+            return setRobustness(ROBUSTNESS.MINIMAL);
+        else if (entropy < 120)
+            return setRobustness(ROBUSTNESS.GOOD);
+        else
+            return setRobustness(ROBUSTNESS.ROBUST);
+    }, [entropy]);
+    return (_jsxs("div", { className: "flex flex-col gap-4 w-full p-4 rounded-lg bg-background shadow-sm", children: [_jsx(Switch, { isSelected: type === PasswordType.PASSWORD, onValueChange: () => setType(type === PasswordType.PASSWORD ? PasswordType.PASSPHRASE : PasswordType.PASSWORD), children: _jsxs("div", { className: "flex flex-row gap-2 items-center", children: [type === PasswordType.PASSWORD ? _jsx(RiLockPasswordFill, {}) : _jsx(BiKey, {}), type === PasswordType.PASSWORD ? TRAD.password[locale] : TRAD.passphrase[locale]] }) }), _jsx("div", { className: "relative", children: _jsx(Tooltip, { content: TRAD.clickToCopy[locale], children: _jsxs("div", { className: `cursor-pointer flex flex-row justify-between items-center gap-4 p-4 border rounded-lg transition-colors ${copied ? "border-success bg-success bg-opacity-10" : "border-default-200 hover:bg-default-100"}`, onClick: () => {
+                            navigator.clipboard.writeText(type === PasswordType.PASSWORD ? password : passphrase);
+                            setCopied(true);
+                            setTimeout(() => setCopied(false), 1500);
+                        }, children: [_jsx("div", { className: "font-mono text-lg break-all", children: type === PasswordType.PASSWORD ? password : passphrase }), _jsx("div", { className: "flex-shrink-0 flex items-center gap-1 text-sm", children: copied ? (_jsxs("span", { className: "flex items-center gap-1 text-success", children: [TRAD.copied[locale], " ", _jsx(BiCheck, { size: 18 })] })) : (_jsx(BiCopy, { size: 18, className: "text-default-500" })) })] }) }) }), _jsxs("div", { className: "space-y-2", children: [_jsxs("div", { className: "flex justify-between items-center text-sm", children: [_jsxs("div", { className: "flex items-center gap-2", children: [_jsx("span", { className: "font-medium", children: TRAD.passwordStrength[locale] }), _jsx(Tooltip, { content: TRAD.infoTooltip[locale], children: _jsx(Button, { isIconOnly: true, size: "sm", variant: "light", children: _jsx(BsInfoCircleFill, { className: "text-default-400" }) }) })] }), _jsx(Chip, { size: "sm", color: getStrengthInfo().color, variant: "flat", children: getStrengthInfo().label })] }), _jsx(Progress, { size: "md", "aria-label": "Password strength", classNames: {
+                            indicator: `${entropy <= 35 ? "bg-danger" : ""} ${entropy > 35 && entropy <= 59 ? "bg-warning" : ""} ${entropy > 59 && entropy < 120 ? "bg-success" : ""} ${entropy >= 120 ? "bg-primary" : ""}`,
+                        }, value: entropy, maxValue: 120, minValue: 0, showValueLabel: false })] }), _jsxs("div", { className: "border border-default-200 rounded-lg p-4 bg-default-50", children: [_jsx("h4", { className: "text-sm font-medium mb-3", children: TRAD.options[locale] }), type === PasswordType.PASSWORD ? (_jsxs("div", { className: "flex flex-col gap-4", children: [_jsx(Slider, { label: `${TRAD.charNumber[locale]} (${length})`, minValue: 8, maxValue: 128, value: length, onChange: (value) => setLength(value), onChangeEnd: generatePassword, size: "sm", classNames: {
+                                    filler: "bg-primary",
+                                } }), _jsxs("div", { className: "grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2", children: [_jsx(Checkbox, { color: "primary", isSelected: lowercaseLetters, onValueChange: (value) => setLowercaseLetters(value), children: "a-z" }), _jsx(Checkbox, { color: "primary", isSelected: capitalLetters, onValueChange: (value) => setCapitalLetters(value), children: "A-Z" }), _jsx(Checkbox, { color: "primary", isSelected: numbers, onValueChange: (value) => setNumbers(value), children: "0-9" }), _jsx(Checkbox, { color: "primary", isSelected: specialCharacters, onValueChange: (value) => setSpecialCharacters(value), children: SPECIAL_CHARS })] })] })) : (_jsxs("div", { className: "flex flex-col gap-4", children: [_jsx(Slider, { label: `${TRAD.wordNumber[locale]} (${wordsNumber})`, minValue: 4, maxValue: 24, value: wordsNumber, onChange: (value) => setWordsNumber(value), onChangeEnd: generatePassphrase, size: "sm", classNames: {
+                                    filler: "bg-primary",
+                                } }), _jsxs(Select, { label: TRAD.language[locale], selectedKeys: [language], size: "sm", className: "max-w-xs", children: [_jsx(SelectItem, { onPress: () => setLanguage("fr"), children: TRAD.french[locale] }, "fr"), _jsx(SelectItem, { onPress: () => setLanguage("en"), children: TRAD.english[locale] }, "en")] })] }))] }), _jsx("div", { className: "flex justify-end mt-2", children: _jsx(Button, { startContent: _jsx(FiRefreshCcw, {}), onPress: () => (type === PasswordType.PASSWORD ? generatePassword() : generatePassphrase()), color: "primary", size: "sm", children: TRAD.regenerate[locale] }) })] }));
 };
