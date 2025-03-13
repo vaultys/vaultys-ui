@@ -15,12 +15,14 @@ export const WindowScreen: React.FC<WindowScreenProps> = ({ children, icon, titl
         size === "lg" && "max-w-5xl"
       } ${size === "xl" && "max-w-7xl"}`}
     >
-      <div className="flex flex-row justify-between text-xl p-3 w-full bg-secondary dark:bg-primary">
+      <div className="flex flex-row justify-between text-xl p-3 w-full bg-primary">
         {icon && <img className="h-8 rounded" src={icon} />}
         <span className="w-full text-center">{title}</span>
         {icon && <img className="h-8 opacity-0" src={icon} />}
       </div>
-      <div className="overflow-auto max-h-full flex flex-col gap-5 justify-center items-center shadow-inner border-2 dark:border-dark-secondary w-full bg-light dark:bg-dark">{children}</div>
+      <div className="overflow-auto max-h-full flex flex-col gap-5 justify-center items-center shadow-inner border-2 dark:border-dark-secondary w-full bg-light dark:bg-dark">
+        {children}
+      </div>
     </div>
   </div>
 );

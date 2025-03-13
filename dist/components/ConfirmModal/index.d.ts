@@ -1,4 +1,4 @@
-import { ReactElement } from "react";
+import { ReactElement, ReactNode } from "react";
 type ConfirmModalContextType = {
     show: (props: {
         header: string | ReactElement;
@@ -12,6 +12,8 @@ type ConfirmModalContextType = {
         color?: "default" | "success" | "warning" | "danger" | "primary" | "secondary" | "info";
     }) => Promise<boolean>;
 };
-export declare function ConfirmModalContextProvider(props: any): import("react/jsx-runtime").JSX.Element;
+declare function ConfirmModalContextProvider({ children }: {
+    children: ReactNode;
+}): import("react/jsx-runtime").JSX.Element;
 declare const useConfirmModal: () => ConfirmModalContextType;
-export { useConfirmModal };
+export { useConfirmModal, ConfirmModalContextProvider };

@@ -1,4 +1,4 @@
-import React, { ReactElement, useContext, useRef, useState } from "react";
+import React, { ReactElement, useContext, useRef, useState, useMemo, ReactNode } from "react";
 import { Button, Divider, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@heroui/react";
 
 type ConfirmModalContextType = {
@@ -17,7 +17,7 @@ type ConfirmModalContextType = {
 
 const ConfirmModalContext = React.createContext<ConfirmModalContextType>({} as ConfirmModalContextType);
 
-export function ConfirmModalContextProvider(props) {
+function ConfirmModalContextProvider({ children }: { children: ReactNode }) {
   const [content, setContent] = useState<{
     header: string | ReactElement;
     customContent?: ReactElement;
@@ -74,9 +74,12 @@ export function ConfirmModalContextProvider(props) {
     onClose();
   };
 
-  const modalContext: ConfirmModalContextType = {
-    show: handleShow,
-  };
+  const modalContext = useMemo<ConfirmModalContextType>(
+    () => ({
+      show: handleShow,
+    }),
+    []
+  );
 
   // Color mappings for alert box styling
   const getAlertStyles = (color: string) => {
@@ -128,7 +131,7 @@ export function ConfirmModalContextProvider(props) {
 
   return (
     <ConfirmModalContext.Provider value={modalContext}>
-      {props.children}
+      {children}
 
       {content && (
         <Modal
@@ -190,4 +193,4 @@ export function ConfirmModalContextProvider(props) {
 }
 
 const useConfirmModal = (): ConfirmModalContextType => useContext(ConfirmModalContext);
-export { useConfirmModal };
+export { useConfirmModal, ConfirmModalContextProvider };

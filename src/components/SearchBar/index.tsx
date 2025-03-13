@@ -13,6 +13,7 @@ export interface SearchBarProps {
   defaultHide?: boolean;
   children?: ReactNode;
   closeOnSelect?: boolean;
+  props?: { [key: string]: string };
 }
 
 export const SearchBar: React.FC<SearchBarProps> = ({
@@ -25,6 +26,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   defaultHide = false,
   children,
   closeOnSelect = false,
+  ...props
 }) => {
   const [hide, setHide] = useState<boolean>(defaultHide);
   const [isFocused, setIsFocused] = useState<boolean>(false);
@@ -70,6 +72,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
 
   return (
     <div
+      {...props}
       className={`${className} group relative transition-all duration-300 ease-in-out rounded-xl
       ${!hide && children && isFocused ? "shadow-lg !rounded-b-none" : "shadow hover:shadow-md"}`}
     >

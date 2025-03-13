@@ -1,8 +1,8 @@
 import { jsx as _jsx, Fragment as _Fragment, jsxs as _jsxs } from "react/jsx-runtime";
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useRef, useState, useMemo } from "react";
 import { Button, Divider, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@heroui/react";
 const ConfirmModalContext = React.createContext({});
-export function ConfirmModalContextProvider(props) {
+function ConfirmModalContextProvider({ children }) {
     var _a, _b, _c, _d;
     const [content, setContent] = useState(null);
     const resolver = useRef(null);
@@ -29,9 +29,9 @@ export function ConfirmModalContextProvider(props) {
         resolver.current && resolver.current(false);
         onClose();
     };
-    const modalContext = {
+    const modalContext = useMemo(() => ({
         show: handleShow,
-    };
+    }), []);
     // Color mappings for alert box styling
     const getAlertStyles = (color) => {
         const styles = {
@@ -77,7 +77,7 @@ export function ConfirmModalContextProvider(props) {
     const getButtonColor = (color) => {
         return color === "info" ? "default" : color;
     };
-    return (_jsxs(ConfirmModalContext.Provider, { value: modalContext, children: [props.children, content && (_jsx(Modal, { isOpen: isOpen, onClose: handleCancel, backdrop: "blur", classNames: {
+    return (_jsxs(ConfirmModalContext.Provider, { value: modalContext, children: [children, content && (_jsx(Modal, { isOpen: isOpen, onClose: handleCancel, backdrop: "blur", classNames: {
                     base: "bg-background",
                     header: "border-b border-divider",
                     body: "py-6",
@@ -85,4 +85,4 @@ export function ConfirmModalContextProvider(props) {
                 }, children: _jsxs(ModalContent, { children: [_jsx(ModalHeader, { className: "flex flex-col gap-1", children: typeof content.header === "string" ? _jsx("h3", { className: "text-xl font-semibold", children: content.header }) : content.header }), _jsxs(ModalBody, { children: [content.customContent && (_jsxs(_Fragment, { children: [content.customContent, _jsx(Divider, { className: "my-4" })] })), content.alert && (_jsxs("div", { className: `${getAlertStyles((_a = content.color) !== null && _a !== void 0 ? _a : "default").bg} ${getAlertStyles((_b = content.color) !== null && _b !== void 0 ? _b : "default").text} p-4 rounded-lg border ${getAlertStyles((_c = content.color) !== null && _c !== void 0 ? _c : "primary").border}`, children: [_jsx("p", { className: "font-medium", children: content.alert }), content.alertDescription && _jsx("p", { className: "mt-1 text-sm", children: content.alertDescription })] }))] }), _jsxs(ModalFooter, { children: [_jsx(Button, { variant: "flat", color: "default", onPress: handleCancel, startContent: content.cancelIcon, "data-test": "confirm-dialog-deny", children: content.cancelText }), _jsx(Button, { color: getButtonColor((_d = content.color) !== null && _d !== void 0 ? _d : "primary"), onPress: handleAccept, startContent: content.acceptIcon, "data-test": "confirm-dialog-accept", className: `${content.color === "info" && "bg-modern-blue"}`, children: content.acceptText })] })] }) }))] }));
 }
 const useConfirmModal = () => useContext(ConfirmModalContext);
-export { useConfirmModal };
+export { useConfirmModal, ConfirmModalContextProvider };

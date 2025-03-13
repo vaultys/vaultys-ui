@@ -1,4 +1,4 @@
-export interface QrCodeElementProps {
+export interface QrCodeElementProps extends React.HTMLAttributes<HTMLCanvasElement> {
     text: string;
     className?: string;
 }
