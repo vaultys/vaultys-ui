@@ -15,7 +15,7 @@ export const WindowScreen: React.FC<WindowScreenProps> = ({ children, icon, titl
         size === "lg" && "max-w-5xl"
       } ${size === "xl" && "max-w-7xl"}`}
     >
-      <div className="flex flex-row justify-between text-xl p-3 w-full bg-primary">
+      <div className="flex flex-row justify-between text-xl p-3 w-full bg-brand">
         {icon && <img className="h-8 rounded" src={icon} />}
         <span className="w-full text-center">{title}</span>
         {icon && <img className="h-8 opacity-0" src={icon} />}
