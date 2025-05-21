@@ -1,5 +1,5 @@
 {
-  "name": "vaultys-ui",
+  "name": "@vaultys/ui",
   "version": "1.2.0",
   "description": "",
   "main": "dist/index.js",
