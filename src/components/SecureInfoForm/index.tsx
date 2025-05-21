@@ -152,7 +152,7 @@ export function SecureInfoForm() {
 
         <Select label="Add Field" placeholder="Select field type" onChange={(e) => addCustomField(e.target.value as FieldType)}>
           {fieldTypes.map((type) => (
-            <SelectItem key={type.value} value={type.value}>
+            <SelectItem key={type.value} textValue={type.value}>
               {type.label}
             </SelectItem>
           ))}

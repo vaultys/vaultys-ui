@@ -2,7 +2,7 @@ import type { Config } from "tailwindcss";
 const { heroui } = require("@heroui/react");
 
 const config: Config = {
-  darkMode: "class",
+  darkMode: ["class", '[data-mode="dark"]'],
   content: ["./src/components/**/*.{js,ts,jsx,tsx,mdx}", "./node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}"],
   theme: {
     fontFamily: {
