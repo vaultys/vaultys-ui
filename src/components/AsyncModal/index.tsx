@@ -95,16 +95,7 @@ function InputModalContextProvider(props) {
       {props.children}
 
       {content && (
-        <Modal
-          isOpen={isOpen}
-          onClose={onClose}
-          backdrop="blur"
-          className={content.className}
-          classNames={{
-            base: "bg-light dark:bg-dark text-black dark:text-white",
-          }}
-          placement="center"
-        >
+        <Modal isOpen={isOpen} onClose={onClose} backdrop="blur" className={content.className} placement="center">
           <ModalContent>
             <ModalHeader className="flex flex-col items-center">{content.title}</ModalHeader>
             <ModalBody className="items-center gap-8">
@@ -120,9 +111,6 @@ function InputModalContextProvider(props) {
                   placeholder={content.placeholder}
                   onValueChange={(value: string) => setVal(value)}
                   value={val}
-                  classNames={{
-                    inputWrapper: "bg-light-secondary dark:bg-dark-secondary",
-                  }}
                 />
               )}
             </ModalBody>

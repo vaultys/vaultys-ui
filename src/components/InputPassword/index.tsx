@@ -51,7 +51,7 @@ export const InputPassword: React.FC<InputPasswordProps> = ({
         <div className="flex flex-row gap-2 items-center">
           {copyToClipboard && (
             <BiCopy
-              className="text-xl cursor-pointer dark:text-white"
+              className="text-xl cursor-pointer"
               onClick={() => {
                 if (value) {
                   navigator.clipboard.writeText(value);
@@ -60,7 +60,7 @@ export const InputPassword: React.FC<InputPasswordProps> = ({
             />
           )}
           <button className="focus:outline-none" type="button" onClick={() => setShow(!show)}>
-            {show ? <BiShow className="text-xl cursor-pointer dark:text-white" /> : <BiHide className="text-xl cursor-pointer dark:text-white" />}
+            {show ? <BiShow className="text-xl cursor-pointer " /> : <BiHide className="text-xl cursor-pointer " />}
           </button>
         </div>
       }

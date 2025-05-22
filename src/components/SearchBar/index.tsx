@@ -13,6 +13,10 @@ export interface SearchBarProps {
   defaultHide?: boolean;
   children?: ReactNode;
   closeOnSelect?: boolean;
+  onFocusChanged?: (isFocused: boolean) => void;
+  debounceTime?: number;
+  onSearch?: (value: string) => void;
+  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   props?: { [key: string]: string };
 }
 
@@ -26,6 +30,10 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   defaultHide = false,
   children,
   closeOnSelect = false,
+  onFocusChanged,
+  debounceTime,
+  onSearch,
+  onKeyDown,
   ...props
 }) => {
   const [hide, setHide] = useState<boolean>(defaultHide);
@@ -33,6 +41,15 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   const inputRef = useRef<HTMLInputElement>(null);
   const childRef = useRef<HTMLInputElement>(null);
   const [inputValue, setInputValue] = useState(value);
+  const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const previousValueRef = useRef<string>(value);
+
+  // Validation: si debounceTime est défini, onSearch doit aussi être défini
+  useEffect(() => {
+    if (debounceTime !== undefined && onSearch === undefined) {
+      console.warn("If debounceTime is provided, onSearch should also be provided");
+    }
+  }, [debounceTime, onSearch]);
 
   const handleSearchIconClick = () => {
     if (defaultHide) setHide(!hide);
@@ -42,12 +59,35 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   const handleClearSearch = () => {
     setInputValue("");
     if (onChange) onChange("");
+    if (onSearch) onSearch("");
     if (inputRef.current) inputRef.current.focus();
+    previousValueRef.current = "";
   };
 
   useEffect(() => {
     setInputValue(value);
   }, [value]);
+
+  // Logique de debounce pour appeler onSearch uniquement lorsque la valeur a changé
+  useEffect(() => {
+    if (debounceTime && onSearch && inputValue !== previousValueRef.current) {
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current);
+      }
+
+      debounceTimerRef.current = setTimeout(() => {
+        onSearch(inputValue);
+        previousValueRef.current = inputValue;
+        debounceTimerRef.current = null;
+      }, debounceTime);
+
+      return () => {
+        if (debounceTimerRef.current) {
+          clearTimeout(debounceTimerRef.current);
+        }
+      };
+    }
+  }, [inputValue, debounceTime, onSearch]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -69,6 +109,13 @@ export const SearchBar: React.FC<SearchBarProps> = ({
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  // Notify parent when focus state changes
+  useEffect(() => {
+    if (onFocusChanged) {
+      onFocusChanged(isFocused);
+    }
+  }, [isFocused, onFocusChanged]);
 
   return (
     <div
@@ -94,9 +141,12 @@ export const SearchBar: React.FC<SearchBarProps> = ({
           text-sm md:text-base transform transition-all duration-300
           ${hide ? "translate-x-full opacity-0" : "translate-x-0 opacity-100"}`}
           onKeyUp={onKeyUp as KeyboardEventHandler<HTMLInputElement>}
+          onKeyDown={onKeyDown}
           onChange={(e) => {
-            setInputValue(e.target.value);
-            if (onChange) onChange(e.target.value);
+            const newValue = e.target.value;
+            setInputValue(newValue);
+            if (onChange) onChange(newValue);
+            // Don't update previousValueRef here to allow debounce to detect the change
           }}
           onClick={onClick as MouseEventHandler<HTMLInputElement>}
           onFocus={() => setIsFocused(true)}
