@@ -1,0 +1,20 @@
+import { ReactNode } from "react";
+export interface SearchBarProps {
+    onKeyUp?: Function;
+    onClick?: Function;
+    className?: string;
+    onChange?: (value: string) => void;
+    value?: string;
+    placeholder?: string;
+    defaultHide?: boolean;
+    children?: ReactNode;
+    closeOnSelect?: boolean;
+    onFocusChanged?: (isFocused: boolean) => void;
+    debounceTime?: number;
+    onSearch?: (value: string) => void;
+    onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+    props?: {
+        [key: string]: string;
+    };
+}
+export declare const SearchBar: React.FC<SearchBarProps>;

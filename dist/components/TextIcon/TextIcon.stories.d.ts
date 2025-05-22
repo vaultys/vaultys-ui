@@ -1,0 +1,14 @@
+import type { Meta, StoryObj } from "@storybook/react";
+import TextIcon from "./index";
+declare const meta: Meta<typeof TextIcon>;
+export default meta;
+type Story = StoryObj<typeof TextIcon>;
+export declare const Default: Story;
+export declare const CustomText: Story;
+export declare const CustomBackground: Story;
+export declare const SingleName: Story;
+export declare const MultipleNames: Story;
+export declare const Small: Story;
+export declare const Medium: Story;
+export declare const Large: Story;
+export declare const Bordered: Story;
