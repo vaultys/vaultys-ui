@@ -26,6 +26,9 @@ importers:
       '@storybook/addon-themes':
         specifier: ^8.6.14
         version: 8.6.14(storybook@8.6.14(prettier@2.8.8))
+      base32-decode:
+        specifier: ^1.0.0
+        version: 1.0.0
       bip39:
         specifier: ^3.1.0
         version: 3.1.0
@@ -3215,6 +3218,9 @@ packages:
 
   balanced-match@1.0.2:
     resolution: {integrity: sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==}
+
+  base32-decode@1.0.0:
+    resolution: {integrity: sha512-KNWUX/R7wKenwE/G/qFMzGScOgVntOmbE27vvc6GrniDGYb6a5+qWcuoXl8WIOQL7q0TpK7nZDm1Y04Yi3Yn5g==}
 
   base64-js@1.5.1:
     resolution: {integrity: sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA==}
@@ -10021,6 +10027,8 @@ snapshots:
       - supports-color
 
   balanced-match@1.0.2: {}
+
+  base32-decode@1.0.0: {}
 
   base64-js@1.5.1: {}
 
