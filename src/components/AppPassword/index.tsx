@@ -1,18 +1,37 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AppPasswordRead from "./AppPasswordRead";
 import AppPasswordEdit from "./AppPasswordEdit";
 import { PasswordDataType } from "./translations";
+import { AnimatePresence, motion } from "framer-motion";
 
 interface AppPasswordProps {
   passwordData: PasswordDataType;
   locale: "fr" | "en" | "es" | "de" | "zh";
   onUpdate?: (data: PasswordDataType) => void;
+  readonly?: boolean;
 }
 
-export const AppPassword: React.FC<AppPasswordProps> = ({ passwordData, locale, onUpdate }) => {
+export const AppPassword: React.FC<AppPasswordProps> = ({ passwordData, locale, onUpdate, readonly = false }) => {
   const [editMode, setEditMode] = useState<boolean>(false);
   const [currentData, setCurrentData] = useState<PasswordDataType>(passwordData);
+  const [isDataChanged, setIsDataChanged] = useState<boolean>(false);
+
+  // Mise à jour du state lorsque les props changent
+  useEffect(() => {
+    setCurrentData(passwordData);
+  }, [passwordData]);
+
+  // Vérifier si des modifications ont été apportées
+  useEffect(() => {
+    const hasChanges =
+      currentData.username !== passwordData.username ||
+      currentData.password !== passwordData.password ||
+      currentData.totpSecret !== passwordData.totpSecret ||
+      currentData.secureNotes !== passwordData.secureNotes;
+
+    setIsDataChanged(hasChanges);
+  }, [currentData, passwordData]);
 
   const handleEdit = () => {
     setEditMode(true);
@@ -27,19 +46,29 @@ export const AppPassword: React.FC<AppPasswordProps> = ({ passwordData, locale, 
   };
 
   const handleCancel = () => {
+    setCurrentData({ ...passwordData });
     setEditMode(false);
-    // Restaurer les données originales
-    setCurrentData(passwordData);
   };
 
   return (
-    <>
-      {editMode ? (
-        <AppPasswordEdit passwordData={currentData} locale={locale} onSave={handleSave} onCancel={handleCancel} />
-      ) : (
-        <AppPasswordRead passwordData={currentData} locale={locale} onEdit={handleEdit} />
+    <div className="w-full">
+      <AnimatePresence mode="wait">
+        {editMode ? (
+          <motion.div key="edit" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.2 }}>
+            <AppPasswordEdit passwordData={currentData} locale={locale} onSave={handleSave} onCancel={handleCancel} />
+          </motion.div>
+        ) : (
+          <motion.div key="read" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.2 }}>
+            <AppPasswordRead readonly={readonly} passwordData={currentData} locale={locale} onEdit={handleEdit} />
+          </motion.div>
+        )}
+      </AnimatePresence>
+      {isDataChanged && !editMode && (
+        <div className="absolute top-2 right-2">
+          <span className="inline-block h-2 w-2 rounded-full bg-success animate-pulse"></span>
+        </div>
       )}
-    </>
+    </div>
   );
 };
 

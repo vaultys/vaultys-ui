@@ -8,6 +8,13 @@ const meta: Meta<typeof AppPassword> = {
     layout: "centered",
   },
   tags: ["autodocs"],
+  decorators: [
+    (Story) => (
+      <div style={{ width: "600px" }}>
+        <Story />
+      </div>
+    ),
+  ],
   argTypes: {
     locale: {
       control: "select",
@@ -17,6 +24,11 @@ const meta: Meta<typeof AppPassword> = {
     },
     passwordData: {
       description: "Données du mot de passe à afficher",
+    },
+    readonly: {
+      control: "boolean",
+      description: "Mode lecture seule pour le composant",
+      defaultValue: false,
     },
   },
 };
@@ -124,6 +136,20 @@ export const ShortSecureNotes: Story = {
       totpSecret: "JBSWY3DPEHPK3PXP",
       secureNotes: "Note courte",
     },
+  },
+};
+
+// readonly variante
+export const ReadOnly: Story = {
+  args: {
+    locale: "fr",
+    passwordData: {
+      username: "utilisateur@exemple.com",
+      password: "MotDePasse123!",
+      totpSecret: "JBSWY3DPEHPK3PXP",
+      secureNotes: "Note courte",
+    },
+    readonly: true,
   },
 };
 

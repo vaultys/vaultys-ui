@@ -1,0 +1,16 @@
+import { Meta, StoryObj } from "@storybook/react";
+import { AppPassword } from ".";
+declare const meta: Meta<typeof AppPassword>;
+export default meta;
+type Story = StoryObj<typeof AppPassword>;
+export declare const Primary: Story;
+export declare const English: Story;
+export declare const Spanish: Story;
+export declare const German: Story;
+export declare const Chinese: Story;
+export declare const WithoutUsername: Story;
+export declare const WithoutPassword: Story;
+export declare const ShortSecureNotes: Story;
+export declare const ReadOnly: Story;
+export declare const InvalidTotpSecret: Story;
+export declare const EmptyData: Story;

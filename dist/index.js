@@ -9,3 +9,5 @@ export * from "./components/InputPassword";
 export * from "./components/Loader";
 export * from "./components/SelectLanguage";
 export * from "./components/PasswordGenerator";
+export * from "./components/SelectPassword";
+export * from "./components/AppPassword";
