@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+export type SearchBarSize = "xs" | "sm" | "md" | "lg" | "xl";
 export interface SearchBarProps {
     onKeyUp?: Function;
     onClick?: Function;
@@ -13,6 +14,7 @@ export interface SearchBarProps {
     debounceTime?: number;
     onSearch?: (value: string) => void;
     onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+    size?: SearchBarSize;
     props?: {
         [key: string]: string;
     };
