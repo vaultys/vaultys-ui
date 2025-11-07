@@ -152,4 +152,39 @@ export declare const TRAD: {
         de: string;
         zh: string;
     };
+    unsaved_changes_title: {
+        fr: string;
+        en: string;
+        es: string;
+        de: string;
+        zh: string;
+    };
+    unsaved_changes_message: {
+        fr: string;
+        en: string;
+        es: string;
+        de: string;
+        zh: string;
+    };
+    unsaved_changes_description: {
+        fr: string;
+        en: string;
+        es: string;
+        de: string;
+        zh: string;
+    };
+    discard: {
+        fr: string;
+        en: string;
+        es: string;
+        de: string;
+        zh: string;
+    };
+    configure_generator: {
+        fr: string;
+        en: string;
+        es: string;
+        de: string;
+        zh: string;
+    };
 };

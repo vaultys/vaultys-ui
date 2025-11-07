@@ -4,7 +4,6 @@ export interface SelectPasswordProps {
     description?: string;
     password?: string;
     onChange?: (value: string) => void;
-    onOverwrite?: (value: string) => void;
     passwordConfig?: PasswordConfig;
     passphraseConfig?: PassphraseConfig;
     passwordType?: PasswordType;

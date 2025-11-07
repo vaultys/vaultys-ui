@@ -38,6 +38,9 @@ export const Primary = {
             totpSecret: "JBSWY3DPEHPK3PXP",
             secureNotes: "Ceci est une note sécurisée\nCeci est une note sécurisée\nCeci est une note sécurisée\nCeci est une note sécurisée\nCeci est une note sécurisée\nCeci est une note sécurisée\nCeci est une note sécurisée\n",
         },
+        onGeneratorConfig: () => {
+            alert("Configurer le générateur de mot de passe");
+        },
     },
 };
 // Variante en anglais

@@ -4,15 +4,18 @@ import AppPasswordRead from "./AppPasswordRead";
 import AppPasswordEdit from "./AppPasswordEdit";
 import { PasswordDataType } from "./translations";
 import { AnimatePresence, motion } from "framer-motion";
+import { PasswordConfig } from "../PasswordGenerator";
 
 interface AppPasswordProps {
   passwordData: PasswordDataType;
   locale: "fr" | "en" | "es" | "de" | "zh";
   onUpdate?: (data: PasswordDataType) => void;
   readonly?: boolean;
+  onGeneratorConfig?: () => void;
+  passwordConfig?: PasswordConfig;
 }
 
-export const AppPassword: React.FC<AppPasswordProps> = ({ passwordData, locale, onUpdate, readonly = false }) => {
+export const AppPassword: React.FC<AppPasswordProps> = ({ passwordData, locale, onUpdate, readonly = false, onGeneratorConfig, passwordConfig }) => {
   const [editMode, setEditMode] = useState<boolean>(false);
   const [currentData, setCurrentData] = useState<PasswordDataType>(passwordData);
   const [isDataChanged, setIsDataChanged] = useState<boolean>(false);
@@ -55,7 +58,14 @@ export const AppPassword: React.FC<AppPasswordProps> = ({ passwordData, locale, 
       <AnimatePresence mode="wait">
         {editMode ? (
           <motion.div key="edit" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.2 }}>
-            <AppPasswordEdit passwordData={currentData} locale={locale} onSave={handleSave} onCancel={handleCancel} />
+            <AppPasswordEdit
+              passwordData={currentData}
+              locale={locale}
+              onSave={handleSave}
+              onCancel={handleCancel}
+              onGeneratorConfig={onGeneratorConfig}
+              passwordConfig={passwordConfig}
+            />
           </motion.div>
         ) : (
           <motion.div key="read" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.2 }}>

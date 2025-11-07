@@ -105,61 +105,57 @@ export const AppPasswordRead: React.FC<AppPasswordReadProps> = ({ passwordData, 
       )}
 
       {passwordData?.username && passwordData.username.length > 0 && (
-        <div className="group relative">
-          <Input
-            onClick={handleCopyUsername}
-            color={usernameCopied ? "success" : "default"}
-            readOnly
-            label={TRAD.username[locale]}
-            value={passwordData.username}
-            classNames={{
-              input: "cursor-copy",
-            }}
-            endContent={
-              <div className="flex flex-row gap-2 items-center">
-                <Tooltip content={usernameCopied ? TRAD.copy[locale] + "!" : TRAD.copy[locale]} color={usernameCopied ? "success" : "default"}>
-                  <button className="p-1 rounded-md hover:bg-default-200 transition-colors">
-                    {usernameCopied ? <FaCheck className="text-success" /> : <FaRegCopy className="cursor-pointer" onClick={handleCopyUsername} />}
-                  </button>
-                </Tooltip>
-              </div>
-            }
-          />
-        </div>
+        <Input
+          onClick={handleCopyUsername}
+          color={usernameCopied ? "success" : "default"}
+          readOnly
+          label={TRAD.username[locale]}
+          value={passwordData.username}
+          classNames={{
+            input: "cursor-copy",
+          }}
+          endContent={
+            <div className="flex flex-row gap-2 items-center">
+              <Tooltip content={usernameCopied ? TRAD.copy[locale] + "!" : TRAD.copy[locale]} color={usernameCopied ? "success" : "default"}>
+                <button className="p-1 rounded-md hover:bg-default-200 transition-colors">
+                  {usernameCopied ? <FaCheck className="text-success" /> : <FaRegCopy className="cursor-pointer" onClick={handleCopyUsername} />}
+                </button>
+              </Tooltip>
+            </div>
+          }
+        />
       )}
 
       {passwordData.password && passwordData.password.length > 0 && (
-        <div className="group relative">
-          <Input
-            readOnly
-            onClick={handleCopyPassword}
-            color={passwordCopied ? "success" : "default"}
-            label={TRAD.password[locale]}
-            type={showPassword ? "text" : "password"}
-            value={showPassword ? passwordData.password : "********"}
-            classNames={{
-              input: "cursor-copy",
-            }}
-            endContent={
-              <div className="flex flex-row gap-2 items-center">
-                <Tooltip content={showPassword ? TRAD.hide[locale] : TRAD.show[locale]}>
-                  <button className="p-1 rounded-md hover:bg-default-200 transition-colors">
-                    {showPassword ? (
-                      <BiHide className="cursor-pointer" onClick={() => setShowPassword(false)} />
-                    ) : (
-                      <BiShow className="cursor-pointer" onClick={() => setShowPassword(true)} />
-                    )}
-                  </button>
-                </Tooltip>
-                <Tooltip content={passwordCopied ? TRAD.copy[locale] + "!" : TRAD.copy[locale]} color={passwordCopied ? "success" : "default"}>
-                  <button className="p-1 rounded-md hover:bg-default-200 transition-colors">
-                    {passwordCopied ? <FaCheck className="text-success" /> : <FaRegCopy className="cursor-pointer" onClick={handleCopyPassword} />}
-                  </button>
-                </Tooltip>
-              </div>
-            }
-          />
-        </div>
+        <Input
+          readOnly
+          onClick={handleCopyPassword}
+          color={passwordCopied ? "success" : "default"}
+          label={TRAD.password[locale]}
+          type={showPassword ? "text" : "password"}
+          value={showPassword ? passwordData.password : "********"}
+          classNames={{
+            input: "cursor-copy",
+          }}
+          endContent={
+            <div className="flex flex-row gap-2 items-center">
+              <Tooltip content={showPassword ? TRAD.hide[locale] : TRAD.show[locale]}>
+                <button className="p-1 rounded-md hover:bg-default-200 transition-colors">
+                  {showPassword ? (
+                    <BiHide className="cursor-pointer" onClick={() => setShowPassword(false)} />
+                  ) : (
+                    <BiShow className="cursor-pointer" onClick={() => setShowPassword(true)} />
+                  )}
+                </button>
+              </Tooltip>
+              <Tooltip content={passwordCopied ? TRAD.copy[locale] + "!" : TRAD.copy[locale]} color={passwordCopied ? "success" : "default"}>
+                <button className="p-1 rounded-md hover:bg-default-200 transition-colors">
+                  {passwordCopied ? <FaCheck className="text-success" /> : <FaRegCopy className="cursor-pointer" onClick={handleCopyPassword} />}
+                </button>
+              </Tooltip>
+            </div>
+          }
+        />
       )}
 
       {passwordData.totpSecret && passwordData.totpSecret.length === 16 && (
@@ -188,36 +184,34 @@ export const AppPasswordRead: React.FC<AppPasswordReadProps> = ({ passwordData, 
       )}
 
       {passwordData.secureNotes && passwordData.secureNotes.length > 0 && (
-        <div className="group relative">
-          <Textarea
-            readOnly
-            maxRows={3}
-            minRows={3}
-            label={TRAD.secure_notes[locale]}
-            value={showSecureNotes ? passwordData.secureNotes : "********"}
-            className="hover:border-primary focus:border-primary transition-all"
-            endContent={
-              <div className="flex flex-row gap-2 items-center">
-                <Tooltip content={showSecureNotes ? TRAD.hide[locale] : TRAD.show[locale]}>
+        <Textarea
+          readOnly
+          maxRows={3}
+          minRows={3}
+          label={TRAD.secure_notes[locale]}
+          value={showSecureNotes ? passwordData.secureNotes : "********"}
+          className="hover:border-primary focus:border-primary transition-all"
+          endContent={
+            <div className="flex flex-row gap-2 items-center">
+              <Tooltip content={showSecureNotes ? TRAD.hide[locale] : TRAD.show[locale]}>
+                <button className="p-1 rounded-md hover:bg-default-200 transition-colors">
+                  {showSecureNotes ? (
+                    <BiHide className="cursor-pointer" onClick={() => setShowSecureNotes(false)} />
+                  ) : (
+                    <BiShow className="cursor-pointer" onClick={() => setShowSecureNotes(true)} />
+                  )}
+                </button>
+              </Tooltip>
+              {passwordData.secureNotes.length > 100 && (
+                <Tooltip content={TRAD.secure_notes[locale]}>
                   <button className="p-1 rounded-md hover:bg-default-200 transition-colors">
-                    {showSecureNotes ? (
-                      <BiHide className="cursor-pointer" onClick={() => setShowSecureNotes(false)} />
-                    ) : (
-                      <BiShow className="cursor-pointer" onClick={() => setShowSecureNotes(true)} />
-                    )}
+                    <FaExpand className="cursor-pointer" onClick={() => secureNotesOnOpen()} />
                   </button>
                 </Tooltip>
-                {passwordData.secureNotes.length > 100 && (
-                  <Tooltip content={TRAD.secure_notes[locale]}>
-                    <button className="p-1 rounded-md hover:bg-default-200 transition-colors">
-                      <FaExpand className="cursor-pointer" onClick={() => secureNotesOnOpen()} />
-                    </button>
-                  </Tooltip>
-                )}
-              </div>
-            }
-          />
-        </div>
+              )}
+            </div>
+          }
+        />
       )}
       {!readonly && (
         <Button color="primary" variant="flat" startContent={<FaRegEdit />} onPress={onEdit} className="mt-2" fullWidth>

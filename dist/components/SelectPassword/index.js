@@ -92,7 +92,7 @@ const TRAD = {
         zh: "生成的密码",
     },
 };
-export const SelectPassword = ({ label = "Mot de passe", description, password = "", onChange, onOverwrite, passwordConfig = {
+export const SelectPassword = ({ label = "Mot de passe", description, password = "", onChange, passwordConfig = {
     length: 16,
     numbers: true,
     capitalLetters: true,
@@ -102,7 +102,6 @@ export const SelectPassword = ({ label = "Mot de passe", description, password =
     const [value, setValue] = useState(password);
     const [showPassword, setShowPassword] = useState(false);
     const [copied, setCopied] = useState(false);
-    const [generatedPassword, setGeneratedPassword] = useState("");
     const [entropy, setEntropy] = useState(0);
     const [robustness, setRobustness] = useState(ROBUSTNESS.BAD);
     // Mettre à jour la valeur du mot de passe si la prop change
@@ -128,7 +127,7 @@ export const SelectPassword = ({ label = "Mot de passe", description, password =
             setRobustness(ROBUSTNESS.BAD);
         }
     }, [value]);
-    // Générer un mot de passe aléatoire
+    // Générer un mot de passe aléatoire et remplacer directement
     const generatePassword = () => {
         let passwordChars = "";
         let generatedPwd = [];
@@ -171,23 +170,10 @@ export const SelectPassword = ({ label = "Mot de passe", description, password =
                 generatedPwd[i] = passwordChars.charAt(randomIndex);
         }
         const newPassword = generatedPwd.join("");
-        // Si le mot de passe actuel est vide, on l'applique directement
-        if (!value) {
-            setValue(newPassword);
-            if (onChange)
-                onChange(newPassword);
-        }
-        else {
-            // Sinon, on stocke le mot de passe généré pour affichage ultérieur
-            setGeneratedPassword(newPassword);
-        }
-    };
-    // Fonction pour appliquer le mot de passe généré
-    const applyGeneratedPassword = () => {
-        setValue(generatedPassword);
-        if (onOverwrite)
-            onOverwrite(generatedPassword);
-        setGeneratedPassword("");
+        // Remplacer directement le mot de passe
+        setValue(newPassword);
+        if (onChange)
+            onChange(newPassword);
     };
     // Fonction pour copier le mot de passe
     const copyPassword = (textToCopy) => {
@@ -233,7 +219,5 @@ export const SelectPassword = ({ label = "Mot de passe", description, password =
                     input: "font-mono",
                 }, endContent: _jsxs("div", { className: "flex flex-row gap-2 items-center", children: [_jsx(Tooltip, { content: TRAD.copy[locale], children: _jsx("button", { className: "focus:outline-none", type: "button", onClick: () => copyPassword(value), disabled: !value, children: copied ? _jsx(BiCheck, { className: "text-xl text-success" }) : _jsx(BiCopy, { className: "text-xl cursor-pointer" }) }) }), _jsx("button", { className: "focus:outline-none", type: "button", onClick: () => setShowPassword(!showPassword), children: showPassword ? _jsx(BiShow, { className: "text-xl cursor-pointer" }) : _jsx(BiHide, { className: "text-xl cursor-pointer" }) }), _jsx(Tooltip, { content: TRAD.generate[locale], children: _jsx("button", { className: "focus:outline-none", type: "button", onClick: generatePassword, children: _jsx(FiRefreshCcw, { className: "text-xl cursor-pointer" }) }) })] }) }), value && (_jsxs("div", { className: "space-y-2", children: [_jsxs("div", { className: "flex justify-between items-center text-sm", children: [_jsxs("div", { className: "flex items-center gap-2", children: [_jsx("span", { className: "font-medium", children: TRAD.passwordStrength[locale] }), _jsx(Tooltip, { content: TRAD.infoTooltip[locale], children: _jsx(Button, { isIconOnly: true, size: "sm", variant: "light", children: _jsx(BsInfoCircleFill, { className: "text-default-400" }) }) })] }), _jsx(Chip, { size: "sm", color: getStrengthInfo().color, variant: "flat", children: getStrengthInfo().label })] }), _jsx(Progress, { size: "md", "aria-label": "Password strength", classNames: {
                             indicator: `${entropy <= 35 ? "bg-danger" : ""} ${entropy > 35 && entropy <= 59 ? "bg-warning" : ""} ${entropy > 59 && entropy < 120 ? "bg-success" : ""} ${entropy >= 120 ? "bg-primary" : ""}`,
-                        }, value: entropy, maxValue: 120, minValue: 0, showValueLabel: false })] })), generatedPassword && (_jsx("div", { className: "mt-2", children: _jsx(Input, { label: TRAD.generatedPassword[locale], value: generatedPassword, type: showPassword ? "text" : "password", readOnly: true, classNames: {
-                        input: "font-mono",
-                    }, endContent: _jsxs("div", { className: "flex flex-row gap-2 items-center", children: [_jsx(Tooltip, { content: TRAD.copy[locale], children: _jsx("button", { className: "focus:outline-none", type: "button", onClick: () => copyPassword(generatedPassword), children: copied ? _jsx(BiCheck, { className: "text-xl text-success" }) : _jsx(BiCopy, { className: "text-xl cursor-pointer" }) }) }), _jsx(Button, { size: "sm", color: "primary", onClick: applyGeneratedPassword, children: TRAD.overwrite[locale] })] }) }) }))] }));
+                        }, value: entropy, maxValue: 120, minValue: 0, showValueLabel: false })] }))] }));
 };

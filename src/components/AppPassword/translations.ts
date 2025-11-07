@@ -26,7 +26,12 @@ type TranslationKeys =
   | "enter_secure_notes"
   | "totp_explanation"
   | "secure_notes_explanation"
-  | "has_changes";
+  | "has_changes"
+  | "unsaved_changes_title"
+  | "unsaved_changes_message"
+  | "unsaved_changes_description"
+  | "discard"
+  | "configure_generator";
 
 type LanguageCodes = "fr" | "en" | "es" | "de" | "zh";
 
@@ -183,5 +188,40 @@ export const TRAD = {
     es: "Tiene cambios sin guardar",
     de: "Sie haben ungespeicherte Änderungen",
     zh: "您有未保存的更改",
+  },
+  unsaved_changes_title: {
+    fr: "Modifications non enregistrées",
+    en: "Unsaved Changes",
+    es: "Cambios sin guardar",
+    de: "Nicht gespeicherte Änderungen",
+    zh: "未保存的更改",
+  },
+  unsaved_changes_message: {
+    fr: "Vous avez des modifications non enregistrées",
+    en: "You have unsaved changes",
+    es: "Tiene cambios sin guardar",
+    de: "Sie haben ungespeicherte Änderungen",
+    zh: "您有未保存的更改",
+  },
+  unsaved_changes_description: {
+    fr: "Si vous continuez, toutes vos modifications seront perdues. Voulez-vous vraiment quitter sans enregistrer ?",
+    en: "If you continue, all your changes will be lost. Do you really want to leave without saving?",
+    es: "Si continúa, se perderán todos sus cambios. ¿Realmente desea salir sin guardar?",
+    de: "Wenn Sie fortfahren, gehen alle Ihre Änderungen verloren. Möchten Sie wirklich ohne Speichern fortfahren?",
+    zh: "如果您继续，所有更改都将丢失。您确定要离开而不保存吗？",
+  },
+  discard: {
+    fr: "Abandonner",
+    en: "Discard",
+    es: "Descartar",
+    de: "Verwerfen",
+    zh: "放弃",
+  },
+  configure_generator: {
+    fr: "Configurer le générateur de mot de passe",
+    en: "Configure password generator",
+    es: "Configurar generador de contraseñas",
+    de: "Passwortgenerator konfigurieren",
+    zh: "配置密码生成器",
   },
 };

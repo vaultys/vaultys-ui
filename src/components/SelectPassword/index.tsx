@@ -102,7 +102,6 @@ export interface SelectPasswordProps {
   description?: string;
   password?: string;
   onChange?: (value: string) => void;
-  onOverwrite?: (value: string) => void;
   passwordConfig?: PasswordConfig;
   passphraseConfig?: PassphraseConfig;
   passwordType?: PasswordType;
@@ -115,7 +114,6 @@ export const SelectPassword: React.FC<SelectPasswordProps> = ({
   description,
   password = "",
   onChange,
-  onOverwrite,
   passwordConfig = {
     length: 16,
     numbers: true,
@@ -129,7 +127,6 @@ export const SelectPassword: React.FC<SelectPasswordProps> = ({
   const [value, setValue] = useState<string>(password);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [copied, setCopied] = useState<boolean>(false);
-  const [generatedPassword, setGeneratedPassword] = useState<string>("");
   const [entropy, setEntropy] = useState<number>(0);
   const [robustness, setRobustness] = useState<ROBUSTNESS>(ROBUSTNESS.BAD);
 
@@ -154,7 +151,7 @@ export const SelectPassword: React.FC<SelectPasswordProps> = ({
     }
   }, [value]);
 
-  // Générer un mot de passe aléatoire
+  // Générer un mot de passe aléatoire et remplacer directement
   const generatePassword = () => {
     let passwordChars = "";
     let generatedPwd: string[] = [];
@@ -200,21 +197,9 @@ export const SelectPassword: React.FC<SelectPasswordProps> = ({
 
     const newPassword = generatedPwd.join("");
 
-    // Si le mot de passe actuel est vide, on l'applique directement
-    if (!value) {
-      setValue(newPassword);
-      if (onChange) onChange(newPassword);
-    } else {
-      // Sinon, on stocke le mot de passe généré pour affichage ultérieur
-      setGeneratedPassword(newPassword);
-    }
-  };
-
-  // Fonction pour appliquer le mot de passe généré
-  const applyGeneratedPassword = () => {
-    setValue(generatedPassword);
-    if (onOverwrite) onOverwrite(generatedPassword);
-    setGeneratedPassword("");
+    // Remplacer directement le mot de passe
+    setValue(newPassword);
+    if (onChange) onChange(newPassword);
   };
 
   // Fonction pour copier le mot de passe
@@ -318,33 +303,6 @@ export const SelectPassword: React.FC<SelectPasswordProps> = ({
             maxValue={120}
             minValue={0}
             showValueLabel={false}
-          />
-        </div>
-      )}
-
-      {/* Mot de passe généré */}
-      {generatedPassword && (
-        <div className="mt-2">
-          <Input
-            label={TRAD.generatedPassword[locale]}
-            value={generatedPassword}
-            type={showPassword ? "text" : "password"}
-            readOnly
-            classNames={{
-              input: "font-mono",
-            }}
-            endContent={
-              <div className="flex flex-row gap-2 items-center">
-                <Tooltip content={TRAD.copy[locale]}>
-                  <button className="focus:outline-none" type="button" onClick={() => copyPassword(generatedPassword)}>
-                    {copied ? <BiCheck className="text-xl text-success" /> : <BiCopy className="text-xl cursor-pointer" />}
-                  </button>
-                </Tooltip>
-                <Button size="sm" color="primary" onClick={applyGeneratedPassword}>
-                  {TRAD.overwrite[locale]}
-                </Button>
-              </div>
-            }
           />
         </div>
       )}

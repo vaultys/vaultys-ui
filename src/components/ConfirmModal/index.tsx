@@ -1,4 +1,4 @@
-import React, { ReactElement, useContext, useRef, useState, useMemo, ReactNode } from "react";
+import React, { ReactElement, useContext, useRef, useState, useMemo } from "react";
 import { Button, Divider, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@heroui/react";
 
 type ConfirmModalContextType = {
@@ -17,7 +17,7 @@ type ConfirmModalContextType = {
 
 const ConfirmModalContext = React.createContext<ConfirmModalContextType>({} as ConfirmModalContextType);
 
-function ConfirmModalContextProvider({ children }: { children: ReactNode }) {
+function ConfirmModalContextProvider({ children }: { children: React.ReactNode }) {
   const [content, setContent] = useState<{
     header: string | ReactElement;
     customContent?: ReactElement;

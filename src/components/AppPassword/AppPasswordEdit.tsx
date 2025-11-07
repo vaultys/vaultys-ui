@@ -10,18 +10,37 @@ import { FaLock } from "@react-icons/all-files/fa/FaLock";
 import { MdFingerprint } from "@react-icons/all-files/md/MdFingerprint";
 import { BsTextLeft } from "@react-icons/all-files/bs/BsTextLeft";
 import { AiOutlineUser } from "@react-icons/all-files/ai/AiOutlineUser";
+import { FaCog } from "@react-icons/all-files/fa/FaCog";
 import { generateTOTP } from "../../lib/totp";
 import { PasswordDataType, TRAD } from "./translations";
 import { SelectPassword } from "../SelectPassword";
+import { useConfirmModal } from "../ConfirmModal";
+import { PasswordConfig } from "../PasswordGenerator";
 
 interface AppPasswordEditProps {
   passwordData: PasswordDataType;
   locale: "fr" | "en" | "es" | "de" | "zh";
   onSave: (data: PasswordDataType) => void;
   onCancel: () => void;
+  onGeneratorConfig?: () => void;
+  passwordConfig?: PasswordConfig;
 }
 
-export const AppPasswordEdit: React.FC<AppPasswordEditProps> = ({ passwordData, locale, onSave, onCancel }) => {
+export const AppPasswordEdit: React.FC<AppPasswordEditProps> = ({
+  passwordData,
+  locale,
+  onSave,
+  onCancel,
+  onGeneratorConfig,
+  passwordConfig = {
+    capitalLetters: true,
+    length: 16,
+    lowercaseLetters: true,
+    numbers: true,
+    specialCharacters: true,
+  },
+}) => {
+  const confirmModal = useConfirmModal();
   const [activeTab, setActiveTab] = useState<string>("credentials");
   const [editedData, setEditedData] = useState<PasswordDataType>({ ...passwordData });
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -64,15 +83,25 @@ export const AppPasswordEdit: React.FC<AppPasswordEditProps> = ({ passwordData, 
     setEditedData({ ...editedData, password: value });
   };
 
-  // Remplacer le mot de passe existant par un nouveau généré
-  const handlePasswordOverwrite = (value: string) => {
-    setEditedData({ ...editedData, password: value });
-  };
+  // Fonction de gestion d'annulation avec confirmation si des modifications existent
+  const handleCancel = async () => {
+    if (hasChanges()) {
+      const confirmed = await confirmModal.show({
+        header: TRAD.unsaved_changes_title[locale],
+        alert: TRAD.unsaved_changes_message[locale],
+        alertDescription: TRAD.unsaved_changes_description[locale],
+        cancelText: TRAD.cancel[locale],
+        acceptText: TRAD.discard[locale],
+        color: "warning",
+      });
 
-  // Fonction de gestion d'annulation pour réinitialiser l'onglet actif
-  const handleCancel = () => {
-    setActiveTab("credentials"); // Réinitialiser l'onglet à credentials
-    onCancel(); // Appeler la fonction onCancel du parent
+      if (!confirmed) {
+        return;
+      }
+    }
+
+    setActiveTab("credentials");
+    onCancel();
   };
 
   // Fonction de sauvegarde qui réinitialise l'onglet
@@ -80,6 +109,13 @@ export const AppPasswordEdit: React.FC<AppPasswordEditProps> = ({ passwordData, 
     setActiveTab("credentials");
     onSave(editedData);
   };
+
+  // Hook pour gérer les modifications non sauvegardées lors du démontage du composant
+  useEffect(() => {
+    return () => {
+      // Nettoyage si nécessaire
+    };
+  }, []);
 
   // Générer le code TOTP lorsque le secret est valide
   useEffect(() => {
@@ -130,6 +166,17 @@ export const AppPasswordEdit: React.FC<AppPasswordEditProps> = ({ passwordData, 
 
   return (
     <div className="flex flex-col gap-4 w-full">
+      {/* Banner de modifications non sauvegardées */}
+      {hasChanges() && (
+        <div className="bg-warning-50 border-l-4 border-warning rounded-r-lg p-4 flex items-start gap-3 animate-in slide-in-from-top">
+          <FaInfoCircle className="text-warning text-xl flex-shrink-0 mt-0.5" />
+          <div className="flex-1">
+            <p className="font-semibold text-warning-700">{TRAD.unsaved_changes_title[locale]}</p>
+            <p className="text-sm text-warning-600 mt-1">{TRAD.unsaved_changes_message[locale]}</p>
+          </div>
+        </div>
+      )}
+
       <Tabs
         variant="underlined"
         size="sm"
@@ -161,20 +208,22 @@ export const AppPasswordEdit: React.FC<AppPasswordEditProps> = ({ passwordData, 
               startContent={<AiOutlineUser className="text-default-400" />}
             />
 
-            <div>
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-sm">{TRAD.password[locale]}</span>
+                {onGeneratorConfig && (
+                  <Tooltip content={TRAD.configure_generator[locale]}>
+                    <Button isIconOnly size="sm" variant="light" onPress={onGeneratorConfig}>
+                      <FaCog className="text-default-400" />
+                    </Button>
+                  </Tooltip>
+                )}
+              </div>
               <SelectPassword
-                label={TRAD.password[locale]}
                 password={editedData.password || ""}
                 onChange={handlePasswordChange}
-                onOverwrite={handlePasswordOverwrite}
                 locale={locale as "fr" | "en" | "es" | "de" | "zh"}
-                passwordConfig={{
-                  length: 16,
-                  numbers: true,
-                  capitalLetters: true,
-                  lowercaseLetters: true,
-                  specialCharacters: true,
-                }}
+                passwordConfig={passwordConfig}
               />
             </div>
           </div>
@@ -283,25 +332,27 @@ export const AppPasswordEdit: React.FC<AppPasswordEditProps> = ({ passwordData, 
         </Tab>
       </Tabs>
 
-      <div className="mt-2">
+      {/* Footer fixe avec les boutons d'action */}
+      <div className="sticky bottom-0 bg-content1 border-t-2 border-default-200 pt-4 pb-2 -mx-1 px-1">
         {hasChanges() && (
-          <div className="mb-3 flex items-center gap-2">
-            <span className="inline-block h-2 w-2 rounded-full bg-warning animate-pulse"></span>
-            <span className="text-sm text-default-600">{TRAD.has_changes[locale]}</span>
+          <div className="mb-3 flex items-center justify-center gap-2 animate-pulse">
+            <span className="inline-block h-2 w-2 rounded-full bg-warning"></span>
+            <span className="text-sm font-medium text-warning-600">{TRAD.has_changes[locale]}</span>
           </div>
         )}
 
-        <div className="flex flex-row gap-3 justify-end pt-3 border-t border-default-100">
-          <Button color="danger" variant="light" startContent={<FaTimes />} onPress={handleCancel} className="min-w-[100px]">
+        <div className="flex flex-row gap-3 justify-end">
+          <Button color="default" variant="flat" startContent={<FaTimes />} onPress={handleCancel} size="lg" className="min-w-[120px]">
             {TRAD.cancel[locale]}
           </Button>
           <Button
-            color="success"
-            variant="flat"
+            color="primary"
+            variant="shadow"
             startContent={<FaRegSave />}
             onPress={handleSave}
             isDisabled={(isInvalidTotpSecret && !!editedData.totpSecret) || !hasChanges()}
-            className="min-w-[100px]"
+            size="lg"
+            className={`min-w-[120px] ${hasChanges() ? "animate-in zoom-in-95" : ""}`}
           >
             {TRAD.save[locale]}
           </Button>

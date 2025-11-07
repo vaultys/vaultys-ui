@@ -47,6 +47,9 @@ export const Primary: Story = {
       secureNotes:
         "Ceci est une note sécurisée\nCeci est une note sécurisée\nCeci est une note sécurisée\nCeci est une note sécurisée\nCeci est une note sécurisée\nCeci est une note sécurisée\nCeci est une note sécurisée\n",
     },
+    onGeneratorConfig: () => {
+      alert("Configurer le générateur de mot de passe");
+    },
   },
 };
 

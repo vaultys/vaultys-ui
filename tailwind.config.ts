@@ -5,6 +5,18 @@ const config: Config = {
   darkMode: ["class", '[data-mode="dark"]'],
   content: ["./src/components/**/*.{js,ts,jsx,tsx,mdx}", "./node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}"],
   theme: {
+    fontSize: {
+      xs: "clamp(0.75rem, 0.5vw, 0.8rem)",
+      sm: "clamp(0.875rem, 0.6vw, 0.95rem)",
+      base: "clamp(1rem, 0.8vw, 1.1rem)",
+      lg: "clamp(1.125rem, 1vw, 1.25rem)",
+      xl: "clamp(1.25rem, 1.2vw, 1.4rem)",
+      "2xl": "clamp(1.5rem, 1.5vw, 1.75rem)",
+      "3xl": "clamp(1.875rem, 2vw, 2.25rem)",
+      "4xl": "clamp(2.25rem, 2.5vw, 2.5rem)",
+      "5xl": "clamp(3rem, 3vw, 3.25rem)",
+      "6xl": "clamp(3.75rem, 3.5vw, 4rem)",
+    },
     fontFamily: {
       montserrat: ["Montserrat", "sans-serif"],
       mono: ["monospace"],
@@ -32,6 +44,20 @@ const config: Config = {
     },
   },
   plugins: [
+    function ({ addBase }: { addBase: (styles: Record<string, any>) => void }) {
+      addBase({
+        "@media (min-resolution: 2dppx)": {
+          html: {
+            fontSize: "85%",
+          },
+        },
+        "@media (min-resolution: 3dppx)": {
+          html: {
+            fontSize: "80%",
+          },
+        },
+      });
+    },
     heroui({
       themes: {
         dark: {

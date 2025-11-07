@@ -19,7 +19,6 @@ export const Default = {
         label: "Mot de passe",
         description: "Entrez un mot de passe sécurisé",
         onChange: (value) => console.log("Password changed:", value),
-        onOverwrite: (value) => console.log("Password overwritten:", value),
         locale: "fr",
     },
 };
@@ -29,7 +28,6 @@ export const WithInitialPassword = {
         description: "Modifiez votre mot de passe",
         password: "P@ssw0rd123!",
         onChange: (value) => console.log("Password changed:", value),
-        onOverwrite: (value) => console.log("Password overwritten:", value),
         locale: "fr",
     },
 };
@@ -38,7 +36,6 @@ export const EnglishLanguage = {
         label: "Password",
         description: "Enter a secure password",
         onChange: (value) => console.log("Password changed:", value),
-        onOverwrite: (value) => console.log("Password overwritten:", value),
         locale: "en",
     },
 };
@@ -47,7 +44,6 @@ export const CustomPasswordConfig = {
         label: "Mot de passe",
         description: "Mot de passe avec configuration personnalisée",
         onChange: (value) => console.log("Password changed:", value),
-        onOverwrite: (value) => console.log("Password overwritten:", value),
         passwordConfig: {
             length: 12,
             numbers: true,

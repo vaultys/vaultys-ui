@@ -11,3 +11,4 @@ export * from "./components/SelectLanguage";
 export * from "./components/PasswordGenerator";
 export * from "./components/SelectPassword";
 export * from "./components/AppPassword";
+export * from "./components/ManagePasswords";
