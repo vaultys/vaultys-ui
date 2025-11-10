@@ -25,6 +25,7 @@ export interface ManagePasswordsProps {
   readonly?: boolean;
   admin?: boolean;
   passwordConfig?: PasswordConfig;
+  compact?: boolean;
 }
 
 export const ManagePasswords: React.FC<ManagePasswordsProps> = ({
@@ -36,6 +37,7 @@ export const ManagePasswords: React.FC<ManagePasswordsProps> = ({
   readonly = false,
   admin = false,
   passwordConfig,
+  compact = false,
 }) => {
   const [selectedKey, setSelectedKey] = useState<string>("");
   const [isOpen, setIsOpen] = useState(false);
@@ -80,6 +82,7 @@ export const ManagePasswords: React.FC<ManagePasswordsProps> = ({
         onUpdate={(data) => onUpdate?.("personal", data)}
         onGeneratorConfig={onGeneratorConfig}
         readonly={readonly}
+        compact={compact}
       />
     );
   }
@@ -120,14 +123,23 @@ export const ManagePasswords: React.FC<ManagePasswordsProps> = ({
   };
 
   return (
-    <div className="flex flex-col gap-4 w-full">
+    <div className={`flex flex-col w-full ${compact ? "gap-2" : "gap-4"}`}>
       {/* Sélecteur de dossier */}
       <Popover placement="bottom-start" isOpen={isOpen} onOpenChange={setIsOpen}>
         <PopoverTrigger>
-          <Button variant="flat" className="justify-between h-14" endContent={<BiChevronDown className="w-4 h-4" />}>
-            <div className="flex items-center gap-2">
-              {selectedKey === "personal" ? <BsPersonFill className="text-primary w-5 h-5" /> : <BsFolderFill className="text-yellow-500 w-5 h-5" />}
-              <span>{getSelectedLabel()}</span>
+          <Button
+            variant="flat"
+            className={`justify-between ${compact ? "h-10" : "h-14"}`}
+            size={compact ? "sm" : "md"}
+            endContent={<BiChevronDown className={compact ? "w-3 h-3" : "w-4 h-4"} />}
+          >
+            <div className={`flex items-center ${compact ? "gap-1" : "gap-2"}`}>
+              {selectedKey === "personal" ? (
+                <BsPersonFill className={`text-primary ${compact ? "w-4 h-4" : "w-5 h-5"}`} />
+              ) : (
+                <BsFolderFill className={`text-yellow-500 ${compact ? "w-4 h-4" : "w-5 h-5"}`} />
+              )}
+              <span className={compact ? "text-sm" : ""}>{getSelectedLabel()}</span>
             </div>
           </Button>
         </PopoverTrigger>
@@ -165,8 +177,13 @@ export const ManagePasswords: React.FC<ManagePasswordsProps> = ({
 
       {/* Message d'information pour les non-admins regardant un dossier */}
       {!admin && selectedKey !== "personal" && (
-        <Chip color="warning" variant="flat" startContent={<AiFillLock className="w-4 h-4" />} classNames={{ base: "p-3 h-auto" }}>
-          <span className="text-sm">{MANAGE_PASSWORDS_TRAD.folder_readonly_info[locale]}</span>
+        <Chip
+          color="warning"
+          variant="flat"
+          startContent={<AiFillLock className={compact ? "w-3 h-3" : "w-4 h-4"} />}
+          classNames={{ base: compact ? "p-2 h-auto" : "p-3 h-auto" }}
+        >
+          <span className={compact ? "text-xs text-wrap" : "text-sm text-wrap"}>{MANAGE_PASSWORDS_TRAD.folder_readonly_info[locale]}</span>
         </Chip>
       )}
 
@@ -179,6 +196,7 @@ export const ManagePasswords: React.FC<ManagePasswordsProps> = ({
         onGeneratorConfig={onGeneratorConfig}
         passwordConfig={passwordConfig}
         readonly={isCurrentReadonly}
+        compact={compact}
       />
     </div>
   );

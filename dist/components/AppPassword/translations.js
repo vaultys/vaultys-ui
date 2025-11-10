@@ -34,6 +34,13 @@ export const TRAD = {
         de: "Kopieren",
         zh: "复制",
     },
+    copied: {
+        fr: "Copié !",
+        en: "Copied!",
+        es: "¡Copiado!",
+        de: "Kopiert!",
+        zh: "已复制！",
+    },
     secure_notes: {
         fr: "Notes sécurisées",
         en: "Secure Notes",
@@ -180,5 +187,12 @@ export const TRAD = {
         es: "Configurar generador de contraseñas",
         de: "Passwortgenerator konfigurieren",
         zh: "配置密码生成器",
+    },
+    generate_password: {
+        fr: "Générer",
+        en: "Generate",
+        es: "Generar",
+        de: "Generieren",
+        zh: "生成",
     },
 };

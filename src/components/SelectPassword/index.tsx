@@ -107,6 +107,7 @@ export interface SelectPasswordProps {
   passwordType?: PasswordType;
   locale?: "fr" | "en" | "es" | "de" | "zh";
   testId?: string;
+  compact?: boolean;
 }
 
 export const SelectPassword: React.FC<SelectPasswordProps> = ({
@@ -123,6 +124,7 @@ export const SelectPassword: React.FC<SelectPasswordProps> = ({
   },
   locale = "fr",
   testId,
+  compact = false,
 }) => {
   const [value, setValue] = useState<string>(password);
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -241,7 +243,7 @@ export const SelectPassword: React.FC<SelectPasswordProps> = ({
   };
 
   return (
-    <div className="flex flex-col gap-4 w-full">
+    <div className={`flex flex-col w-full ${compact ? "gap-2" : "gap-4"}`}>
       {/* Champ de saisie du mot de passe */}
       <Input
         data-test={testId}
@@ -253,22 +255,31 @@ export const SelectPassword: React.FC<SelectPasswordProps> = ({
           if (onChange) onChange(val);
         }}
         description={description}
+        size={compact ? "sm" : "md"}
         classNames={{
           input: "font-mono",
         }}
         endContent={
-          <div className="flex flex-row gap-2 items-center">
+          <div className={`flex flex-row items-center ${compact ? "gap-1" : "gap-2"}`}>
             <Tooltip content={TRAD.copy[locale]}>
               <button className="focus:outline-none" type="button" onClick={() => copyPassword(value)} disabled={!value}>
-                {copied ? <BiCheck className="text-xl text-success" /> : <BiCopy className="text-xl cursor-pointer" />}
+                {copied ? (
+                  <BiCheck className={`text-success ${compact ? "text-base" : "text-xl"}`} />
+                ) : (
+                  <BiCopy className={`cursor-pointer ${compact ? "text-base" : "text-xl"}`} />
+                )}
               </button>
             </Tooltip>
             <button className="focus:outline-none" type="button" onClick={() => setShowPassword(!showPassword)}>
-              {showPassword ? <BiShow className="text-xl cursor-pointer" /> : <BiHide className="text-xl cursor-pointer" />}
+              {showPassword ? (
+                <BiShow className={`cursor-pointer ${compact ? "text-base" : "text-xl"}`} />
+              ) : (
+                <BiHide className={`cursor-pointer ${compact ? "text-base" : "text-xl"}`} />
+              )}
             </button>
             <Tooltip content={TRAD.generate[locale]}>
               <button className="focus:outline-none" type="button" onClick={generatePassword}>
-                <FiRefreshCcw className="text-xl cursor-pointer" />
+                <FiRefreshCcw className={`cursor-pointer ${compact ? "text-base" : "text-xl"}`} />
               </button>
             </Tooltip>
           </div>
@@ -277,22 +288,22 @@ export const SelectPassword: React.FC<SelectPasswordProps> = ({
 
       {/* Indicateur de force du mot de passe */}
       {value && (
-        <div className="space-y-2">
-          <div className="flex justify-between items-center text-sm">
-            <div className="flex items-center gap-2">
+        <div className={compact ? "space-y-1" : "space-y-2"}>
+          <div className={`flex justify-between items-center ${compact ? "text-xs" : "text-sm"}`}>
+            <div className={`flex items-center ${compact ? "gap-1" : "gap-2"}`}>
               <span className="font-medium">{TRAD.passwordStrength[locale]}</span>
               <Tooltip content={TRAD.infoTooltip[locale]}>
                 <Button isIconOnly size="sm" variant="light">
-                  <BsInfoCircleFill className="text-default-400" />
+                  <BsInfoCircleFill className={`text-default-400 ${compact ? "text-xs" : ""}`} />
                 </Button>
               </Tooltip>
             </div>
             <Chip size="sm" color={getStrengthInfo().color as "danger" | "warning" | "success" | "primary"} variant="flat">
-              {getStrengthInfo().label}
+              <span className={compact ? "text-xs" : ""}>{getStrengthInfo().label}</span>
             </Chip>
           </div>
           <Progress
-            size="md"
+            size={compact ? "sm" : "md"}
             aria-label="Password strength"
             classNames={{
               indicator: `${entropy <= 35 ? "bg-danger" : ""} ${entropy > 35 && entropy <= 59 ? "bg-warning" : ""} ${entropy > 59 && entropy < 120 ? "bg-success" : ""} ${

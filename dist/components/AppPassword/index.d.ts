@@ -7,6 +7,7 @@ interface AppPasswordProps {
     readonly?: boolean;
     onGeneratorConfig?: () => void;
     passwordConfig?: PasswordConfig;
+    compact?: boolean;
 }
 export declare const AppPassword: React.FC<AppPasswordProps>;
 export default AppPassword;

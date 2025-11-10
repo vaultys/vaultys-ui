@@ -5,12 +5,19 @@ export interface PasswordDataType {
   secureNotes?: string;
 }
 
+export interface BasePasswordProps {
+  passwordData: PasswordDataType;
+  locale: "fr" | "en" | "es" | "de" | "zh";
+  compact?: boolean;
+}
+
 type TranslationKeys =
   | "credentials"
   | "username"
   | "password"
   | "otp"
   | "copy"
+  | "copied"
   | "secure_notes"
   | "no_credentials"
   | "invalid_totp_secret"
@@ -31,7 +38,8 @@ type TranslationKeys =
   | "unsaved_changes_message"
   | "unsaved_changes_description"
   | "discard"
-  | "configure_generator";
+  | "configure_generator"
+  | "generate_password";
 
 type LanguageCodes = "fr" | "en" | "es" | "de" | "zh";
 
@@ -76,6 +84,13 @@ export const TRAD = {
     es: "Copiar",
     de: "Kopieren",
     zh: "复制",
+  },
+  copied: {
+    fr: "Copié !",
+    en: "Copied!",
+    es: "¡Copiado!",
+    de: "Kopiert!",
+    zh: "已复制！",
   },
   secure_notes: {
     fr: "Notes sécurisées",
@@ -223,5 +238,12 @@ export const TRAD = {
     es: "Configurar generador de contraseñas",
     de: "Passwortgenerator konfigurieren",
     zh: "配置密码生成器",
+  },
+  generate_password: {
+    fr: "Générer",
+    en: "Generate",
+    es: "Generar",
+    de: "Generieren",
+    zh: "生成",
   },
 };

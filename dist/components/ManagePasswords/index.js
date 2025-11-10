@@ -9,7 +9,7 @@ import { AiFillLock } from "@react-icons/all-files/ai/AiFillLock";
 import { BiChevronDown } from "@react-icons/all-files/bi/BiChevronDown";
 import { AppPassword } from "../AppPassword";
 import { MANAGE_PASSWORDS_TRAD } from "./translations";
-export const ManagePasswords = ({ personalPassword, folderPasswords = [], locale = "en", onUpdate, onGeneratorConfig, readonly = false, admin = false, passwordConfig, }) => {
+export const ManagePasswords = ({ personalPassword, folderPasswords = [], locale = "en", onUpdate, onGeneratorConfig, readonly = false, admin = false, passwordConfig, compact = false, }) => {
     const [selectedKey, setSelectedKey] = useState("");
     const [isOpen, setIsOpen] = useState(false);
     // Déterminer le premier élément avec un mot de passe
@@ -40,7 +40,7 @@ export const ManagePasswords = ({ personalPassword, folderPasswords = [], locale
     const isCurrentReadonly = readonly || (!admin && selectedKey !== "personal");
     // S'il n'y a pas de dossiers, afficher directement AppPassword
     if (folderPasswords.length === 0) {
-        return (_jsx(AppPassword, { passwordConfig: passwordConfig, passwordData: personalPassword || {}, locale: locale, onUpdate: (data) => onUpdate === null || onUpdate === void 0 ? void 0 : onUpdate("personal", data), onGeneratorConfig: onGeneratorConfig, readonly: readonly }));
+        return (_jsx(AppPassword, { passwordConfig: passwordConfig, passwordData: personalPassword || {}, locale: locale, onUpdate: (data) => onUpdate === null || onUpdate === void 0 ? void 0 : onUpdate("personal", data), onGeneratorConfig: onGeneratorConfig, readonly: readonly, compact: compact }));
     }
     // Obtenir le mot de passe actuellement sélectionné
     const getCurrentPassword = () => {
@@ -73,12 +73,12 @@ export const ManagePasswords = ({ personalPassword, folderPasswords = [], locale
         const selected = options.find((opt) => opt.key === selectedKey);
         return (selected === null || selected === void 0 ? void 0 : selected.label) || MANAGE_PASSWORDS_TRAD.select_folder[locale];
     };
-    return (_jsxs("div", { className: "flex flex-col gap-4 w-full", children: [_jsxs(Popover, { placement: "bottom-start", isOpen: isOpen, onOpenChange: setIsOpen, children: [_jsx(PopoverTrigger, { children: _jsx(Button, { variant: "flat", className: "justify-between h-14", endContent: _jsx(BiChevronDown, { className: "w-4 h-4" }), children: _jsxs("div", { className: "flex items-center gap-2", children: [selectedKey === "personal" ? _jsx(BsPersonFill, { className: "text-primary w-5 h-5" }) : _jsx(BsFolderFill, { className: "text-yellow-500 w-5 h-5" }), _jsx("span", { children: getSelectedLabel() })] }) }) }), _jsx(PopoverContent, { className: "p-1", children: _jsx(Listbox, { "aria-label": MANAGE_PASSWORDS_TRAD.select_folder[locale], selectedKeys: selectedKey ? [selectedKey] : [], selectionMode: "single", onSelectionChange: (keys) => {
+    return (_jsxs("div", { className: `flex flex-col w-full ${compact ? "gap-2" : "gap-4"}`, children: [_jsxs(Popover, { placement: "bottom-start", isOpen: isOpen, onOpenChange: setIsOpen, children: [_jsx(PopoverTrigger, { children: _jsx(Button, { variant: "flat", className: `justify-between ${compact ? "h-10" : "h-14"}`, size: compact ? "sm" : "md", endContent: _jsx(BiChevronDown, { className: compact ? "w-3 h-3" : "w-4 h-4" }), children: _jsxs("div", { className: `flex items-center ${compact ? "gap-1" : "gap-2"}`, children: [selectedKey === "personal" ? (_jsx(BsPersonFill, { className: `text-primary ${compact ? "w-4 h-4" : "w-5 h-5"}` })) : (_jsx(BsFolderFill, { className: `text-yellow-500 ${compact ? "w-4 h-4" : "w-5 h-5"}` })), _jsx("span", { className: compact ? "text-sm" : "", children: getSelectedLabel() })] }) }) }), _jsx(PopoverContent, { className: "p-1", children: _jsx(Listbox, { "aria-label": MANAGE_PASSWORDS_TRAD.select_folder[locale], selectedKeys: selectedKey ? [selectedKey] : [], selectionMode: "single", onSelectionChange: (keys) => {
                                 const selected = Array.from(keys)[0];
                                 if (selected) {
                                     setSelectedKey(selected);
                                     setIsOpen(false);
                                 }
-                            }, children: options.map((option) => (_jsx(ListboxItem, { startContent: option.icon, endContent: option.hasPassword ? (_jsx(Chip, { size: "sm", color: "success", variant: "flat", startContent: _jsx(BiKey, { className: "w-3 h-3" }), children: _jsx("span", { className: "text-xs", children: "Password" }) })) : undefined, children: option.label }, option.key))) }) })] }), !admin && selectedKey !== "personal" && (_jsx(Chip, { color: "warning", variant: "flat", startContent: _jsx(AiFillLock, { className: "w-4 h-4" }), classNames: { base: "p-3 h-auto" }, children: _jsx("span", { className: "text-sm", children: MANAGE_PASSWORDS_TRAD.folder_readonly_info[locale] }) })), _jsx(AppPassword, { passwordData: getCurrentPassword(), locale: locale, onUpdate: handleUpdate, onGeneratorConfig: onGeneratorConfig, passwordConfig: passwordConfig, readonly: isCurrentReadonly }, selectedKey)] }));
+                            }, children: options.map((option) => (_jsx(ListboxItem, { startContent: option.icon, endContent: option.hasPassword ? (_jsx(Chip, { size: "sm", color: "success", variant: "flat", startContent: _jsx(BiKey, { className: "w-3 h-3" }), children: _jsx("span", { className: "text-xs", children: "Password" }) })) : undefined, children: option.label }, option.key))) }) })] }), !admin && selectedKey !== "personal" && (_jsx(Chip, { color: "warning", variant: "flat", startContent: _jsx(AiFillLock, { className: compact ? "w-3 h-3" : "w-4 h-4" }), classNames: { base: compact ? "p-2 h-auto" : "p-3 h-auto" }, children: _jsx("span", { className: compact ? "text-xs text-wrap" : "text-sm text-wrap", children: MANAGE_PASSWORDS_TRAD.folder_readonly_info[locale] }) })), _jsx(AppPassword, { passwordData: getCurrentPassword(), locale: locale, onUpdate: handleUpdate, onGeneratorConfig: onGeneratorConfig, passwordConfig: passwordConfig, readonly: isCurrentReadonly, compact: compact }, selectedKey)] }));
 };
 export default ManagePasswords;

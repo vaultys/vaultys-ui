@@ -7,6 +7,7 @@ interface AppPasswordEditProps {
     onCancel: () => void;
     onGeneratorConfig?: () => void;
     passwordConfig?: PasswordConfig;
+    compact?: boolean;
 }
 export declare const AppPasswordEdit: React.FC<AppPasswordEditProps>;
 export default AppPasswordEdit;

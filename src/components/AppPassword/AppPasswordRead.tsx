@@ -4,20 +4,21 @@ import { useEffect, useState } from "react";
 import { FaRegCopy } from "@react-icons/all-files/fa/FaRegCopy";
 import { BiShow } from "@react-icons/all-files/bi/BiShow";
 import { BiHide } from "@react-icons/all-files/bi/BiHide";
-import { FaCheck } from "@react-icons/all-files/fa/FaCheck";
 import { FaExpand } from "@react-icons/all-files/fa/FaExpand";
 import { FaRegEdit } from "@react-icons/all-files/fa/FaRegEdit";
 import { generateTOTP } from "../../lib/totp";
 import { TRAD, PasswordDataType } from "./translations";
+import { AnimatePresence, motion } from "framer-motion";
 
 interface AppPasswordReadProps {
   passwordData: PasswordDataType;
   locale: "fr" | "en" | "es" | "de" | "zh";
   onEdit: () => void;
   readonly?: boolean;
+  compact?: boolean;
 }
 
-export const AppPasswordRead: React.FC<AppPasswordReadProps> = ({ passwordData, locale, onEdit, readonly = false }) => {
+export const AppPasswordRead: React.FC<AppPasswordReadProps> = ({ passwordData, locale, onEdit, readonly = false, compact = false }) => {
   const [usernameCopied, setUsernameCopied] = useState<boolean>(false);
   const [passwordCopied, setPasswordCopied] = useState<boolean>(false);
   const [otpCopied, setOtpCopied] = useState<boolean>(false);
@@ -56,7 +57,7 @@ export const AppPasswordRead: React.FC<AppPasswordReadProps> = ({ passwordData, 
       setUsernameCopied(true);
       setTimeout(() => {
         setUsernameCopied(false);
-      }, 2000);
+      }, 3000);
     }
   };
 
@@ -66,7 +67,7 @@ export const AppPasswordRead: React.FC<AppPasswordReadProps> = ({ passwordData, 
       setPasswordCopied(true);
       setTimeout(() => {
         setPasswordCopied(false);
-      }, 2000);
+      }, 3000);
     }
   };
 
@@ -76,7 +77,7 @@ export const AppPasswordRead: React.FC<AppPasswordReadProps> = ({ passwordData, 
       setOtpCopied(true);
       setTimeout(() => {
         setOtpCopied(false);
-      }, 2000);
+      }, 3000);
     }
   };
 
@@ -85,111 +86,168 @@ export const AppPasswordRead: React.FC<AppPasswordReadProps> = ({ passwordData, 
   const isInvalidTotpSecret = passwordData?.totpSecret && passwordData.totpSecret.length !== 16;
 
   return (
-    <div className="flex flex-col gap-4 w-full">
+    <div className={`flex flex-col w-full ${compact ? "gap-2" : "gap-4"}`}>
       {isEmptyPasswordData && (
-        <Card className="p-6 bg-default-50 border-none">
+        <Card className={`bg-default-50 border-none ${compact ? "p-3" : "p-6"}`}>
           <div className="flex flex-col items-center justify-center text-center">
-            <div className="text-4xl mb-3">🔒</div>
-            <p className="text-default-600">{TRAD.no_credentials[locale]}</p>
+            <div className={`mb-2 ${compact ? "text-2xl" : "text-4xl mb-3"}`}>🔒</div>
+            <p className={`text-default-600 ${compact ? "text-sm" : ""}`}>{TRAD.no_credentials[locale]}</p>
           </div>
         </Card>
       )}
 
       {isInvalidTotpSecret && (
-        <div className="p-4 mb-2 bg-danger-100 text-danger rounded-lg border border-danger/20 shadow-sm">
+        <div className={`bg-danger-100 text-danger rounded-lg border border-danger/20 shadow-sm ${compact ? "p-2 mb-1" : "p-4 mb-2"}`}>
           <div className="flex items-center gap-2">
-            <span className="text-lg">⚠️</span>
-            <span>{TRAD.invalid_totp_secret[locale]}</span>
+            <span className={compact ? "text-base" : "text-lg"}>⚠️</span>
+            <span className={compact ? "text-sm" : ""}>{TRAD.invalid_totp_secret[locale]}</span>
           </div>
         </div>
       )}
 
       {passwordData?.username && passwordData.username.length > 0 && (
-        <Input
-          onClick={handleCopyUsername}
-          color={usernameCopied ? "success" : "default"}
-          readOnly
-          label={TRAD.username[locale]}
-          value={passwordData.username}
-          classNames={{
-            input: "cursor-copy",
-          }}
-          endContent={
-            <div className="flex flex-row gap-2 items-center">
-              <Tooltip content={usernameCopied ? TRAD.copy[locale] + "!" : TRAD.copy[locale]} color={usernameCopied ? "success" : "default"}>
-                <button className="p-1 rounded-md hover:bg-default-200 transition-colors">
-                  {usernameCopied ? <FaCheck className="text-success" /> : <FaRegCopy className="cursor-pointer" onClick={handleCopyUsername} />}
-                </button>
-              </Tooltip>
-            </div>
-          }
-        />
-      )}
-
-      {passwordData.password && passwordData.password.length > 0 && (
-        <Input
-          readOnly
-          onClick={handleCopyPassword}
-          color={passwordCopied ? "success" : "default"}
-          label={TRAD.password[locale]}
-          type={showPassword ? "text" : "password"}
-          value={showPassword ? passwordData.password : "********"}
-          classNames={{
-            input: "cursor-copy",
-          }}
-          endContent={
-            <div className="flex flex-row gap-2 items-center">
-              <Tooltip content={showPassword ? TRAD.hide[locale] : TRAD.show[locale]}>
-                <button className="p-1 rounded-md hover:bg-default-200 transition-colors">
-                  {showPassword ? (
-                    <BiHide className="cursor-pointer" onClick={() => setShowPassword(false)} />
-                  ) : (
-                    <BiShow className="cursor-pointer" onClick={() => setShowPassword(true)} />
-                  )}
-                </button>
-              </Tooltip>
-              <Tooltip content={passwordCopied ? TRAD.copy[locale] + "!" : TRAD.copy[locale]} color={passwordCopied ? "success" : "default"}>
-                <button className="p-1 rounded-md hover:bg-default-200 transition-colors">
-                  {passwordCopied ? <FaCheck className="text-success" /> : <FaRegCopy className="cursor-pointer" onClick={handleCopyPassword} />}
-                </button>
-              </Tooltip>
-            </div>
-          }
-        />
-      )}
-
-      {passwordData.totpSecret && passwordData.totpSecret.length === 16 && (
-        <div className={`${otpCopied ? "bg-success-50 text-success-600" : "bg-default-100"} p-4 rounded-large cursor-copy`} onClick={handleCopyOtp}>
-          <div className="flex flex-col gap-2">
-            <div className="flex justify-between items-center">
-              {TRAD.otp[locale]}
-
-              {passwordData.totpSecret && otpProgress !== null && <div className="text-xs text-default-500">{30 - Math.floor(otpProgress / 3.333)}s</div>}
-            </div>
-            <div className="relative">
-              <div className="flex justify-center items-center">
-                <div className="text-2xl font-mono tracking-wider  px-4 py-2">{otp ? otp.match(/.{1,3}/g)?.join(" ") || otp : ""}</div>
-                <Tooltip content={otpCopied ? TRAD.copy[locale] + "!" : TRAD.copy[locale]} color={otpCopied ? "success" : "default"}>
-                  <button className="p-1 rounded-md ml-2 hover:bg-default-200 transition-colors">
-                    {otpCopied ? <FaCheck className="text-success" /> : <FaRegCopy className="cursor-pointer" onClick={handleCopyOtp} />}
+        <div className="relative">
+          <Input
+            onClick={handleCopyUsername}
+            readOnly
+            label={TRAD.username[locale]}
+            value={passwordData.username}
+            size={compact ? "sm" : "md"}
+            classNames={{
+              input: "cursor-copy",
+            }}
+            endContent={
+              <div className="flex flex-row gap-2 items-center">
+                <Tooltip content={TRAD.copy[locale]}>
+                  <button className="p-1 rounded-md hover:bg-default-200 transition-colors">
+                    <FaRegCopy className="cursor-pointer" onClick={handleCopyUsername} />
                   </button>
                 </Tooltip>
               </div>
-            </div>
-            {passwordData.totpSecret && otpProgress !== null && (
-              <Progress aria-label="OTP Timer" size="md" value={100 - otpProgress} color="secondary" className="mt-1" showValueLabel={false} />
+            }
+          />
+          <AnimatePresence>
+            {usernameCopied && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+                className="absolute -top-8 right-0 bg-success text-white px-3 py-1 rounded-full text-sm font-medium shadow-lg"
+              >
+                {TRAD.copied[locale]}
+              </motion.div>
             )}
+          </AnimatePresence>
+        </div>
+      )}
+
+      {passwordData.password && passwordData.password.length > 0 && (
+        <div className="relative">
+          <Input
+            readOnly
+            onClick={handleCopyPassword}
+            label={TRAD.password[locale]}
+            type={showPassword ? "text" : "password"}
+            value={showPassword ? passwordData.password : "********"}
+            size={compact ? "sm" : "md"}
+            classNames={{
+              input: "cursor-copy",
+            }}
+            endContent={
+              <div className="flex flex-row gap-2 items-center">
+                <Tooltip content={showPassword ? TRAD.hide[locale] : TRAD.show[locale]}>
+                  <button className="p-1 rounded-md hover:bg-default-200 transition-colors">
+                    {showPassword ? (
+                      <BiHide className="cursor-pointer" onClick={() => setShowPassword(false)} />
+                    ) : (
+                      <BiShow className="cursor-pointer" onClick={() => setShowPassword(true)} />
+                    )}
+                  </button>
+                </Tooltip>
+                <Tooltip content={TRAD.copy[locale]}>
+                  <button className="p-1 rounded-md hover:bg-default-200 transition-colors">
+                    <FaRegCopy className="cursor-pointer" onClick={handleCopyPassword} />
+                  </button>
+                </Tooltip>
+              </div>
+            }
+          />
+          <AnimatePresence>
+            {passwordCopied && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+                className="absolute -top-8 right-0 bg-success text-white px-3 py-1 rounded-full text-sm font-medium shadow-lg"
+              >
+                {TRAD.copied[locale]}
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      )}
+
+      {passwordData.totpSecret && passwordData.totpSecret.length === 16 && (
+        <div className="relative">
+          <div
+            className={`${otpCopied ? "bg-success-50 text-success-600" : "bg-default-100"} rounded-large cursor-copy ${compact ? "p-2" : "p-4"}`}
+            onClick={handleCopyOtp}
+          >
+            <div className={`flex flex-col ${compact ? "gap-1" : "gap-2"}`}>
+              <div className="flex justify-between items-center">
+                <span className={compact ? "text-sm" : ""}>{TRAD.otp[locale]}</span>
+                {passwordData.totpSecret && otpProgress !== null && <div className="text-xs text-default-500">{30 - Math.floor(otpProgress / 3.333)}s</div>}
+              </div>
+              <div className="relative">
+                <div className="flex justify-center items-center">
+                  <div className={`font-mono tracking-wider ${compact ? "text-lg px-2 py-1" : "text-2xl px-4 py-2"}`}>
+                    {otp ? otp.match(/.{1,3}/g)?.join(" ") || otp : ""}
+                  </div>
+                  <Tooltip content={TRAD.copy[locale]}>
+                    <button className={`p-1 rounded-md hover:bg-default-200 transition-colors ${compact ? "ml-1" : "ml-2"}`}>
+                      <FaRegCopy className={`cursor-pointer ${compact ? "text-sm" : ""}`} onClick={handleCopyOtp} />
+                    </button>
+                  </Tooltip>
+                </div>
+              </div>
+              {passwordData.totpSecret && otpProgress !== null && (
+                <Progress
+                  aria-label="OTP Timer"
+                  size={compact ? "sm" : "md"}
+                  value={100 - otpProgress}
+                  color="secondary"
+                  className={compact ? "" : "mt-1"}
+                  showValueLabel={false}
+                />
+              )}
+            </div>
           </div>
+          <AnimatePresence>
+            {otpCopied && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+                className="absolute -top-8 right-0 bg-success text-white px-3 py-1 rounded-full text-sm font-medium shadow-lg"
+              >
+                {TRAD.copied[locale]}
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       )}
 
       {passwordData.secureNotes && passwordData.secureNotes.length > 0 && (
         <Textarea
           readOnly
-          maxRows={3}
-          minRows={3}
+          maxRows={compact ? 2 : 3}
+          minRows={compact ? 2 : 3}
           label={TRAD.secure_notes[locale]}
           value={showSecureNotes ? passwordData.secureNotes : "********"}
+          size={compact ? "sm" : "md"}
           className="hover:border-primary focus:border-primary transition-all"
           endContent={
             <div className="flex flex-row gap-2 items-center">
@@ -214,7 +272,7 @@ export const AppPasswordRead: React.FC<AppPasswordReadProps> = ({ passwordData, 
         />
       )}
       {!readonly && (
-        <Button color="primary" variant="flat" startContent={<FaRegEdit />} onPress={onEdit} className="mt-2" fullWidth>
+        <Button color="primary" variant="flat" startContent={<FaRegEdit />} onPress={onEdit} className={compact ? "mt-1" : "mt-2"} size={compact ? "md" : "lg"} fullWidth>
           {TRAD.edit[locale]}
         </Button>
       )}

@@ -13,6 +13,7 @@ export interface ManagePasswordsProps {
     readonly?: boolean;
     admin?: boolean;
     passwordConfig?: PasswordConfig;
+    compact?: boolean;
 }
 export declare const ManagePasswords: React.FC<ManagePasswordsProps>;
 export default ManagePasswords;

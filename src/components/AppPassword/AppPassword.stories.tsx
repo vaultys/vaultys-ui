@@ -30,6 +30,11 @@ const meta: Meta<typeof AppPassword> = {
       description: "Mode lecture seule pour le composant",
       defaultValue: false,
     },
+    compact: {
+      control: "boolean",
+      description: "Mode compact pour les espaces réduits",
+      defaultValue: false,
+    },
   },
 };
 
@@ -174,5 +179,123 @@ export const EmptyData: Story = {
   args: {
     locale: "fr",
     passwordData: {},
+  },
+};
+
+// Mode compact - Vue par défaut
+export const Compact: Story = {
+  args: {
+    locale: "fr",
+    passwordData: {
+      username: "utilisateur@exemple.com",
+      password: "MotDePasse123!",
+      totpSecret: "JBSWY3DPEHPK3PXP",
+      secureNotes: "Ceci est une note sécurisée pour tester le mode compact",
+    },
+    compact: true,
+    onGeneratorConfig: () => {
+      alert("Configurer le générateur de mot de passe");
+    },
+  },
+  decorators: [
+    (Story) => (
+      <div style={{ width: "400px" }}>
+        <Story />
+      </div>
+    ),
+  ],
+};
+
+// Mode compact - Readonly
+export const CompactReadOnly: Story = {
+  args: {
+    locale: "fr",
+    passwordData: {
+      username: "utilisateur@exemple.com",
+      password: "MotDePasse123!",
+      totpSecret: "JBSWY3DPEHPK3PXP",
+      secureNotes: "Ceci est une note sécurisée",
+    },
+    compact: true,
+    readonly: true,
+  },
+  decorators: [
+    (Story) => (
+      <div style={{ width: "400px" }}>
+        <Story />
+      </div>
+    ),
+  ],
+};
+
+// Mode compact - Données minimales
+export const CompactMinimal: Story = {
+  args: {
+    locale: "fr",
+    passwordData: {
+      username: "user@example.com",
+      password: "Pass123!",
+    },
+    compact: true,
+  },
+  decorators: [
+    (Story) => (
+      <div style={{ width: "350px" }}>
+        <Story />
+      </div>
+    ),
+  ],
+};
+
+// Mode compact - Toutes les langues
+export const CompactEnglish: Story = {
+  args: {
+    locale: "en",
+    passwordData: {
+      username: "user@example.com",
+      password: "Password123!",
+      totpSecret: "JBSWY3DPEHPK3PXP",
+      secureNotes: "This is a secure note in compact mode",
+    },
+    compact: true,
+  },
+  decorators: [
+    (Story) => (
+      <div style={{ width: "400px" }}>
+        <Story />
+      </div>
+    ),
+  ],
+};
+
+// Comparaison côte à côte : Normal vs Compact
+export const NormalVsCompact: Story = {
+  render: (args) => (
+    <div style={{ display: "flex", gap: "20px", alignItems: "flex-start" }}>
+      <div style={{ width: "500px" }}>
+        <h3 style={{ marginBottom: "10px" }}>Normal Mode</h3>
+        <AppPassword {...args} compact={false} />
+      </div>
+      <div style={{ width: "400px" }}>
+        <h3 style={{ marginBottom: "10px" }}>Compact Mode</h3>
+        <AppPassword {...args} compact={true} />
+      </div>
+    </div>
+  ),
+  args: {
+    locale: "fr",
+    passwordData: {
+      username: "utilisateur@exemple.com",
+      password: "MotDePasse123!",
+      totpSecret: "JBSWY3DPEHPK3PXP",
+      secureNotes: "Ceci est une note sécurisée pour comparer les deux modes d'affichage.",
+    },
+    onGeneratorConfig: () => {
+      alert("Configurer le générateur de mot de passe");
+    },
+  },
+  decorators: [],
+  parameters: {
+    layout: "padded",
   },
 };

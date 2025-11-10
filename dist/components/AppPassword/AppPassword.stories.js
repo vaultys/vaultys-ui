@@ -1,4 +1,4 @@
-import { jsx as _jsx } from "react/jsx-runtime";
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { AppPassword } from ".";
 const meta = {
     title: "Components/AppPassword",
@@ -23,6 +23,11 @@ const meta = {
         readonly: {
             control: "boolean",
             description: "Mode lecture seule pour le composant",
+            defaultValue: false,
+        },
+        compact: {
+            control: "boolean",
+            description: "Mode compact pour les espaces réduits",
             defaultValue: false,
         },
     },
@@ -155,5 +160,91 @@ export const EmptyData = {
     args: {
         locale: "fr",
         passwordData: {},
+    },
+};
+// Mode compact - Vue par défaut
+export const Compact = {
+    args: {
+        locale: "fr",
+        passwordData: {
+            username: "utilisateur@exemple.com",
+            password: "MotDePasse123!",
+            totpSecret: "JBSWY3DPEHPK3PXP",
+            secureNotes: "Ceci est une note sécurisée pour tester le mode compact",
+        },
+        compact: true,
+        onGeneratorConfig: () => {
+            alert("Configurer le générateur de mot de passe");
+        },
+    },
+    decorators: [
+        (Story) => (_jsx("div", { style: { width: "400px" }, children: _jsx(Story, {}) })),
+    ],
+};
+// Mode compact - Readonly
+export const CompactReadOnly = {
+    args: {
+        locale: "fr",
+        passwordData: {
+            username: "utilisateur@exemple.com",
+            password: "MotDePasse123!",
+            totpSecret: "JBSWY3DPEHPK3PXP",
+            secureNotes: "Ceci est une note sécurisée",
+        },
+        compact: true,
+        readonly: true,
+    },
+    decorators: [
+        (Story) => (_jsx("div", { style: { width: "400px" }, children: _jsx(Story, {}) })),
+    ],
+};
+// Mode compact - Données minimales
+export const CompactMinimal = {
+    args: {
+        locale: "fr",
+        passwordData: {
+            username: "user@example.com",
+            password: "Pass123!",
+        },
+        compact: true,
+    },
+    decorators: [
+        (Story) => (_jsx("div", { style: { width: "350px" }, children: _jsx(Story, {}) })),
+    ],
+};
+// Mode compact - Toutes les langues
+export const CompactEnglish = {
+    args: {
+        locale: "en",
+        passwordData: {
+            username: "user@example.com",
+            password: "Password123!",
+            totpSecret: "JBSWY3DPEHPK3PXP",
+            secureNotes: "This is a secure note in compact mode",
+        },
+        compact: true,
+    },
+    decorators: [
+        (Story) => (_jsx("div", { style: { width: "400px" }, children: _jsx(Story, {}) })),
+    ],
+};
+// Comparaison côte à côte : Normal vs Compact
+export const NormalVsCompact = {
+    render: (args) => (_jsxs("div", { style: { display: "flex", gap: "20px", alignItems: "flex-start" }, children: [_jsxs("div", { style: { width: "500px" }, children: [_jsx("h3", { style: { marginBottom: "10px" }, children: "Normal Mode" }), _jsx(AppPassword, Object.assign({}, args, { compact: false }))] }), _jsxs("div", { style: { width: "400px" }, children: [_jsx("h3", { style: { marginBottom: "10px" }, children: "Compact Mode" }), _jsx(AppPassword, Object.assign({}, args, { compact: true }))] })] })),
+    args: {
+        locale: "fr",
+        passwordData: {
+            username: "utilisateur@exemple.com",
+            password: "MotDePasse123!",
+            totpSecret: "JBSWY3DPEHPK3PXP",
+            secureNotes: "Ceci est une note sécurisée pour comparer les deux modes d'affichage.",
+        },
+        onGeneratorConfig: () => {
+            alert("Configurer le générateur de mot de passe");
+        },
+    },
+    decorators: [],
+    parameters: {
+        layout: "padded",
     },
 };

@@ -14,3 +14,8 @@ export declare const ShortSecureNotes: Story;
 export declare const ReadOnly: Story;
 export declare const InvalidTotpSecret: Story;
 export declare const EmptyData: Story;
+export declare const Compact: Story;
+export declare const CompactReadOnly: Story;
+export declare const CompactMinimal: Story;
+export declare const CompactEnglish: Story;
+export declare const NormalVsCompact: Story;

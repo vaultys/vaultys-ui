@@ -9,5 +9,6 @@ export interface SelectPasswordProps {
     passwordType?: PasswordType;
     locale?: "fr" | "en" | "es" | "de" | "zh";
     testId?: string;
+    compact?: boolean;
 }
 export declare const SelectPassword: React.FC<SelectPasswordProps>;

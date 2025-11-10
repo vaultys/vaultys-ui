@@ -4,6 +4,11 @@ export interface PasswordDataType {
     totpSecret?: string;
     secureNotes?: string;
 }
+export interface BasePasswordProps {
+    passwordData: PasswordDataType;
+    locale: "fr" | "en" | "es" | "de" | "zh";
+    compact?: boolean;
+}
 export declare const TRAD: {
     credentials: {
         fr: string;
@@ -34,6 +39,13 @@ export declare const TRAD: {
         zh: string;
     };
     copy: {
+        fr: string;
+        en: string;
+        es: string;
+        de: string;
+        zh: string;
+    };
+    copied: {
         fr: string;
         en: string;
         es: string;
@@ -181,6 +193,13 @@ export declare const TRAD: {
         zh: string;
     };
     configure_generator: {
+        fr: string;
+        en: string;
+        es: string;
+        de: string;
+        zh: string;
+    };
+    generate_password: {
         fr: string;
         en: string;
         es: string;
