@@ -1,5 +1,5 @@
 import "../src/index.css";
-import type { Preview } from "@storybook/react";
+import type { Preview } from "@storybook/nextjs";
 import { withThemeByClassName } from "@storybook/addon-themes";
 
 export const preview: Preview = {

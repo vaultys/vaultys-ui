@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from "@storybook/react";
+import { Meta, StoryObj } from "@storybook/nextjs";
 import { PasswordGenerator } from ".";
 const meta: Meta<typeof PasswordGenerator> = {
   component: PasswordGenerator,
