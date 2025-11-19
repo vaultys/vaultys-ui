@@ -7,7 +7,6 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack-dev-server --config webpack.dev.config.js",
     "build": "tsc",
-    "build2": "tsup",
     "storybook": "pnpm dotenv -e .env.storybook -- storybook dev -p 6006",
     "build-storybook": "storybook build",
     "extract": "lingui extract",
