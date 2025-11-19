@@ -1,0 +1,18 @@
+import type { Meta, StoryObj } from "@storybook/nextjs";
+import { ManagePasswords } from "./index";
+declare const meta: Meta<typeof ManagePasswords>;
+export default meta;
+type Story = StoryObj<typeof ManagePasswords>;
+export declare const PersonalOnly: Story;
+export declare const PersonalOnlyEmpty: Story;
+export declare const WithFolders: Story;
+export declare const FoldersWithoutPersonal: Story;
+export declare const FoldersNoPassword: Story;
+export declare const MixedPasswordStates: Story;
+export declare const FrenchLocale: Story;
+export declare const ReadOnly: Story;
+export declare const WithCallbacks: Story;
+export declare const LongFolderPaths: Story;
+export declare const SpanishLocale: Story;
+export declare const AdminMode: Story;
+export declare const NonAdminMode: Story;

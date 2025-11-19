@@ -1,0 +1,10 @@
+import type { Meta, StoryObj } from "@storybook/nextjs";
+declare const meta: Meta;
+export default meta;
+type Story = StoryObj<typeof meta>;
+export declare const Default: Story;
+export declare const WithDescription: Story;
+export declare const DangerModal: Story;
+export declare const SuccessModal: Story;
+export declare const WithCustomContent: Story;
+export declare const MultipleModals: Story;

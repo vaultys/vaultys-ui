@@ -1,0 +1,10 @@
+import { Meta, StoryObj } from "@storybook/nextjs";
+import { SelectPassword } from ".";
+declare const meta: Meta<typeof SelectPassword>;
+export default meta;
+type Story = StoryObj<typeof SelectPassword>;
+export declare const Default: Story;
+export declare const WithInitialPassword: Story;
+export declare const EnglishLanguage: Story;
+export declare const CustomPasswordConfig: Story;
+export declare const ReadOnly: Story;
