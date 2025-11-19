@@ -68,7 +68,13 @@ export const AppPasswordEdit = ({ passwordData, locale, onSave, onCancel, onGene
         const formattedValue = value.replace(/\s/g, "").toUpperCase();
         setEditedData(Object.assign(Object.assign({}, editedData), { totpSecret: formattedValue }));
         if (formattedValue) {
-            setIsInvalidTotpSecret(formattedValue.length !== 16);
+            try {
+                generateTOTP(formattedValue);
+                setIsInvalidTotpSecret(false);
+            }
+            catch (error) {
+                setIsInvalidTotpSecret(true);
+            }
         }
         else {
             setIsInvalidTotpSecret(false);
@@ -159,39 +165,44 @@ export const AppPasswordEdit = ({ passwordData, locale, onSave, onCancel, onGene
     }, []);
     // Générer le code TOTP lorsque le secret est valide
     useEffect(() => {
-        if (!editedData.totpSecret || editedData.totpSecret.length !== 16) {
+        if (!editedData.totpSecret) {
             setOtp("");
+            setIsInvalidTotpSecret(false);
             return;
         }
+        // Tester d'abord la validité de la clé
         try {
-            // Démarrer exactement au début d'une nouvelle seconde
-            const msToNextSecond = Math.ceil(Date.now() / 1000) * 1000 - Date.now();
-            const startTimer = () => {
-                try {
-                    const generatedOtp = generateTOTP(editedData.totpSecret);
-                    setOtp(generatedOtp);
-                    // Calculer la progression (0-100) basée sur le temps écoulé dans la période de 30s
-                    setOtpProgress(Math.floor((Date.now() - Math.floor(Date.now() / 30000) * 30000) / 300));
-                }
-                catch (error) {
-                    setOtp("");
-                    setIsInvalidTotpSecret(true);
-                }
-            };
-            // Initialisation
-            startTimer();
-            // Configurer l'intervalle pour actualiser chaque seconde
-            const initialTimeout = setTimeout(() => {
-                startTimer();
-                const intervalId = setInterval(startTimer, 1000);
-                return () => clearInterval(intervalId);
-            }, msToNextSecond);
-            return () => clearTimeout(initialTimeout);
+            generateTOTP(editedData.totpSecret);
+            setIsInvalidTotpSecret(false);
         }
         catch (error) {
             setOtp("");
             setIsInvalidTotpSecret(true);
+            return;
         }
+        // Si la clé est valide, démarrer le timer
+        const msToNextSecond = Math.ceil(Date.now() / 1000) * 1000 - Date.now();
+        const startTimer = () => {
+            try {
+                const generatedOtp = generateTOTP(editedData.totpSecret);
+                setOtp(generatedOtp);
+                // Calculer la progression (0-100) basée sur le temps écoulé dans la période de 30s
+                setOtpProgress(Math.floor((Date.now() - Math.floor(Date.now() / 30000) * 30000) / 300));
+            }
+            catch (error) {
+                setOtp("");
+                setIsInvalidTotpSecret(true);
+            }
+        };
+        // Initialisation
+        startTimer();
+        // Configurer l'intervalle pour actualiser chaque seconde
+        const initialTimeout = setTimeout(() => {
+            startTimer();
+            const intervalId = setInterval(startTimer, 1000);
+            return () => clearInterval(intervalId);
+        }, msToNextSecond);
+        return () => clearTimeout(initialTimeout);
     }, [editedData.totpSecret]);
     // Mettre à jour l'état du TOTP activé/désactivé
     useEffect(() => {
@@ -270,7 +281,7 @@ export const AppPasswordEdit = ({ passwordData, locale, onSave, onCancel, onGene
                                                                                     ? "您使用的字符类型越多，密码越长，密码就越安全。"
                                                                                     : "The more character types you use and the longer your password is, the more secure it will be.", children: _jsx(Button, { isIconOnly: true, size: "sm", variant: "light", className: compact ? "min-w-5 w-5 h-5" : "min-w-6 w-6 h-6", children: _jsx(BsInfoCircleFill, { className: `text-default-400 ${compact ? "text-xs" : "text-sm"}` }) }) })] }), _jsx(Chip, { size: "sm", color: getStrengthInfo().color, variant: "flat", className: compact ? "text-xs h-5" : "", children: getStrengthInfo().label })] }), _jsx(Progress, { size: compact ? "sm" : "md", "aria-label": "Password strength", classNames: {
                                                         indicator: `${entropy <= 35 ? "bg-danger" : ""} ${entropy > 35 && entropy <= 59 ? "bg-warning" : ""} ${entropy > 59 && entropy < 120 ? "bg-success" : ""} ${entropy >= 120 ? "bg-primary" : ""}`,
-                                                    }, value: entropy, maxValue: 120, minValue: 0, showValueLabel: false })] }))] })] }) }, "credentials"), _jsx(Tab, { title: compact ? (_jsx(Tooltip, { content: TRAD.two_factor_auth[locale], children: _jsx("div", { className: "flex items-center", children: _jsx(MdFingerprint, { className: "text-base" }) }) })) : (_jsxs("div", { className: "flex items-center gap-2", children: [_jsx(MdFingerprint, { className: "text-lg" }), _jsx("span", { children: TRAD.two_factor_auth[locale] })] })), children: _jsxs("div", { className: compact ? "py-2 space-y-3" : "py-4 space-y-5", children: [!compact && (_jsxs("div", { className: `flex items-start gap-2 text-default-600 ${compact ? "text-xs" : "text-sm"}`, children: [_jsx(FaInfoCircle, { className: "mt-0.5 flex-shrink-0 text-default-400" }), _jsx("p", { children: TRAD.totp_explanation[locale] })] })), compact && (_jsx(Tooltip, { content: TRAD.totp_explanation[locale], className: "max-w-xs", children: _jsx("div", { className: "flex items-center gap-2 text-default-600 text-xs cursor-help", children: _jsx(FaInfoCircle, { className: "text-default-400" }) }) })), _jsx("div", { className: "flex items-center gap-2", children: _jsx(Switch, { isSelected: totpEnabled, onValueChange: setTotpEnabled, color: "primary", children: _jsx("span", { className: "text-medium", children: TRAD.two_factor_auth[locale] }) }) }), totpEnabled && (_jsxs("div", { className: compact ? "space-y-3" : "space-y-5", children: [_jsx(Input, { label: TRAD.otp[locale], placeholder: TRAD.enter_totp_secret[locale], value: editedData.totpSecret || "", onValueChange: updateTotpSecret, color: isInvalidTotpSecret ? "danger" : "default", variant: "flat", size: compact ? "sm" : "md", description: isInvalidTotpSecret ? TRAD.invalid_totp_secret[locale] : "" }), editedData.totpSecret && editedData.totpSecret.length === 16 && otp && (_jsx("div", { className: compact ? "py-1" : "py-2", children: _jsxs("div", { className: `flex flex-col ${compact ? "gap-1" : "gap-2"}`, children: [_jsxs("div", { className: "flex justify-between items-center", children: [_jsx("span", { className: `text-default-600 ${compact ? "text-xs" : "text-sm"}`, children: TRAD.otp[locale] }), otpProgress !== null && _jsxs("div", { className: "text-xs text-default-500", children: [30 - Math.floor(otpProgress / 3.333), "s"] })] }), _jsxs("div", { className: "flex justify-center items-center relative", children: [_jsx("div", { className: `font-mono tracking-wider ${compact ? "text-lg" : "text-2xl"}`, children: otp ? ((_a = otp.match(/.{1,3}/g)) === null || _a === void 0 ? void 0 : _a.join(" ")) || otp : "" }), _jsx(Tooltip, { content: TRAD.copy[locale], children: _jsx("button", { className: `p-1 rounded-md hover:bg-default-200 transition-colors ${compact ? "ml-1" : "ml-2"}`, onClick: () => {
+                                                    }, value: entropy, maxValue: 120, minValue: 0, showValueLabel: false })] }))] })] }) }, "credentials"), _jsx(Tab, { title: compact ? (_jsx(Tooltip, { content: TRAD.two_factor_auth[locale], children: _jsx("div", { className: "flex items-center", children: _jsx(MdFingerprint, { className: "text-base" }) }) })) : (_jsxs("div", { className: "flex items-center gap-2", children: [_jsx(MdFingerprint, { className: "text-lg" }), _jsx("span", { children: TRAD.two_factor_auth[locale] })] })), children: _jsxs("div", { className: compact ? "py-2 space-y-3" : "py-4 space-y-5", children: [!compact && (_jsxs("div", { className: `flex items-start gap-2 text-default-600 ${compact ? "text-xs" : "text-sm"}`, children: [_jsx(FaInfoCircle, { className: "mt-0.5 flex-shrink-0 text-default-400" }), _jsx("p", { children: TRAD.totp_explanation[locale] })] })), compact && (_jsx(Tooltip, { content: TRAD.totp_explanation[locale], className: "max-w-xs", children: _jsx("div", { className: "flex items-center gap-2 text-default-600 text-xs cursor-help", children: _jsx(FaInfoCircle, { className: "text-default-400" }) }) })), _jsx("div", { className: "flex items-center gap-2", children: _jsx(Switch, { isSelected: totpEnabled, onValueChange: setTotpEnabled, color: "primary", children: _jsx("span", { className: "text-medium", children: TRAD.two_factor_auth[locale] }) }) }), totpEnabled && (_jsxs("div", { className: compact ? "space-y-3" : "space-y-5", children: [_jsx(Input, { label: TRAD.otp[locale], placeholder: TRAD.enter_totp_secret[locale], value: editedData.totpSecret || "", onValueChange: updateTotpSecret, color: isInvalidTotpSecret ? "danger" : "default", variant: "flat", size: compact ? "sm" : "md", description: isInvalidTotpSecret ? TRAD.invalid_totp_secret[locale] : "" }), editedData.totpSecret && !isInvalidTotpSecret && otp && (_jsx("div", { className: compact ? "py-1" : "py-2", children: _jsxs("div", { className: `flex flex-col ${compact ? "gap-1" : "gap-2"}`, children: [_jsxs("div", { className: "flex justify-between items-center", children: [_jsx("span", { className: `text-default-600 ${compact ? "text-xs" : "text-sm"}`, children: TRAD.otp[locale] }), otpProgress !== null && _jsxs("div", { className: "text-xs text-default-500", children: [30 - Math.floor(otpProgress / 3.333), "s"] })] }), _jsxs("div", { className: "flex justify-center items-center relative", children: [_jsx("div", { className: `font-mono tracking-wider ${compact ? "text-lg" : "text-2xl"}`, children: otp ? ((_a = otp.match(/.{1,3}/g)) === null || _a === void 0 ? void 0 : _a.join(" ")) || otp : "" }), _jsx(Tooltip, { content: TRAD.copy[locale], children: _jsx("button", { className: `p-1 rounded-md hover:bg-default-200 transition-colors ${compact ? "ml-1" : "ml-2"}`, onClick: () => {
                                                                         if (otp) {
                                                                             navigator.clipboard.writeText(otp);
                                                                             setOtpCopied(true);

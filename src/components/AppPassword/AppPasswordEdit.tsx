@@ -83,7 +83,12 @@ export const AppPasswordEdit: React.FC<AppPasswordEditProps> = ({
     setEditedData({ ...editedData, totpSecret: formattedValue });
 
     if (formattedValue) {
-      setIsInvalidTotpSecret(formattedValue.length !== 16);
+      try {
+        generateTOTP(formattedValue);
+        setIsInvalidTotpSecret(false);
+      } catch (error) {
+        setIsInvalidTotpSecret(true);
+      }
     } else {
       setIsInvalidTotpSecret(false);
     }
@@ -184,42 +189,48 @@ export const AppPasswordEdit: React.FC<AppPasswordEditProps> = ({
 
   // Générer le code TOTP lorsque le secret est valide
   useEffect(() => {
-    if (!editedData.totpSecret || editedData.totpSecret.length !== 16) {
+    if (!editedData.totpSecret) {
       setOtp("");
+      setIsInvalidTotpSecret(false);
       return;
     }
 
+    // Tester d'abord la validité de la clé
     try {
-      // Démarrer exactement au début d'une nouvelle seconde
-      const msToNextSecond = Math.ceil(Date.now() / 1000) * 1000 - Date.now();
-
-      const startTimer = () => {
-        try {
-          const generatedOtp = generateTOTP(editedData.totpSecret);
-          setOtp(generatedOtp);
-          // Calculer la progression (0-100) basée sur le temps écoulé dans la période de 30s
-          setOtpProgress(Math.floor((Date.now() - Math.floor(Date.now() / 30000) * 30000) / 300));
-        } catch (error) {
-          setOtp("");
-          setIsInvalidTotpSecret(true);
-        }
-      };
-
-      // Initialisation
-      startTimer();
-
-      // Configurer l'intervalle pour actualiser chaque seconde
-      const initialTimeout = setTimeout(() => {
-        startTimer();
-        const intervalId = setInterval(startTimer, 1000);
-        return () => clearInterval(intervalId);
-      }, msToNextSecond);
-
-      return () => clearTimeout(initialTimeout);
+      generateTOTP(editedData.totpSecret);
+      setIsInvalidTotpSecret(false);
     } catch (error) {
       setOtp("");
       setIsInvalidTotpSecret(true);
+      return;
     }
+
+    // Si la clé est valide, démarrer le timer
+    const msToNextSecond = Math.ceil(Date.now() / 1000) * 1000 - Date.now();
+
+    const startTimer = () => {
+      try {
+        const generatedOtp = generateTOTP(editedData.totpSecret);
+        setOtp(generatedOtp);
+        // Calculer la progression (0-100) basée sur le temps écoulé dans la période de 30s
+        setOtpProgress(Math.floor((Date.now() - Math.floor(Date.now() / 30000) * 30000) / 300));
+      } catch (error) {
+        setOtp("");
+        setIsInvalidTotpSecret(true);
+      }
+    };
+
+    // Initialisation
+    startTimer();
+
+    // Configurer l'intervalle pour actualiser chaque seconde
+    const initialTimeout = setTimeout(() => {
+      startTimer();
+      const intervalId = setInterval(startTimer, 1000);
+      return () => clearInterval(intervalId);
+    }, msToNextSecond);
+
+    return () => clearTimeout(initialTimeout);
   }, [editedData.totpSecret]);
 
   // Mettre à jour l'état du TOTP activé/désactivé
@@ -544,7 +555,7 @@ export const AppPasswordEdit: React.FC<AppPasswordEditProps> = ({
                   description={isInvalidTotpSecret ? TRAD.invalid_totp_secret[locale] : ""}
                 />
 
-                {editedData.totpSecret && editedData.totpSecret.length === 16 && otp && (
+                {editedData.totpSecret && !isInvalidTotpSecret && otp && (
                   <div className={compact ? "py-1" : "py-2"}>
                     <div className={`flex flex-col ${compact ? "gap-1" : "gap-2"}`}>
                       <div className="flex justify-between items-center">

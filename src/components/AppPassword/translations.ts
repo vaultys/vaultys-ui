@@ -107,11 +107,11 @@ export const TRAD = {
     zh: "没有可用的凭据数据",
   },
   invalid_totp_secret: {
-    fr: "Le secret TOTP est invalide. Il doit contenir exactement 16 caractères.",
-    en: "TOTP secret is invalid. It must contain exactly 16 characters.",
-    es: "El secreto TOTP no es válido. Debe contener exactamente 16 caracteres.",
-    de: "Das TOTP-Geheimnis ist ungültig. Es muss genau 16 Zeichen enthalten.",
-    zh: "TOTP 密钥无效。它必须包含恰好 16 个字符。",
+    fr: "La clé secrète TOTP est invalide.",
+    en: "The TOTP secret key is invalid.",
+    es: "La clave secreta TOTP no es válida.",
+    de: "Der TOTP-Geheimschlüssel ist ungültig.",
+    zh: "TOTP 密钥无效。",
   },
   edit: {
     fr: "Modifier",

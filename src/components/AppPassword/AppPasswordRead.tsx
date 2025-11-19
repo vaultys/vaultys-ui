@@ -28,16 +28,36 @@ export const AppPasswordRead: React.FC<AppPasswordReadProps> = ({ passwordData, 
   const [showSecureNotes, setShowSecureNotes] = useState<boolean>(false);
 
   const { isOpen: secureNotesIsOpen, onOpen: secureNotesOnOpen, onClose: secureNotesOnClose } = useDisclosure();
+  const [isInvalidTotpSecret, setIsInvalidTotpSecret] = useState<boolean>(false);
 
   useEffect(() => {
-    if (!passwordData?.totpSecret) return;
+    if (!passwordData?.totpSecret) {
+      setIsInvalidTotpSecret(false);
+      return;
+    }
 
+    // Tester d'abord la validité de la clé
+    try {
+      generateTOTP(passwordData.totpSecret);
+      setIsInvalidTotpSecret(false);
+    } catch (error) {
+      setOtp(undefined);
+      setIsInvalidTotpSecret(true);
+      return;
+    }
+
+    // Si la clé est valide, démarrer le timer
     const msToNextSecond = Math.ceil(Date.now() / 1000) * 1000 - Date.now();
 
     const startTimer = () => {
-      const generatedOtp = generateTOTP(passwordData.totpSecret);
-      setOtp(generatedOtp);
-      setOtpProgress(Math.floor((Date.now() - Math.floor(Date.now() / 30000) * 30000) / 300));
+      try {
+        const generatedOtp = generateTOTP(passwordData.totpSecret);
+        setOtp(generatedOtp);
+        setOtpProgress(Math.floor((Date.now() - Math.floor(Date.now() / 30000) * 30000) / 300));
+      } catch (error) {
+        setOtp(undefined);
+        setIsInvalidTotpSecret(true);
+      }
     };
 
     startTimer();
@@ -82,8 +102,6 @@ export const AppPasswordRead: React.FC<AppPasswordReadProps> = ({ passwordData, 
   };
 
   const isEmptyPasswordData = !passwordData?.username && !passwordData?.password && !passwordData?.totpSecret && !passwordData?.secureNotes;
-
-  const isInvalidTotpSecret = passwordData?.totpSecret && passwordData.totpSecret.length !== 16;
 
   return (
     <div className={`flex flex-col w-full ${compact ? "gap-2" : "gap-4"}`}>
@@ -189,7 +207,7 @@ export const AppPasswordRead: React.FC<AppPasswordReadProps> = ({ passwordData, 
         </div>
       )}
 
-      {passwordData.totpSecret && passwordData.totpSecret.length === 16 && (
+      {passwordData.totpSecret && !isInvalidTotpSecret && otp && (
         <div className="relative">
           <div
             className={`${otpCopied ? "bg-success-50 text-success-600" : "bg-default-100"} rounded-large cursor-copy ${compact ? "p-2" : "p-4"}`}
