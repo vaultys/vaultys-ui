@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { Button, Input, Tab, Tabs, Textarea, Switch, Progress, Tooltip } from "@heroui/react";
+import { Button, Input, Tab, Tabs, Textarea, Switch, Progress, Tooltip, Chip } from "@heroui/react";
 import { FaRegSave } from "@react-icons/all-files/fa/FaRegSave";
 import { FaTimes } from "@react-icons/all-files/fa/FaTimes";
 import { BiShow } from "@react-icons/all-files/bi/BiShow";
@@ -13,11 +13,13 @@ import { AiOutlineUser } from "@react-icons/all-files/ai/AiOutlineUser";
 import { FaCog } from "@react-icons/all-files/fa/FaCog";
 import { FaRegCopy } from "@react-icons/all-files/fa/FaRegCopy";
 import { FiRefreshCcw } from "@react-icons/all-files/fi/FiRefreshCcw";
+import { BsInfoCircleFill } from "@react-icons/all-files/bs/BsInfoCircleFill";
 import { generateTOTP } from "../../lib/totp";
 import { PasswordDataType, TRAD } from "./translations";
 import { useConfirmModal } from "../ConfirmModal";
 import { PasswordConfig } from "../PasswordGenerator";
 import { AnimatePresence, motion } from "framer-motion";
+import PasswordEntropy from "@rabbit-company/password-entropy";
 
 interface AppPasswordEditProps {
   passwordData: PasswordDataType;
@@ -56,6 +58,8 @@ export const AppPasswordEdit: React.FC<AppPasswordEditProps> = ({
   const [usernameCopied, setUsernameCopied] = useState<boolean>(false);
   const [passwordCopied, setPasswordCopied] = useState<boolean>(false);
   const [otpCopied, setOtpCopied] = useState<boolean>(false);
+  const [entropy, setEntropy] = useState<number>(0);
+  const [robustness, setRobustness] = useState<number>(0);
 
   // Réinitialiser les données quand les props changent
   useEffect(() => {
@@ -224,6 +228,40 @@ export const AppPasswordEdit: React.FC<AppPasswordEditProps> = ({
       setEditedData({ ...editedData, totpSecret: "" });
     }
   }, [totpEnabled]);
+
+  // Calculer l'entropie du mot de passe
+  useEffect(() => {
+    if (editedData.password) {
+      const calculatedEntropy = PasswordEntropy.calculate(editedData.password);
+      setEntropy(calculatedEntropy);
+    } else {
+      setEntropy(0);
+    }
+  }, [editedData.password]);
+
+  // Déterminer la robustesse basée sur l'entropie
+  useEffect(() => {
+    if (entropy < 36) setRobustness(0);
+    else if (entropy < 60) setRobustness(1);
+    else if (entropy < 120) setRobustness(2);
+    else setRobustness(3);
+  }, [entropy]);
+
+  const getStrengthInfo = () => {
+    const strengthLabels = {
+      fr: ["Très faible", "Faible", "Fort", "Très fort"],
+      en: ["Very weak", "Weak", "Strong", "Very strong"],
+      es: ["Muy débil", "Débil", "Fuerte", "Muy fuerte"],
+      de: ["Sehr schwach", "Schwach", "Stark", "Sehr stark"],
+      zh: ["非常弱", "弱", "强", "非常强"],
+    };
+    const colors = ["danger", "warning", "success", "primary"];
+
+    return {
+      label: strengthLabels[locale]?.[robustness] || strengthLabels.en[robustness],
+      color: colors[robustness] as "danger" | "warning" | "success" | "primary",
+    };
+  };
 
   return (
     <div className={`flex flex-col w-full ${compact ? "gap-2" : "gap-4"}`}>
@@ -397,6 +435,59 @@ export const AppPasswordEdit: React.FC<AppPasswordEditProps> = ({
                   )}
                 </AnimatePresence>
               </div>
+
+              {editedData.password && editedData.password.length > 0 && (
+                <div className={compact ? "space-y-1 mt-2" : "space-y-2 mt-3"}>
+                  <div className="flex justify-between items-center">
+                    <div className="flex items-center gap-2">
+                      <span className={`font-medium text-default-600 ${compact ? "text-xs" : "text-sm"}`}>
+                        {locale === "fr"
+                          ? "Force du mot de passe"
+                          : locale === "es"
+                          ? "Fuerza de la contraseña"
+                          : locale === "de"
+                          ? "Passwortstärke"
+                          : locale === "zh"
+                          ? "密码强度"
+                          : "Password strength"}
+                      </span>
+                      <Tooltip
+                        content={
+                          locale === "fr"
+                            ? "Plus vous utilisez de types de caractères et plus votre mot de passe est long, plus il est sécurisé."
+                            : locale === "es"
+                            ? "Cuantos más tipos de caracteres utilices y más larga sea tu contraseña, más segura será."
+                            : locale === "de"
+                            ? "Je mehr Zeichentypen Sie verwenden und je länger Ihr Passwort ist, desto sicherer ist es."
+                            : locale === "zh"
+                            ? "您使用的字符类型越多，密码越长，密码就越安全。"
+                            : "The more character types you use and the longer your password is, the more secure it will be."
+                        }
+                      >
+                        <Button isIconOnly size="sm" variant="light" className={compact ? "min-w-5 w-5 h-5" : "min-w-6 w-6 h-6"}>
+                          <BsInfoCircleFill className={`text-default-400 ${compact ? "text-xs" : "text-sm"}`} />
+                        </Button>
+                      </Tooltip>
+                    </div>
+                    <Chip size="sm" color={getStrengthInfo().color} variant="flat" className={compact ? "text-xs h-5" : ""}>
+                      {getStrengthInfo().label}
+                    </Chip>
+                  </div>
+                  <Progress
+                    size={compact ? "sm" : "md"}
+                    aria-label="Password strength"
+                    classNames={{
+                      indicator: `${entropy <= 35 ? "bg-danger" : ""} ${entropy > 35 && entropy <= 59 ? "bg-warning" : ""} ${
+                        entropy > 59 && entropy < 120 ? "bg-success" : ""
+                      } ${entropy >= 120 ? "bg-primary" : ""}`,
+                    }}
+                    value={entropy}
+                    maxValue={120}
+                    minValue={0}
+                    showValueLabel={false}
+                  />
+                </div>
+              )}
             </div>
           </div>
         </Tab>

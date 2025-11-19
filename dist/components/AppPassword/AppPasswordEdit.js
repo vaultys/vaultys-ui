@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { useState, useEffect } from "react";
-import { Button, Input, Tab, Tabs, Textarea, Switch, Progress, Tooltip } from "@heroui/react";
+import { Button, Input, Tab, Tabs, Textarea, Switch, Progress, Tooltip, Chip } from "@heroui/react";
 import { FaRegSave } from "@react-icons/all-files/fa/FaRegSave";
 import { FaTimes } from "@react-icons/all-files/fa/FaTimes";
 import { BiShow } from "@react-icons/all-files/bi/BiShow";
@@ -23,10 +23,12 @@ import { AiOutlineUser } from "@react-icons/all-files/ai/AiOutlineUser";
 import { FaCog } from "@react-icons/all-files/fa/FaCog";
 import { FaRegCopy } from "@react-icons/all-files/fa/FaRegCopy";
 import { FiRefreshCcw } from "@react-icons/all-files/fi/FiRefreshCcw";
+import { BsInfoCircleFill } from "@react-icons/all-files/bs/BsInfoCircleFill";
 import { generateTOTP } from "../../lib/totp";
 import { TRAD } from "./translations";
 import { useConfirmModal } from "../ConfirmModal";
 import { AnimatePresence, motion } from "framer-motion";
+import PasswordEntropy from "@rabbit-company/password-entropy";
 export const AppPasswordEdit = ({ passwordData, locale, onSave, onCancel, onGeneratorConfig, passwordConfig = {
     capitalLetters: true,
     length: 16,
@@ -47,6 +49,8 @@ export const AppPasswordEdit = ({ passwordData, locale, onSave, onCancel, onGene
     const [usernameCopied, setUsernameCopied] = useState(false);
     const [passwordCopied, setPasswordCopied] = useState(false);
     const [otpCopied, setOtpCopied] = useState(false);
+    const [entropy, setEntropy] = useState(0);
+    const [robustness, setRobustness] = useState(0);
     // Réinitialiser les données quand les props changent
     useEffect(() => {
         setEditedData(Object.assign({}, passwordData));
@@ -195,6 +199,42 @@ export const AppPasswordEdit = ({ passwordData, locale, onSave, onCancel, onGene
             setEditedData(Object.assign(Object.assign({}, editedData), { totpSecret: "" }));
         }
     }, [totpEnabled]);
+    // Calculer l'entropie du mot de passe
+    useEffect(() => {
+        if (editedData.password) {
+            const calculatedEntropy = PasswordEntropy.calculate(editedData.password);
+            setEntropy(calculatedEntropy);
+        }
+        else {
+            setEntropy(0);
+        }
+    }, [editedData.password]);
+    // Déterminer la robustesse basée sur l'entropie
+    useEffect(() => {
+        if (entropy < 36)
+            setRobustness(0);
+        else if (entropy < 60)
+            setRobustness(1);
+        else if (entropy < 120)
+            setRobustness(2);
+        else
+            setRobustness(3);
+    }, [entropy]);
+    const getStrengthInfo = () => {
+        var _a;
+        const strengthLabels = {
+            fr: ["Très faible", "Faible", "Fort", "Très fort"],
+            en: ["Very weak", "Weak", "Strong", "Very strong"],
+            es: ["Muy débil", "Débil", "Fuerte", "Muy fuerte"],
+            de: ["Sehr schwach", "Schwach", "Stark", "Sehr stark"],
+            zh: ["非常弱", "弱", "强", "非常强"],
+        };
+        const colors = ["danger", "warning", "success", "primary"];
+        return {
+            label: ((_a = strengthLabels[locale]) === null || _a === void 0 ? void 0 : _a[robustness]) || strengthLabels.en[robustness],
+            color: colors[robustness],
+        };
+    };
     return (_jsxs("div", { className: `flex flex-col w-full ${compact ? "gap-2" : "gap-4"}`, children: [hasChanges() && (_jsxs("div", { className: "sticky top-0 z-10 bg-content1 -mx-1 px-1 pb-3 border-b-2 border-default-200", children: [_jsxs("div", { className: `bg-warning-50 border-l-4 border-warning rounded-r-lg flex items-start gap-2 ${compact ? "p-2 mb-2" : "p-4 mb-3 gap-3"}`, children: [_jsx(FaInfoCircle, { className: `text-warning flex-shrink-0 mt-0.5 ${compact ? "text-base" : "text-xl"}` }), _jsxs("div", { className: "flex-1", children: [_jsx("p", { className: `font-semibold text-warning-700 ${compact ? "text-sm" : ""}`, children: TRAD.unsaved_changes_title[locale] }), _jsx("p", { className: `text-warning-600 ${compact ? "text-xs mt-0.5" : "text-sm mt-1"}`, children: TRAD.unsaved_changes_message[locale] })] })] }), _jsxs("div", { className: `flex flex-row justify-end ${compact ? "gap-2" : "gap-3"}`, children: [_jsx(Button, { color: "default", variant: "flat", startContent: _jsx(FaTimes, {}), onPress: handleCancel, size: compact ? "md" : "lg", className: compact ? "min-w-[100px]" : "min-w-[120px]", children: TRAD.cancel[locale] }), _jsx(Button, { color: "primary", variant: "shadow", startContent: _jsx(FaRegSave, {}), onPress: handleSave, isDisabled: (isInvalidTotpSecret && !!editedData.totpSecret) || !hasChanges(), size: compact ? "md" : "lg", className: `${compact ? "min-w-[100px]" : "min-w-[120px]"} animate-in zoom-in-95`, children: TRAD.save[locale] })] })] })), _jsxs(Tabs, { variant: "underlined", size: "sm", "aria-label": "Options", color: "primary", selectedKey: activeTab, onSelectionChange: (key) => setActiveTab(key.toString()), classNames: {
                     tabList: compact ? "gap-1" : "gap-4",
                     tab: compact ? "px-1 h-8 data-[selected=true]:text-primary" : "px-1 h-10 data-[selected=true]:text-primary",
@@ -212,7 +252,25 @@ export const AppPasswordEdit = ({ passwordData, locale, onSave, onCancel, onGene
                                                                             setPasswordCopied(true);
                                                                             setTimeout(() => setPasswordCopied(false), 3000);
                                                                         }
-                                                                    }, children: _jsx(FaRegCopy, { className: "cursor-pointer" }) }) })] }) }), _jsx(AnimatePresence, { children: passwordCopied && (_jsx(motion.div, { initial: { opacity: 0, y: 10 }, animate: { opacity: 1, y: 0 }, exit: { opacity: 0, y: -20 }, transition: { duration: 0.3 }, className: "absolute -top-8 right-0 bg-success text-white px-3 py-1 rounded-full text-sm font-medium shadow-lg", children: TRAD.copied[locale] })) })] })] })] }) }, "credentials"), _jsx(Tab, { title: compact ? (_jsx(Tooltip, { content: TRAD.two_factor_auth[locale], children: _jsx("div", { className: "flex items-center", children: _jsx(MdFingerprint, { className: "text-base" }) }) })) : (_jsxs("div", { className: "flex items-center gap-2", children: [_jsx(MdFingerprint, { className: "text-lg" }), _jsx("span", { children: TRAD.two_factor_auth[locale] })] })), children: _jsxs("div", { className: compact ? "py-2 space-y-3" : "py-4 space-y-5", children: [!compact && (_jsxs("div", { className: `flex items-start gap-2 text-default-600 ${compact ? "text-xs" : "text-sm"}`, children: [_jsx(FaInfoCircle, { className: "mt-0.5 flex-shrink-0 text-default-400" }), _jsx("p", { children: TRAD.totp_explanation[locale] })] })), compact && (_jsx(Tooltip, { content: TRAD.totp_explanation[locale], className: "max-w-xs", children: _jsx("div", { className: "flex items-center gap-2 text-default-600 text-xs cursor-help", children: _jsx(FaInfoCircle, { className: "text-default-400" }) }) })), _jsx("div", { className: "flex items-center gap-2", children: _jsx(Switch, { isSelected: totpEnabled, onValueChange: setTotpEnabled, color: "primary", children: _jsx("span", { className: "text-medium", children: TRAD.two_factor_auth[locale] }) }) }), totpEnabled && (_jsxs("div", { className: compact ? "space-y-3" : "space-y-5", children: [_jsx(Input, { label: TRAD.otp[locale], placeholder: TRAD.enter_totp_secret[locale], value: editedData.totpSecret || "", onValueChange: updateTotpSecret, color: isInvalidTotpSecret ? "danger" : "default", variant: "flat", size: compact ? "sm" : "md", description: isInvalidTotpSecret ? TRAD.invalid_totp_secret[locale] : "" }), editedData.totpSecret && editedData.totpSecret.length === 16 && otp && (_jsx("div", { className: compact ? "py-1" : "py-2", children: _jsxs("div", { className: `flex flex-col ${compact ? "gap-1" : "gap-2"}`, children: [_jsxs("div", { className: "flex justify-between items-center", children: [_jsx("span", { className: `text-default-600 ${compact ? "text-xs" : "text-sm"}`, children: TRAD.otp[locale] }), otpProgress !== null && _jsxs("div", { className: "text-xs text-default-500", children: [30 - Math.floor(otpProgress / 3.333), "s"] })] }), _jsxs("div", { className: "flex justify-center items-center relative", children: [_jsx("div", { className: `font-mono tracking-wider ${compact ? "text-lg" : "text-2xl"}`, children: otp ? ((_a = otp.match(/.{1,3}/g)) === null || _a === void 0 ? void 0 : _a.join(" ")) || otp : "" }), _jsx(Tooltip, { content: TRAD.copy[locale], children: _jsx("button", { className: `p-1 rounded-md hover:bg-default-200 transition-colors ${compact ? "ml-1" : "ml-2"}`, onClick: () => {
+                                                                    }, children: _jsx(FaRegCopy, { className: "cursor-pointer" }) }) })] }) }), _jsx(AnimatePresence, { children: passwordCopied && (_jsx(motion.div, { initial: { opacity: 0, y: 10 }, animate: { opacity: 1, y: 0 }, exit: { opacity: 0, y: -20 }, transition: { duration: 0.3 }, className: "absolute -top-8 right-0 bg-success text-white px-3 py-1 rounded-full text-sm font-medium shadow-lg", children: TRAD.copied[locale] })) })] }), editedData.password && editedData.password.length > 0 && (_jsxs("div", { className: compact ? "space-y-1 mt-2" : "space-y-2 mt-3", children: [_jsxs("div", { className: "flex justify-between items-center", children: [_jsxs("div", { className: "flex items-center gap-2", children: [_jsx("span", { className: `font-medium text-default-600 ${compact ? "text-xs" : "text-sm"}`, children: locale === "fr"
+                                                                        ? "Force du mot de passe"
+                                                                        : locale === "es"
+                                                                            ? "Fuerza de la contraseña"
+                                                                            : locale === "de"
+                                                                                ? "Passwortstärke"
+                                                                                : locale === "zh"
+                                                                                    ? "密码强度"
+                                                                                    : "Password strength" }), _jsx(Tooltip, { content: locale === "fr"
+                                                                        ? "Plus vous utilisez de types de caractères et plus votre mot de passe est long, plus il est sécurisé."
+                                                                        : locale === "es"
+                                                                            ? "Cuantos más tipos de caracteres utilices y más larga sea tu contraseña, más segura será."
+                                                                            : locale === "de"
+                                                                                ? "Je mehr Zeichentypen Sie verwenden und je länger Ihr Passwort ist, desto sicherer ist es."
+                                                                                : locale === "zh"
+                                                                                    ? "您使用的字符类型越多，密码越长，密码就越安全。"
+                                                                                    : "The more character types you use and the longer your password is, the more secure it will be.", children: _jsx(Button, { isIconOnly: true, size: "sm", variant: "light", className: compact ? "min-w-5 w-5 h-5" : "min-w-6 w-6 h-6", children: _jsx(BsInfoCircleFill, { className: `text-default-400 ${compact ? "text-xs" : "text-sm"}` }) }) })] }), _jsx(Chip, { size: "sm", color: getStrengthInfo().color, variant: "flat", className: compact ? "text-xs h-5" : "", children: getStrengthInfo().label })] }), _jsx(Progress, { size: compact ? "sm" : "md", "aria-label": "Password strength", classNames: {
+                                                        indicator: `${entropy <= 35 ? "bg-danger" : ""} ${entropy > 35 && entropy <= 59 ? "bg-warning" : ""} ${entropy > 59 && entropy < 120 ? "bg-success" : ""} ${entropy >= 120 ? "bg-primary" : ""}`,
+                                                    }, value: entropy, maxValue: 120, minValue: 0, showValueLabel: false })] }))] })] }) }, "credentials"), _jsx(Tab, { title: compact ? (_jsx(Tooltip, { content: TRAD.two_factor_auth[locale], children: _jsx("div", { className: "flex items-center", children: _jsx(MdFingerprint, { className: "text-base" }) }) })) : (_jsxs("div", { className: "flex items-center gap-2", children: [_jsx(MdFingerprint, { className: "text-lg" }), _jsx("span", { children: TRAD.two_factor_auth[locale] })] })), children: _jsxs("div", { className: compact ? "py-2 space-y-3" : "py-4 space-y-5", children: [!compact && (_jsxs("div", { className: `flex items-start gap-2 text-default-600 ${compact ? "text-xs" : "text-sm"}`, children: [_jsx(FaInfoCircle, { className: "mt-0.5 flex-shrink-0 text-default-400" }), _jsx("p", { children: TRAD.totp_explanation[locale] })] })), compact && (_jsx(Tooltip, { content: TRAD.totp_explanation[locale], className: "max-w-xs", children: _jsx("div", { className: "flex items-center gap-2 text-default-600 text-xs cursor-help", children: _jsx(FaInfoCircle, { className: "text-default-400" }) }) })), _jsx("div", { className: "flex items-center gap-2", children: _jsx(Switch, { isSelected: totpEnabled, onValueChange: setTotpEnabled, color: "primary", children: _jsx("span", { className: "text-medium", children: TRAD.two_factor_auth[locale] }) }) }), totpEnabled && (_jsxs("div", { className: compact ? "space-y-3" : "space-y-5", children: [_jsx(Input, { label: TRAD.otp[locale], placeholder: TRAD.enter_totp_secret[locale], value: editedData.totpSecret || "", onValueChange: updateTotpSecret, color: isInvalidTotpSecret ? "danger" : "default", variant: "flat", size: compact ? "sm" : "md", description: isInvalidTotpSecret ? TRAD.invalid_totp_secret[locale] : "" }), editedData.totpSecret && editedData.totpSecret.length === 16 && otp && (_jsx("div", { className: compact ? "py-1" : "py-2", children: _jsxs("div", { className: `flex flex-col ${compact ? "gap-1" : "gap-2"}`, children: [_jsxs("div", { className: "flex justify-between items-center", children: [_jsx("span", { className: `text-default-600 ${compact ? "text-xs" : "text-sm"}`, children: TRAD.otp[locale] }), otpProgress !== null && _jsxs("div", { className: "text-xs text-default-500", children: [30 - Math.floor(otpProgress / 3.333), "s"] })] }), _jsxs("div", { className: "flex justify-center items-center relative", children: [_jsx("div", { className: `font-mono tracking-wider ${compact ? "text-lg" : "text-2xl"}`, children: otp ? ((_a = otp.match(/.{1,3}/g)) === null || _a === void 0 ? void 0 : _a.join(" ")) || otp : "" }), _jsx(Tooltip, { content: TRAD.copy[locale], children: _jsx("button", { className: `p-1 rounded-md hover:bg-default-200 transition-colors ${compact ? "ml-1" : "ml-2"}`, onClick: () => {
                                                                         if (otp) {
                                                                             navigator.clipboard.writeText(otp);
                                                                             setOtpCopied(true);
