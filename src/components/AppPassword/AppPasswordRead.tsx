@@ -115,7 +115,7 @@ export const AppPasswordRead: React.FC<AppPasswordReadProps> = ({ passwordData, 
       )}
 
       {isInvalidTotpSecret && (
-        <div className={`bg-danger-100 text-danger rounded-lg border border-danger/20 shadow-sm ${compact ? "p-2 mb-1" : "p-4 mb-2"}`}>
+        <div className={`bg-danger-100 text-danger rounded-lg border border-danger/20 shadow-xs ${compact ? "p-2 mb-1" : "p-4 mb-2"}`}>
           <div className="flex items-center gap-2">
             <span className={compact ? "text-base" : "text-lg"}>⚠️</span>
             <span className={compact ? "text-sm" : ""}>{TRAD.invalid_totp_secret[locale]}</span>

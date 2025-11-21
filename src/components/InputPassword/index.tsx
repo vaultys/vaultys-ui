@@ -59,7 +59,7 @@ export const InputPassword: React.FC<InputPasswordProps> = ({
               }}
             />
           )}
-          <button className="focus:outline-none" type="button" onClick={() => setShow(!show)}>
+          <button className="focus:outline-hidden" type="button" onClick={() => setShow(!show)}>
             {show ? <BiShow className="text-xl cursor-pointer " /> : <BiHide className="text-xl cursor-pointer " />}
           </button>
         </div>

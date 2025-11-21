@@ -38,7 +38,7 @@ function ConfirmModalContextProvider({ children }) {
             default: {
                 bg: "",
                 text: "text-default-700",
-                border: "!border-0",
+                border: "border-0!",
             },
             success: {
                 bg: "bg-success-50",

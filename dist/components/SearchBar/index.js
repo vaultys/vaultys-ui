@@ -124,7 +124,7 @@ export const SearchBar = (_a) => {
         }
     }, [isFocused, onFocusChanged]);
     return (_jsxs("div", Object.assign({}, props, { className: `${className} group relative transition-all duration-300 ease-in-out rounded-xl
-      ${!hide && children && isFocused ? "shadow-lg !rounded-b-none" : "shadow hover:shadow-md"}`, children: [_jsxs("div", { className: `relative flex flex-row items-center ${hide ? "justify-end" : ""} overflow-hidden`, children: [_jsx(BsSearch, { className: `absolute z-20 ${sizeStyles[size].searchIcon} cursor-pointer text-gray-400 hover:text-gray-700 transition-colors`, onClick: handleSearchIconClick, "aria-label": "Search" }), _jsx("input", { ref: inputRef, placeholder: placeholder, "data-test": "search", value: inputValue, autoComplete: "off", accessKey: "shift+e", className: `w-full rounded-xl ${sizeStyles[size].input} bg-transparent focus-visible:outline-none
+      ${!hide && children && isFocused ? "shadow-lg rounded-b-none!" : "shadow-sm hover:shadow-md"}`, children: [_jsxs("div", { className: `relative flex flex-row items-center ${hide ? "justify-end" : ""} overflow-hidden`, children: [_jsx(BsSearch, { className: `absolute z-20 ${sizeStyles[size].searchIcon} cursor-pointer text-gray-400 hover:text-gray-700 transition-colors`, onClick: handleSearchIconClick, "aria-label": "Search" }), _jsx("input", { ref: inputRef, placeholder: placeholder, "data-test": "search", value: inputValue, autoComplete: "off", accessKey: "shift+e", className: `w-full rounded-xl ${sizeStyles[size].input} bg-transparent focus-visible:outline-hidden
           border border-transparent focus:border-gray-300 hover:border-gray-200
           transform transition-all duration-300
           ${hide ? "translate-x-full opacity-0" : "translate-x-0 opacity-100"}`, onKeyUp: onKeyUp, onKeyDown: onKeyDown, onChange: (e) => {
@@ -133,7 +133,7 @@ export const SearchBar = (_a) => {
                             if (onChange)
                                 onChange(newValue);
                             // Don't update previousValueRef here to allow debounce to detect the change
-                        }, onClick: onClick, onFocus: () => setIsFocused(true) }), inputValue && !hide && (_jsx("button", { type: "button", onClick: handleClearSearch, className: `absolute ${sizeStyles[size].closeButton} z-20 p-1 rounded-full hover:bg-gray-100 transition-colors`, "aria-label": "Clear search", children: _jsx(IoMdClose, { className: `${sizeStyles[size].closeIcon} text-gray-500 hover:text-gray-700` }) }))] }), _jsx("div", { ref: childRef, className: `w-full ${className} !rounded-t-none absolute z-40  overflow-y-auto 
+                        }, onClick: onClick, onFocus: () => setIsFocused(true) }), inputValue && !hide && (_jsx("button", { type: "button", onClick: handleClearSearch, className: `absolute ${sizeStyles[size].closeButton} z-20 p-1 rounded-full hover:bg-gray-100 transition-colors`, "aria-label": "Clear search", children: _jsx(IoMdClose, { className: `${sizeStyles[size].closeIcon} text-gray-500 hover:text-gray-700` }) }))] }), _jsx("div", { ref: childRef, className: `w-full ${className} rounded-t-none! absolute z-40  overflow-y-auto 
         transition-all duration-300 ease-in-out 
         ${!hide && isFocused ? "max-h-96 opacity-100" : "max-h-0 opacity-0 pointer-events-none"}`, onClick: () => {
                     if (closeOnSelect)

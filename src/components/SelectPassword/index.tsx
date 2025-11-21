@@ -262,7 +262,7 @@ export const SelectPassword: React.FC<SelectPasswordProps> = ({
         endContent={
           <div className={`flex flex-row items-center ${compact ? "gap-1" : "gap-2"}`}>
             <Tooltip content={TRAD.copy[locale]}>
-              <button className="focus:outline-none" type="button" onClick={() => copyPassword(value)} disabled={!value}>
+              <button className="focus:outline-hidden" type="button" onClick={() => copyPassword(value)} disabled={!value}>
                 {copied ? (
                   <BiCheck className={`text-success ${compact ? "text-base" : "text-xl"}`} />
                 ) : (
@@ -270,7 +270,7 @@ export const SelectPassword: React.FC<SelectPasswordProps> = ({
                 )}
               </button>
             </Tooltip>
-            <button className="focus:outline-none" type="button" onClick={() => setShowPassword(!showPassword)}>
+            <button className="focus:outline-hidden" type="button" onClick={() => setShowPassword(!showPassword)}>
               {showPassword ? (
                 <BiShow className={`cursor-pointer ${compact ? "text-base" : "text-xl"}`} />
               ) : (
@@ -278,7 +278,7 @@ export const SelectPassword: React.FC<SelectPasswordProps> = ({
               )}
             </button>
             <Tooltip content={TRAD.generate[locale]}>
-              <button className="focus:outline-none" type="button" onClick={generatePassword}>
+              <button className="focus:outline-hidden" type="button" onClick={generatePassword}>
                 <FiRefreshCcw className={`cursor-pointer ${compact ? "text-base" : "text-xl"}`} />
               </button>
             </Tooltip>

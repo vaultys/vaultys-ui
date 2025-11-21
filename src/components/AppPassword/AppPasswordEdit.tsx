@@ -280,7 +280,7 @@ export const AppPasswordEdit: React.FC<AppPasswordEditProps> = ({
       {hasChanges() && (
         <div className="sticky top-0 z-10 bg-content1 -mx-1 px-1 pb-3 border-b-2 border-default-200">
           <div className={`bg-warning-50 border-l-4 border-warning rounded-r-lg flex items-start gap-2 ${compact ? "p-2 mb-2" : "p-4 mb-3 gap-3"}`}>
-            <FaInfoCircle className={`text-warning flex-shrink-0 mt-0.5 ${compact ? "text-base" : "text-xl"}`} />
+            <FaInfoCircle className={`text-warning shrink-0 mt-0.5 ${compact ? "text-base" : "text-xl"}`} />
             <div className="flex-1">
               <p className={`font-semibold text-warning-700 ${compact ? "text-sm" : ""}`}>{TRAD.unsaved_changes_title[locale]}</p>
               <p className={`text-warning-600 ${compact ? "text-xs mt-0.5" : "text-sm mt-1"}`}>{TRAD.unsaved_changes_message[locale]}</p>
@@ -523,7 +523,7 @@ export const AppPasswordEdit: React.FC<AppPasswordEditProps> = ({
           <div className={compact ? "py-2 space-y-3" : "py-4 space-y-5"}>
             {!compact && (
               <div className={`flex items-start gap-2 text-default-600 ${compact ? "text-xs" : "text-sm"}`}>
-                <FaInfoCircle className="mt-0.5 flex-shrink-0 text-default-400" />
+                <FaInfoCircle className="mt-0.5 shrink-0 text-default-400" />
                 <p>{TRAD.totp_explanation[locale]}</p>
               </div>
             )}
@@ -621,7 +621,7 @@ export const AppPasswordEdit: React.FC<AppPasswordEditProps> = ({
           <div className={compact ? "py-2 space-y-2" : "py-4 space-y-4"}>
             {!compact && (
               <div className={`flex items-start gap-2 text-default-600 ${compact ? "text-xs" : "text-sm"}`}>
-                <FaInfoCircle className="mt-0.5 flex-shrink-0 text-default-400" />
+                <FaInfoCircle className="mt-0.5 shrink-0 text-default-400" />
                 <p>{TRAD.secure_notes_explanation[locale]}</p>
               </div>
             )}
@@ -659,7 +659,7 @@ export const AppPasswordEdit: React.FC<AppPasswordEditProps> = ({
                 variant="flat"
                 size={compact ? "sm" : "md"}
                 classNames={{
-                  input: `${!showSecureNotes ? "blur-sm font-mono" : "font-mono"}`,
+                  input: `${!showSecureNotes ? "blur-xs font-mono" : "font-mono"}`,
                   base: "w-full",
                 }}
               />

@@ -100,10 +100,10 @@ export const SuccessModal: Story = {
 export const WithCustomContent: Story = {
   render: () => {
     const CustomContent = () => (
-      <div className="p-4 bg-gray-100 rounded">
+      <div className="p-4 bg-gray-100 rounded-sm">
         <h4 className="text-lg font-semibold">Custom Form Content</h4>
         <p className="my-2">This is an example of custom content inside the modal.</p>
-        <div className="mt-2 p-2 bg-white rounded">You can add any React components here.</div>
+        <div className="mt-2 p-2 bg-white rounded-sm">You can add any React components here.</div>
       </div>
     );
 

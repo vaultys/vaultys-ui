@@ -22,7 +22,7 @@ export interface HeaderItemProps {
 export const HeaderItem: React.FC<HeaderItemProps> = ({ title, children, sortColumn = false, sortActive, sortType = SortType.ASCENDING, onClick, className, testId }) => {
   return (
     <th
-      className={`bg-background first:rounded-l-lg rtl:first:rounded-r-lg rtl:first:rounded-l-[unset] last:rounded-r-lg rtl:last:rounded-l-lg rtl:last:rounded-r-[unset] py-2 px-2 ${
+      className={`bg-background first:rounded-l-lg first:rtl:rounded-r-lg first:rtl:rounded-l-[unset] last:rounded-r-lg last:rtl:rounded-l-lg last:rtl:rounded-r-[unset] py-2 px-2 ${
         sortColumn && "cursor-pointer"
       } ${className}`}
       onClick={() => sortColumn && typeof onClick === "function" && onClick()}

@@ -1,7 +1,66 @@
-@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap")
+layer(base);
+@import "tailwindcss";
+
+@plugin '../hero.ts';
+
+@source '../node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}';
+
+@custom-variant dark (&:is([data-mode="dark"] *));
+
+@theme {
+  --text-*: initial;
+  --text-xs: clamp(0.75rem, 0.5vw, 0.8rem);
+  --text-sm: clamp(0.875rem, 0.6vw, 0.95rem);
+  --text-base: clamp(1rem, 0.8vw, 1.1rem);
+  --text-lg: clamp(1.125rem, 1vw, 1.25rem);
+  --text-xl: clamp(1.25rem, 1.2vw, 1.4rem);
+  --text-2xl: clamp(1.5rem, 1.5vw, 1.75rem);
+  --text-3xl: clamp(1.875rem, 2vw, 2.25rem);
+  --text-4xl: clamp(2.25rem, 2.5vw, 2.5rem);
+  --text-5xl: clamp(3rem, 3vw, 3.25rem);
+  --text-6xl: clamp(3.75rem, 3.5vw, 4rem);
+
+  --font-*: initial;
+  --font-montserrat: Montserrat, sans-serif;
+  --font-mono: monospace;
+
+  --color-modern-blue: #00a8cc;
+  --color-modern-blue-light: #4dcbed;
+  --color-warning: #d35400;
+  --color-warning-light: #e98a08;
+  --color-danger: #992d22;
+  --color-success: #16a085;
+  --color-primary: #4f386e;
+  --color-primary-dark: #b79dcb;
+  --color-primary-hover: #7a59a5;
+  --color-primary-dark-hover: #4f386e;
+  --color-secondary: #b79dcb;
+  --color-secondary-dark: #4f386e;
+  --color-light: #f5f5f5;
+  --color-light-secondary: #ffffff;
+  --color-dark: #333333;
+  --color-dark-secondary: #515151;
+  --color-brand: #4f386e;
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
 
 * {
   @apply font-montserrat;

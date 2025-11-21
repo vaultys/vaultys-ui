@@ -29,5 +29,5 @@ export const RowItem = ({ type, value, title, editMode, items, onChange, onClick
                 return _jsx(_Fragment, {});
         }
     };
-    return (_jsx("td", { className: ` px-2 first:rounded-l-lg rtl:first:rounded-r-lg rtl:first:rounded-l-[unset] last:rounded-r-lg rtl:last:rounded-l-lg rtl:last:rounded-r-[unset] ${className}`, id: id, "data-test": testId, children: getChild() }));
+    return (_jsx("td", { className: ` px-2 first:rounded-l-lg first:rtl:rounded-r-lg first:rtl:rounded-l-[unset] last:rounded-r-lg last:rtl:rounded-l-lg last:rtl:rounded-r-[unset] ${className}`, id: id, "data-test": testId, children: getChild() }));
 };

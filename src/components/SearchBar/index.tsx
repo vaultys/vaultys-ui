@@ -159,7 +159,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
     <div
       {...props}
       className={`${className} group relative transition-all duration-300 ease-in-out rounded-xl
-      ${!hide && children && isFocused ? "shadow-lg !rounded-b-none" : "shadow hover:shadow-md"}`}
+      ${!hide && children && isFocused ? "shadow-lg rounded-b-none!" : "shadow-sm hover:shadow-md"}`}
     >
       <div className={`relative flex flex-row items-center ${hide ? "justify-end" : ""} overflow-hidden`}>
         <BsSearch
@@ -174,7 +174,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
           value={inputValue}
           autoComplete="off"
           accessKey="shift+e"
-          className={`w-full rounded-xl ${sizeStyles[size].input} bg-transparent focus-visible:outline-none
+          className={`w-full rounded-xl ${sizeStyles[size].input} bg-transparent focus-visible:outline-hidden
           border border-transparent focus:border-gray-300 hover:border-gray-200
           transform transition-all duration-300
           ${hide ? "translate-x-full opacity-0" : "translate-x-0 opacity-100"}`}
@@ -202,7 +202,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
       </div>
       <div
         ref={childRef}
-        className={`w-full ${className} !rounded-t-none absolute z-40  overflow-y-auto 
+        className={`w-full ${className} rounded-t-none! absolute z-40  overflow-y-auto 
         transition-all duration-300 ease-in-out 
         ${!hide && isFocused ? "max-h-96 opacity-100" : "max-h-0 opacity-0 pointer-events-none"}`}
         onClick={() => {

@@ -15,5 +15,5 @@ export const InputPassword = ({ label, description, onChange, valid = true, colo
                         if (value) {
                             navigator.clipboard.writeText(value);
                         }
-                    } })), _jsx("button", { className: "focus:outline-none", type: "button", onClick: () => setShow(!show), children: show ? _jsx(BiShow, { className: "text-xl cursor-pointer " }) : _jsx(BiHide, { className: "text-xl cursor-pointer " }) })] }), type: show ? "text" : "password" }));
+                    } })), _jsx("button", { className: "focus:outline-hidden", type: "button", onClick: () => setShow(!show), children: show ? _jsx(BiShow, { className: "text-xl cursor-pointer " }) : _jsx(BiHide, { className: "text-xl cursor-pointer " }) })] }), type: show ? "text" : "password" }));
 };

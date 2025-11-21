@@ -52,7 +52,7 @@ export const SuccessModal = {
 };
 export const WithCustomContent = {
     render: () => {
-        const CustomContent = () => (_jsxs("div", { className: "p-4 bg-gray-100 rounded", children: [_jsx("h4", { className: "text-lg font-semibold", children: "Custom Form Content" }), _jsx("p", { className: "my-2", children: "This is an example of custom content inside the modal." }), _jsx("div", { className: "mt-2 p-2 bg-white rounded", children: "You can add any React components here." })] }));
+        const CustomContent = () => (_jsxs("div", { className: "p-4 bg-gray-100 rounded-sm", children: [_jsx("h4", { className: "text-lg font-semibold", children: "Custom Form Content" }), _jsx("p", { className: "my-2", children: "This is an example of custom content inside the modal." }), _jsx("div", { className: "mt-2 p-2 bg-white rounded-sm", children: "You can add any React components here." })] }));
         return (_jsx(ConfirmModalContextProvider, { children: _jsx(ModalTrigger, { header: "Modal with Custom Content", customContent: _jsx(CustomContent, {}), alert: "Please confirm after reviewing the details above", buttonText: "Show Modal with Custom Content" }) }));
     },
 };

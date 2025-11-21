@@ -277,7 +277,7 @@ export const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({ passwordTy
   }, [entropy]);
 
   return (
-    <div className="flex flex-col gap-4 w-full p-4 rounded-lg bg-background shadow-sm">
+    <div className="flex flex-col gap-4 w-full p-4 rounded-lg bg-background shadow-xs">
       <Switch
         isSelected={type === PasswordType.PASSWORD}
         onValueChange={() => setType(type === PasswordType.PASSWORD ? PasswordType.PASSPHRASE : PasswordType.PASSWORD)}
@@ -303,7 +303,7 @@ export const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({ passwordTy
             }}
           >
             <div className="font-mono text-lg break-all">{type === PasswordType.PASSWORD ? password : passphrase}</div>
-            <div className="flex-shrink-0 flex items-center gap-1 text-sm">
+            <div className="shrink-0 flex items-center gap-1 text-sm">
               {copied ? (
                 <span className="flex items-center gap-1 text-success">
                   {TRAD.copied[locale]} <BiCheck size={18} />

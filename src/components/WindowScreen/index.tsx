@@ -9,14 +9,14 @@ export interface WindowScreenProps {
 }
 
 export const WindowScreen: React.FC<WindowScreenProps> = ({ children, icon, title = "SmartLink", size = "lg" }) => (
-  <div className="flex flex-col w-full p-2 h-screen justify-center items-center bg-white/50 backdrop-blur">
+  <div className="flex flex-col w-full p-2 h-screen justify-center items-center bg-white/50 backdrop-blur-sm">
     <div
       className={`max-h-full  shadow-lg w-full shadow-black/40 rounded-t-xl rounded-b overflow-clip ${size === "sm" && "max-w-xl"} ${size === "md" && "max-w-3xl"} ${
         size === "lg" && "max-w-5xl"
       } ${size === "xl" && "max-w-7xl"}`}
     >
       <div className="flex flex-row justify-between text-xl p-3 w-full bg-brand">
-        {icon && <img className="h-8 rounded" src={icon} />}
+        {icon && <img className="h-8 rounded-sm" src={icon} />}
         <span className="w-full text-center">{title}</span>
         {icon && <img className="h-8 opacity-0" src={icon} />}
       </div>
