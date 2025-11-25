@@ -414,7 +414,11 @@ export const AppPasswordEdit: React.FC<AppPasswordEditProps> = ({
                   endContent={
                     <div className="flex flex-row gap-2 items-center">
                       <Tooltip content={showPassword ? TRAD.hide[locale] : TRAD.show[locale]}>
-                        <button className="p-1 rounded-md hover:bg-default-200 transition-colors" onClick={() => setShowPassword(!showPassword)}>
+                        <button
+                          className="p-1 rounded-md hover:bg-default-200 transition-colors"
+                          data-test="app-password-show-password-button"
+                          onClick={() => setShowPassword(!showPassword)}
+                        >
                           {showPassword ? <BiHide className="cursor-pointer" /> : <BiShow className="cursor-pointer" />}
                         </button>
                       </Tooltip>
