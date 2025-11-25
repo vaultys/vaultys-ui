@@ -126,6 +126,7 @@ export const AppPasswordRead: React.FC<AppPasswordReadProps> = ({ passwordData, 
       {passwordData?.username && passwordData.username.length > 0 && (
         <div className="relative">
           <Input
+            data-test="app-password-username-input"
             onClick={handleCopyUsername}
             readOnly
             label={TRAD.username[locale]}
@@ -137,7 +138,7 @@ export const AppPasswordRead: React.FC<AppPasswordReadProps> = ({ passwordData, 
             endContent={
               <div className="flex flex-row gap-2 items-center">
                 <Tooltip content={TRAD.copy[locale]}>
-                  <button className="p-1 rounded-md hover:bg-default-200 transition-colors">
+                  <button className="p-1 rounded-md hover:bg-default-200 transition-colors" data-test="app-password-copy-username-button">
                     <FaRegCopy className="cursor-pointer" onClick={handleCopyUsername} />
                   </button>
                 </Tooltip>
@@ -163,6 +164,7 @@ export const AppPasswordRead: React.FC<AppPasswordReadProps> = ({ passwordData, 
       {passwordData.password && passwordData.password.length > 0 && (
         <div className="relative">
           <Input
+            data-test="app-password-password-input"
             readOnly
             onClick={handleCopyPassword}
             label={TRAD.password[locale]}
@@ -184,7 +186,7 @@ export const AppPasswordRead: React.FC<AppPasswordReadProps> = ({ passwordData, 
                   </button>
                 </Tooltip>
                 <Tooltip content={TRAD.copy[locale]}>
-                  <button className="p-1 rounded-md hover:bg-default-200 transition-colors">
+                  <button className="p-1 rounded-md hover:bg-default-200 transition-colors" data-test="app-password-copy-password-button-in-input">
                     <FaRegCopy className="cursor-pointer" onClick={handleCopyPassword} />
                   </button>
                 </Tooltip>
@@ -290,7 +292,16 @@ export const AppPasswordRead: React.FC<AppPasswordReadProps> = ({ passwordData, 
         />
       )}
       {!readonly && (
-        <Button color="primary" variant="flat" startContent={<FaRegEdit />} onPress={onEdit} className={compact ? "mt-1" : "mt-2"} size={compact ? "md" : "lg"} fullWidth>
+        <Button
+          color="primary"
+          variant="flat"
+          startContent={<FaRegEdit />}
+          onPress={onEdit}
+          className={compact ? "mt-1" : "mt-2"}
+          size={compact ? "md" : "lg"}
+          fullWidth
+          data-test="app-password-configure"
+        >
           {TRAD.edit[locale]}
         </Button>
       )}

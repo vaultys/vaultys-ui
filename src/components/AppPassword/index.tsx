@@ -55,7 +55,7 @@ export const AppPassword: React.FC<AppPasswordProps> = ({ passwordData, locale, 
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full" data-test="app-password">
       <AnimatePresence mode="wait">
         {editMode ? (
           <motion.div key="edit" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.2 }}>

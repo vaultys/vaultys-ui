@@ -128,6 +128,7 @@ export const ManagePasswords: React.FC<ManagePasswordsProps> = ({
       <Popover placement="bottom-start" isOpen={isOpen} onOpenChange={setIsOpen}>
         <PopoverTrigger>
           <Button
+            data-test="app-password-folders-trigger"
             variant="flat"
             className={`justify-between ${compact ? "h-10" : "h-14"}`}
             size={compact ? "sm" : "md"}
@@ -156,9 +157,10 @@ export const ManagePasswords: React.FC<ManagePasswordsProps> = ({
               }
             }}
           >
-            {options.map((option) => (
+            {options.map((option, index) => (
               <ListboxItem
                 key={option.key}
+                data-test={`app-password-folder-item-${index}`}
                 startContent={option.icon}
                 endContent={
                   option.hasPassword ? (

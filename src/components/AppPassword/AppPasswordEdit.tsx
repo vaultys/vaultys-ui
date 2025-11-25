@@ -275,7 +275,7 @@ export const AppPasswordEdit: React.FC<AppPasswordEditProps> = ({
   };
 
   return (
-    <div className={`flex flex-col w-full ${compact ? "gap-2" : "gap-4"}`}>
+    <div className={`flex flex-col w-full ${compact ? "gap-2" : "gap-4"}`} data-test="app-password-edit-layout">
       {/* Banner et boutons fixes en haut */}
       {hasChanges() && (
         <div className="sticky top-0 z-10 bg-content1 -mx-1 px-1 pb-3 border-b-2 border-default-200">
@@ -299,6 +299,7 @@ export const AppPasswordEdit: React.FC<AppPasswordEditProps> = ({
               {TRAD.cancel[locale]}
             </Button>
             <Button
+              data-test="app-password-save-button"
               color="primary"
               variant="shadow"
               startContent={<FaRegSave />}
@@ -345,6 +346,7 @@ export const AppPasswordEdit: React.FC<AppPasswordEditProps> = ({
           <div className={compact ? "py-2 space-y-3" : "py-4 space-y-5"}>
             <div className="relative">
               <Input
+                data-test="app-password-username-input"
                 label={TRAD.username[locale]}
                 placeholder={TRAD.enter_username[locale]}
                 value={editedData.username || ""}
@@ -401,6 +403,7 @@ export const AppPasswordEdit: React.FC<AppPasswordEditProps> = ({
               </div>
               <div className="relative">
                 <Input
+                  data-test="app-password-password-input"
                   value={editedData.password || ""}
                   type={showPassword ? "text" : "password"}
                   onValueChange={handlePasswordChange}
