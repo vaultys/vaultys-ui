@@ -9,15 +9,15 @@ import { AiFillLock } from "@react-icons/all-files/ai/AiFillLock";
 import { BiChevronDown } from "@react-icons/all-files/bi/BiChevronDown";
 import { AppPassword } from "../AppPassword";
 import { MANAGE_PASSWORDS_TRAD } from "./translations";
-export const ManagePasswords = ({ personalPassword, folderPasswords = [], locale = "en", onUpdate, onGeneratorConfig, readonly = false, admin = false, passwordConfig, compact = false, }) => {
+export const ManagePasswords = ({ personalPassword, folderPasswords = [], locale = "en", onUpdate, onGeneratorConfig, readonly = false, admin = false, passwordConfig, compact = false, allowPersonal = true, }) => {
     const [selectedKey, setSelectedKey] = useState("");
     const [isOpen, setIsOpen] = useState(false);
     // Déterminer le premier élément avec un mot de passe
     useEffect(() => {
         if (selectedKey)
             return;
-        // Vérifier le mot de passe personnel d'abord
-        if (personalPassword && (personalPassword.username || personalPassword.password)) {
+        // Vérifier le mot de passe personnel d'abord (seulement si allowPersonal est true)
+        if (allowPersonal && personalPassword && (personalPassword.username || personalPassword.password)) {
             setSelectedKey("personal");
             return;
         }
@@ -31,16 +31,20 @@ export const ManagePasswords = ({ personalPassword, folderPasswords = [], locale
         if (folderPasswords.length > 0) {
             setSelectedKey(folderPasswords[0].folder);
         }
-        else {
+        else if (allowPersonal) {
             setSelectedKey("personal");
         }
-    }, [personalPassword, folderPasswords, selectedKey]);
+    }, [personalPassword, folderPasswords, selectedKey, allowPersonal]);
     // Déterminer si la sélection actuelle est en lecture seule
     // En mode non-admin, les dossiers sont en lecture seule
     const isCurrentReadonly = readonly || (!admin && selectedKey !== "personal");
-    // S'il n'y a pas de dossiers, afficher directement AppPassword
-    if (folderPasswords.length === 0) {
+    // S'il n'y a pas de dossiers et allowPersonal est true, afficher directement AppPassword
+    if (folderPasswords.length === 0 && allowPersonal) {
         return (_jsx(AppPassword, { passwordConfig: passwordConfig, passwordData: personalPassword || {}, locale: locale, onUpdate: (data) => onUpdate === null || onUpdate === void 0 ? void 0 : onUpdate("personal", data), onGeneratorConfig: onGeneratorConfig, readonly: readonly, compact: compact }));
+    }
+    // Si allowPersonal est false et qu'il n'y a pas de dossiers, ne rien afficher
+    if (folderPasswords.length === 0 && !allowPersonal) {
+        return (_jsx(Chip, { color: "warning", variant: "flat", startContent: _jsx(AiFillLock, { className: compact ? "w-3 h-3" : "w-4 h-4" }), classNames: { base: compact ? "p-2 h-auto" : "p-3 h-auto" }, children: _jsx("span", { className: compact ? "text-xs text-wrap" : "text-sm text-wrap", children: MANAGE_PASSWORDS_TRAD.personal_not_allowed[locale] }) }));
     }
     // Obtenir le mot de passe actuellement sélectionné
     const getCurrentPassword = () => {
@@ -52,12 +56,16 @@ export const ManagePasswords = ({ personalPassword, folderPasswords = [], locale
     };
     // Créer les options pour le Select
     const options = [
-        {
-            key: "personal",
-            label: MANAGE_PASSWORDS_TRAD.personal[locale],
-            icon: _jsx(BsPersonFill, { className: "text-primary" }),
-            hasPassword: !!(personalPassword && (personalPassword.username || personalPassword.password)),
-        },
+        ...(allowPersonal
+            ? [
+                {
+                    key: "personal",
+                    label: MANAGE_PASSWORDS_TRAD.personal[locale],
+                    icon: _jsx(BsPersonFill, { className: "text-primary" }),
+                    hasPassword: !!(personalPassword && (personalPassword.username || personalPassword.password)),
+                },
+            ]
+            : []),
         ...folderPasswords.map((fp) => ({
             key: fp.folder,
             label: fp.folder,
@@ -73,7 +81,7 @@ export const ManagePasswords = ({ personalPassword, folderPasswords = [], locale
         const selected = options.find((opt) => opt.key === selectedKey);
         return (selected === null || selected === void 0 ? void 0 : selected.label) || MANAGE_PASSWORDS_TRAD.select_folder[locale];
     };
-    return (_jsxs("div", { className: `flex flex-col w-full ${compact ? "gap-2" : "gap-4"}`, children: [_jsxs(Popover, { placement: "bottom-start", isOpen: isOpen, onOpenChange: setIsOpen, children: [_jsx(PopoverTrigger, { children: _jsx(Button, { "data-test": "app-password-folders-trigger", variant: "flat", className: `justify-between ${compact ? "h-10" : "h-14"}`, size: compact ? "sm" : "md", endContent: _jsx(BiChevronDown, { className: compact ? "w-3 h-3" : "w-4 h-4" }), children: _jsxs("div", { className: `flex items-center ${compact ? "gap-1" : "gap-2"}`, children: [selectedKey === "personal" ? (_jsx(BsPersonFill, { className: `text-primary ${compact ? "w-4 h-4" : "w-5 h-5"}` })) : (_jsx(BsFolderFill, { className: `text-yellow-500 ${compact ? "w-4 h-4" : "w-5 h-5"}` })), _jsx("span", { className: compact ? "text-sm" : "", children: getSelectedLabel() })] }) }) }), _jsx(PopoverContent, { className: "p-1", children: _jsx(Listbox, { "aria-label": MANAGE_PASSWORDS_TRAD.select_folder[locale], selectedKeys: selectedKey ? [selectedKey] : [], selectionMode: "single", onSelectionChange: (keys) => {
+    return (_jsxs("div", { className: `flex flex-col w-full ${compact ? "gap-2" : "gap-4"}`, children: [!allowPersonal && (_jsx(Chip, { color: "primary", variant: "flat", startContent: _jsx(AiFillLock, { className: compact ? "w-3 h-3" : "w-4 h-4" }), classNames: { base: compact ? "p-2 h-auto" : "p-3 h-auto" }, children: _jsx("span", { className: compact ? "text-xs text-wrap" : "text-sm text-wrap", children: MANAGE_PASSWORDS_TRAD.personal_not_allowed[locale] }) })), _jsxs(Popover, { placement: "bottom-start", isOpen: isOpen, onOpenChange: setIsOpen, children: [_jsx(PopoverTrigger, { children: _jsx(Button, { "data-test": "app-password-folders-trigger", variant: "flat", className: `justify-between ${compact ? "h-10" : "h-14"}`, size: compact ? "sm" : "md", endContent: _jsx(BiChevronDown, { className: compact ? "w-3 h-3" : "w-4 h-4" }), children: _jsxs("div", { className: `flex items-center ${compact ? "gap-1" : "gap-2"}`, children: [selectedKey === "personal" ? (_jsx(BsPersonFill, { className: `text-primary ${compact ? "w-4 h-4" : "w-5 h-5"}` })) : (_jsx(BsFolderFill, { className: `text-yellow-500 ${compact ? "w-4 h-4" : "w-5 h-5"}` })), _jsx("span", { className: compact ? "text-sm" : "", children: getSelectedLabel() })] }) }) }), _jsx(PopoverContent, { className: "p-1", children: _jsx(Listbox, { "aria-label": MANAGE_PASSWORDS_TRAD.select_folder[locale], selectedKeys: selectedKey ? [selectedKey] : [], selectionMode: "single", onSelectionChange: (keys) => {
                                 const selected = Array.from(keys)[0];
                                 if (selected) {
                                     setSelectedKey(selected);

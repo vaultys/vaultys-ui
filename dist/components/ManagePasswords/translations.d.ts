@@ -27,4 +27,11 @@ export declare const MANAGE_PASSWORDS_TRAD: {
         readonly de: "Sie können dieses Passwort anzeigen, aber nur Administratoren können es bearbeiten.";
         readonly zh: "您可以查看此密码，但只有管理员可以编辑它。";
     };
+    readonly personal_not_allowed: {
+        readonly fr: "Les mots de passe personnels ne sont pas autorisés dans ce contexte.";
+        readonly en: "Personal passwords are not allowed in this context.";
+        readonly es: "No se permiten contraseñas personales en este contexto.";
+        readonly de: "Persönliche Passwörter sind in diesem Kontext nicht erlaubt.";
+        readonly zh: "在此上下文中不允许使用个人密码。";
+    };
 };

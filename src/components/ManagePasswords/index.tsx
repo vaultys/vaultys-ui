@@ -26,6 +26,7 @@ export interface ManagePasswordsProps {
   admin?: boolean;
   passwordConfig?: PasswordConfig;
   compact?: boolean;
+  allowPersonal?: boolean;
 }
 
 export const ManagePasswords: React.FC<ManagePasswordsProps> = ({
@@ -38,6 +39,7 @@ export const ManagePasswords: React.FC<ManagePasswordsProps> = ({
   admin = false,
   passwordConfig,
   compact = false,
+  allowPersonal = true,
 }) => {
   const [selectedKey, setSelectedKey] = useState<string>("");
   const [isOpen, setIsOpen] = useState(false);
@@ -46,8 +48,8 @@ export const ManagePasswords: React.FC<ManagePasswordsProps> = ({
   useEffect(() => {
     if (selectedKey) return;
 
-    // Vérifier le mot de passe personnel d'abord
-    if (personalPassword && (personalPassword.username || personalPassword.password)) {
+    // Vérifier le mot de passe personnel d'abord (seulement si allowPersonal est true)
+    if (allowPersonal && personalPassword && (personalPassword.username || personalPassword.password)) {
       setSelectedKey("personal");
       return;
     }
@@ -63,17 +65,17 @@ export const ManagePasswords: React.FC<ManagePasswordsProps> = ({
     // Par défaut, sélectionner "personal" ou le premier dossier
     if (folderPasswords.length > 0) {
       setSelectedKey(folderPasswords[0].folder);
-    } else {
+    } else if (allowPersonal) {
       setSelectedKey("personal");
     }
-  }, [personalPassword, folderPasswords, selectedKey]);
+  }, [personalPassword, folderPasswords, selectedKey, allowPersonal]);
 
   // Déterminer si la sélection actuelle est en lecture seule
   // En mode non-admin, les dossiers sont en lecture seule
   const isCurrentReadonly = readonly || (!admin && selectedKey !== "personal");
 
-  // S'il n'y a pas de dossiers, afficher directement AppPassword
-  if (folderPasswords.length === 0) {
+  // S'il n'y a pas de dossiers et allowPersonal est true, afficher directement AppPassword
+  if (folderPasswords.length === 0 && allowPersonal) {
     return (
       <AppPassword
         passwordConfig={passwordConfig}
@@ -84,6 +86,20 @@ export const ManagePasswords: React.FC<ManagePasswordsProps> = ({
         readonly={readonly}
         compact={compact}
       />
+    );
+  }
+
+  // Si allowPersonal est false et qu'il n'y a pas de dossiers, ne rien afficher
+  if (folderPasswords.length === 0 && !allowPersonal) {
+    return (
+      <Chip
+        color="warning"
+        variant="flat"
+        startContent={<AiFillLock className={compact ? "w-3 h-3" : "w-4 h-4"} />}
+        classNames={{ base: compact ? "p-2 h-auto" : "p-3 h-auto" }}
+      >
+        <span className={compact ? "text-xs text-wrap" : "text-sm text-wrap"}>{MANAGE_PASSWORDS_TRAD.personal_not_allowed[locale]}</span>
+      </Chip>
     );
   }
 
@@ -98,12 +114,16 @@ export const ManagePasswords: React.FC<ManagePasswordsProps> = ({
 
   // Créer les options pour le Select
   const options = [
-    {
-      key: "personal",
-      label: MANAGE_PASSWORDS_TRAD.personal[locale],
-      icon: <BsPersonFill className="text-primary" />,
-      hasPassword: !!(personalPassword && (personalPassword.username || personalPassword.password)),
-    },
+    ...(allowPersonal
+      ? [
+          {
+            key: "personal",
+            label: MANAGE_PASSWORDS_TRAD.personal[locale],
+            icon: <BsPersonFill className="text-primary" />,
+            hasPassword: !!(personalPassword && (personalPassword.username || personalPassword.password)),
+          },
+        ]
+      : []),
     ...folderPasswords.map((fp) => ({
       key: fp.folder,
       label: fp.folder,
@@ -124,6 +144,18 @@ export const ManagePasswords: React.FC<ManagePasswordsProps> = ({
 
   return (
     <div className={`flex flex-col w-full ${compact ? "gap-2" : "gap-4"}`}>
+      {/* Message d'information si allowPersonal est false */}
+      {!allowPersonal && (
+        <Chip
+          color="primary"
+          variant="flat"
+          startContent={<AiFillLock className={compact ? "w-3 h-3" : "w-4 h-4"} />}
+          classNames={{ base: compact ? "p-2 h-auto" : "p-3 h-auto" }}
+        >
+          <span className={compact ? "text-xs text-wrap" : "text-sm text-wrap"}>{MANAGE_PASSWORDS_TRAD.personal_not_allowed[locale]}</span>
+        </Chip>
+      )}
+
       {/* Sélecteur de dossier */}
       <Popover placement="bottom-start" isOpen={isOpen} onOpenChange={setIsOpen}>
         <PopoverTrigger>

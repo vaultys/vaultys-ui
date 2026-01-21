@@ -16,3 +16,5 @@ export declare const LongFolderPaths: Story;
 export declare const SpanishLocale: Story;
 export declare const AdminMode: Story;
 export declare const NonAdminMode: Story;
+export declare const NoPersonalAllowed: Story;
+export declare const NoPersonalAllowedNoFolders: Story;

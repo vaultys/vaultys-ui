@@ -26,6 +26,11 @@ const meta: Meta<typeof ManagePasswords> = {
       description: "Admin mode - allows editing folder passwords",
       defaultValue: false,
     },
+    allowPersonal: {
+      control: "boolean",
+      description: "Allow personal passwords",
+      defaultValue: true,
+    },
   },
 };
 
@@ -269,5 +274,31 @@ export const NonAdminMode: Story = {
       },
     ],
     locale: "es",
+  },
+};
+
+export const NoPersonalAllowed: Story = {
+  args: {
+    personalPassword: examplePersonalPassword,
+    folderPasswords: [
+      {
+        folder: "/Dev/FrontEnd",
+        password: exampleFolderPassword1,
+      },
+      {
+        folder: "/Dev/Backend",
+        password: exampleFolderPassword2,
+      },
+    ],
+    locale: "en",
+    allowPersonal: false,
+  },
+};
+
+export const NoPersonalAllowedNoFolders: Story = {
+  args: {
+    personalPassword: examplePersonalPassword,
+    locale: "en",
+    allowPersonal: false,
   },
 };
