@@ -15,7 +15,7 @@ import { useEffect, useRef, useState } from "react";
 import { BsSearch } from "@react-icons/all-files/bs/BsSearch";
 import { IoMdClose } from "@react-icons/all-files/io/IoMdClose";
 export const SearchBar = (_a) => {
-    var { onKeyUp, onClick, className, onChange, value = "", placeholder = "Search...", defaultHide = false, children, closeOnSelect = false, onFocusChanged, debounceTime, onSearch, onKeyDown, size = "md" } = _a, props = __rest(_a, ["onKeyUp", "onClick", "className", "onChange", "value", "placeholder", "defaultHide", "children", "closeOnSelect", "onFocusChanged", "debounceTime", "onSearch", "onKeyDown", "size"]);
+    var { onKeyUp, onClick, className, onChange, value = "", placeholder = "Search...", defaultHide = false, children, closeOnSelect = false, onFocusChanged, debounceTime, onSearch, onKeyDown, size = "md", icon } = _a, props = __rest(_a, ["onKeyUp", "onClick", "className", "onChange", "value", "placeholder", "defaultHide", "children", "closeOnSelect", "onFocusChanged", "debounceTime", "onSearch", "onKeyDown", "size", "icon"]);
     const [hide, setHide] = useState(defaultHide);
     const [isFocused, setIsFocused] = useState(false);
     const inputRef = useRef(null);
@@ -124,7 +124,7 @@ export const SearchBar = (_a) => {
         }
     }, [isFocused, onFocusChanged]);
     return (_jsxs("div", Object.assign({}, props, { className: `${className} group relative transition-all duration-300 ease-in-out rounded-xl
-      ${!hide && children && isFocused ? "shadow-lg rounded-b-none!" : "shadow-sm hover:shadow-md"}`, children: [_jsxs("div", { className: `relative flex flex-row items-center ${hide ? "justify-end" : ""} overflow-hidden`, children: [_jsx(BsSearch, { className: `absolute z-20 ${sizeStyles[size].searchIcon} cursor-pointer text-gray-400 hover:text-gray-700 transition-colors`, onClick: handleSearchIconClick, "aria-label": "Search" }), _jsx("input", { ref: inputRef, placeholder: placeholder, "data-test": "search", value: inputValue, autoComplete: "off", accessKey: "shift+e", className: `w-full rounded-xl ${sizeStyles[size].input} bg-transparent focus-visible:outline-hidden
+      ${!hide && children && isFocused ? "shadow-lg rounded-b-none!" : "shadow-sm hover:shadow-md"}`, children: [_jsxs("div", { className: `relative flex flex-row items-center ${hide ? "justify-end" : ""} overflow-hidden`, children: [icon ? (_jsx("div", { className: `absolute z-20 ${sizeStyles[size].searchIcon} cursor-pointer text-gray-400 hover:text-gray-700 transition-colors`, onClick: handleSearchIconClick, children: icon })) : (_jsx(BsSearch, { className: `absolute z-20 ${sizeStyles[size].searchIcon} cursor-pointer text-gray-400 hover:text-gray-700 transition-colors`, onClick: handleSearchIconClick, "aria-label": "Search" })), _jsx("input", { ref: inputRef, placeholder: placeholder, "data-test": "search", value: inputValue, autoComplete: "off", accessKey: "shift+e", className: `w-full rounded-xl ${sizeStyles[size].input} bg-transparent focus-visible:outline-hidden
           border border-transparent focus:border-gray-300 hover:border-gray-200
           transform transition-all duration-300
           ${hide ? "translate-x-full opacity-0" : "translate-x-0 opacity-100"}`, onKeyUp: onKeyUp, onKeyDown: onKeyDown, onChange: (e) => {

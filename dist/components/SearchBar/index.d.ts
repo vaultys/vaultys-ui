@@ -18,5 +18,6 @@ export interface SearchBarProps {
     props?: {
         [key: string]: string;
     };
+    icon?: ReactNode;
 }
 export declare const SearchBar: React.FC<SearchBarProps>;

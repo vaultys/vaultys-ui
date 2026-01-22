@@ -21,6 +21,7 @@ export interface SearchBarProps {
   onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   size?: SearchBarSize;
   props?: { [key: string]: string };
+  icon?: ReactNode;
 }
 
 export const SearchBar: React.FC<SearchBarProps> = ({
@@ -38,6 +39,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   onSearch,
   onKeyDown,
   size = "md",
+  icon,
   ...props
 }) => {
   const [hide, setHide] = useState<boolean>(defaultHide);
@@ -162,11 +164,20 @@ export const SearchBar: React.FC<SearchBarProps> = ({
       ${!hide && children && isFocused ? "shadow-lg rounded-b-none!" : "shadow-sm hover:shadow-md"}`}
     >
       <div className={`relative flex flex-row items-center ${hide ? "justify-end" : ""} overflow-hidden`}>
-        <BsSearch
-          className={`absolute z-20 ${sizeStyles[size].searchIcon} cursor-pointer text-gray-400 hover:text-gray-700 transition-colors`}
-          onClick={handleSearchIconClick}
-          aria-label="Search"
-        />
+        {icon ? (
+          <div
+            className={`absolute z-20 ${sizeStyles[size].searchIcon} cursor-pointer text-gray-400 hover:text-gray-700 transition-colors`}
+            onClick={handleSearchIconClick}
+          >
+            {icon}
+          </div>
+        ) : (
+          <BsSearch
+            className={`absolute z-20 ${sizeStyles[size].searchIcon} cursor-pointer text-gray-400 hover:text-gray-700 transition-colors`}
+            onClick={handleSearchIconClick}
+            aria-label="Search"
+          />
+        )}
         <input
           ref={inputRef}
           placeholder={placeholder}
