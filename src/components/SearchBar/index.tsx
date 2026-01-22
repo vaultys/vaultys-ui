@@ -166,7 +166,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
       <div className={`relative flex flex-row items-center ${hide ? "justify-end" : ""} overflow-hidden`}>
         {icon ? (
           <div
-            className={`absolute z-20 ${sizeStyles[size].searchIcon} cursor-pointer text-gray-400 hover:text-gray-700 transition-colors`}
+            className={`absolute flex items-center justify-center z-20 ${sizeStyles[size].searchIcon} cursor-pointer text-gray-400 hover:text-gray-700 transition-colors`}
             onClick={handleSearchIconClick}
           >
             {icon}
