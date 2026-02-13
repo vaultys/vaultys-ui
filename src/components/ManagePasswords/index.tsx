@@ -63,10 +63,10 @@ export const ManagePasswords: React.FC<ManagePasswordsProps> = ({
     }
 
     // Par défaut, sélectionner "personal" ou le premier dossier
-    if (folderPasswords.length > 0) {
-      setSelectedKey(folderPasswords[0].folder);
-    } else if (allowPersonal) {
+    if (allowPersonal) {
       setSelectedKey("personal");
+    } else if (folderPasswords.length > 0) {
+      setSelectedKey(folderPasswords[0].folder);
     }
   }, [personalPassword, folderPasswords, selectedKey, allowPersonal]);
 
@@ -160,7 +160,7 @@ export const ManagePasswords: React.FC<ManagePasswordsProps> = ({
       <Popover placement="bottom-start" isOpen={isOpen} onOpenChange={setIsOpen}>
         <PopoverTrigger>
           <Button
-            data-test="app-password-folders-trigger"
+            data-testid="app-password-folders-trigger"
             variant="flat"
             className={`justify-between ${compact ? "h-10" : "h-14"}`}
             size={compact ? "sm" : "md"}
@@ -192,7 +192,7 @@ export const ManagePasswords: React.FC<ManagePasswordsProps> = ({
             {options.map((option, index) => (
               <ListboxItem
                 key={option.key}
-                data-test={`app-password-folder-item-${index}`}
+                data-testid={`app-password-folder-item-${index}`}
                 startContent={option.icon}
                 endContent={
                   option.hasPassword ? (

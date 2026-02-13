@@ -26,7 +26,7 @@ export const HeaderItem: React.FC<HeaderItemProps> = ({ title, children, sortCol
         sortColumn && "cursor-pointer"
       } ${className}`}
       onClick={() => sortColumn && typeof onClick === "function" && onClick()}
-      data-test={testId}
+      data-testid={testId}
     >
       <div className="flex flex-row gap-2">
         {title}

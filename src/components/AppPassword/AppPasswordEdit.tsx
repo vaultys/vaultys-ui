@@ -275,7 +275,7 @@ export const AppPasswordEdit: React.FC<AppPasswordEditProps> = ({
   };
 
   return (
-    <div className={`flex flex-col w-full ${compact ? "gap-2" : "gap-4"}`} data-test="app-password-edit-layout">
+    <div className={`flex flex-col w-full ${compact ? "gap-2" : "gap-4"}`} data-testid="app-password-edit-layout">
       {/* Banner et boutons fixes en haut */}
       {hasChanges() && (
         <div className="sticky top-0 z-10 bg-content1 -mx-1 px-1 pb-3 border-b-2 border-default-200">
@@ -299,7 +299,7 @@ export const AppPasswordEdit: React.FC<AppPasswordEditProps> = ({
               {TRAD.cancel[locale]}
             </Button>
             <Button
-              data-test="app-password-save-button"
+              data-testid="app-password-save-button"
               color="primary"
               variant="shadow"
               startContent={<FaRegSave />}
@@ -346,7 +346,7 @@ export const AppPasswordEdit: React.FC<AppPasswordEditProps> = ({
           <div className={compact ? "py-2 space-y-3" : "py-4 space-y-5"}>
             <div className="relative">
               <Input
-                data-test="app-password-username-input"
+                data-testid="app-password-username-input"
                 label={TRAD.username[locale]}
                 placeholder={TRAD.enter_username[locale]}
                 value={editedData.username || ""}
@@ -403,7 +403,7 @@ export const AppPasswordEdit: React.FC<AppPasswordEditProps> = ({
               </div>
               <div className="relative">
                 <Input
-                  data-test="app-password-password-input"
+                  data-testid="app-password-password-input"
                   value={editedData.password || ""}
                   type={showPassword ? "text" : "password"}
                   onValueChange={handlePasswordChange}
@@ -416,7 +416,7 @@ export const AppPasswordEdit: React.FC<AppPasswordEditProps> = ({
                       <Tooltip content={showPassword ? TRAD.hide[locale] : TRAD.show[locale]}>
                         <button
                           className="p-1 rounded-md hover:bg-default-200 transition-colors"
-                          data-test="app-password-show-password-button"
+                          data-testid="app-password-show-password-button"
                           onClick={() => setShowPassword(!showPassword)}
                         >
                           {showPassword ? <BiHide className="cursor-pointer" /> : <BiShow className="cursor-pointer" />}
@@ -462,24 +462,24 @@ export const AppPasswordEdit: React.FC<AppPasswordEditProps> = ({
                         {locale === "fr"
                           ? "Force du mot de passe"
                           : locale === "es"
-                          ? "Fuerza de la contraseña"
-                          : locale === "de"
-                          ? "Passwortstärke"
-                          : locale === "zh"
-                          ? "密码强度"
-                          : "Password strength"}
+                            ? "Fuerza de la contraseña"
+                            : locale === "de"
+                              ? "Passwortstärke"
+                              : locale === "zh"
+                                ? "密码强度"
+                                : "Password strength"}
                       </span>
                       <Tooltip
                         content={
                           locale === "fr"
                             ? "Plus vous utilisez de types de caractères et plus votre mot de passe est long, plus il est sécurisé."
                             : locale === "es"
-                            ? "Cuantos más tipos de caracteres utilices y más larga sea tu contraseña, más segura será."
-                            : locale === "de"
-                            ? "Je mehr Zeichentypen Sie verwenden und je länger Ihr Passwort ist, desto sicherer ist es."
-                            : locale === "zh"
-                            ? "您使用的字符类型越多，密码越长，密码就越安全。"
-                            : "The more character types you use and the longer your password is, the more secure it will be."
+                              ? "Cuantos más tipos de caracteres utilices y más larga sea tu contraseña, más segura será."
+                              : locale === "de"
+                                ? "Je mehr Zeichentypen Sie verwenden und je länger Ihr Passwort ist, desto sicherer ist es."
+                                : locale === "zh"
+                                  ? "您使用的字符类型越多，密码越长，密码就越安全。"
+                                  : "The more character types you use and the longer your password is, the more secure it will be."
                         }
                       >
                         <Button isIconOnly size="sm" variant="light" className={compact ? "min-w-5 w-5 h-5" : "min-w-6 w-6 h-6"}>

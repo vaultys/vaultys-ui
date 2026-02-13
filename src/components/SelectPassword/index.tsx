@@ -246,7 +246,7 @@ export const SelectPassword: React.FC<SelectPasswordProps> = ({
     <div className={`flex flex-col w-full ${compact ? "gap-2" : "gap-4"}`}>
       {/* Champ de saisie du mot de passe */}
       <Input
-        data-test={testId}
+        data-testid={testId}
         label={label}
         value={value}
         type={showPassword ? "text" : "password"}

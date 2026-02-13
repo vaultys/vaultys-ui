@@ -82,7 +82,7 @@ export const RowItem: React.FC<RowItemProps> = ({
     <td
       className={` px-2 first:rounded-l-lg first:rtl:rounded-r-lg first:rtl:rounded-l-[unset] last:rounded-r-lg last:rtl:rounded-l-lg last:rtl:rounded-r-[unset] ${className}`}
       id={id}
-      data-test={testId}
+      data-testid={testId}
     >
       {getChild()}
     </td>

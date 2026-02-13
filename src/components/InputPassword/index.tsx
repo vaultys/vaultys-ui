@@ -34,7 +34,7 @@ export const InputPassword: React.FC<InputPasswordProps> = ({
   return (
     <Input
       autoComplete="off"
-      data-test={testId}
+      data-testid={testId}
       label={label}
       value={value}
       placeholder={placeholder}

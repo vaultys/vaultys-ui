@@ -281,7 +281,7 @@ export const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({ passwordTy
       <Switch
         isSelected={type === PasswordType.PASSWORD}
         onValueChange={() => setType(type === PasswordType.PASSWORD ? PasswordType.PASSPHRASE : PasswordType.PASSWORD)}
-        data-test="password-generator-select-type-switch"
+        data-testid="password-generator-select-type-switch"
       >
         <div className="flex flex-row gap-2 items-center">
           {type === PasswordType.PASSWORD ? <RiLockPasswordFill /> : <BiKey />}
@@ -295,7 +295,7 @@ export const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({ passwordTy
             className={`cursor-pointer flex flex-row justify-between items-center gap-4 p-4 border rounded-lg transition-colors ${
               copied ? "border-success bg-success bg-opacity-10" : "border-default-200 hover:bg-default-100"
             }`}
-            data-test="password-generator-password-area"
+            data-testid="password-generator-password-area"
             onClick={() => {
               navigator.clipboard.writeText(type === PasswordType.PASSWORD ? password : passphrase);
               setCopied(true);
@@ -345,13 +345,13 @@ export const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({ passwordTy
         />
       </div>
 
-      <div className="border border-default-200 rounded-lg p-4 bg-default-50" data-test="password-generator-password-options">
+      <div className="border border-default-200 rounded-lg p-4 bg-default-50" data-testid="password-generator-password-options">
         <h4 className="text-sm font-medium mb-3">{TRAD.options[locale]}</h4>
 
         {type === PasswordType.PASSWORD ? (
           <div className="flex flex-col gap-4">
             <Slider
-              data-test="password-generator-password-length"
+              data-testid="password-generator-password-length"
               label={`${TRAD.charNumber[locale]} (${length})`}
               minValue={8}
               maxValue={128}
@@ -368,7 +368,7 @@ export const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({ passwordTy
                 color="primary"
                 isSelected={lowercaseLetters}
                 onValueChange={(value: boolean) => setLowercaseLetters(value)}
-                data-test="password-generator-password-lowercase"
+                data-testid="password-generator-password-lowercase"
               >
                 a-z
               </Checkbox>
@@ -376,18 +376,18 @@ export const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({ passwordTy
                 color="primary"
                 isSelected={capitalLetters}
                 onValueChange={(value: boolean) => setCapitalLetters(value)}
-                data-test="password-generator-password-uppercase"
+                data-testid="password-generator-password-uppercase"
               >
                 A-Z
               </Checkbox>
-              <Checkbox color="primary" isSelected={numbers} onValueChange={(value: boolean) => setNumbers(value)} data-test="password-generator-password-numbers">
+              <Checkbox color="primary" isSelected={numbers} onValueChange={(value: boolean) => setNumbers(value)} data-testid="password-generator-password-numbers">
                 0-9
               </Checkbox>
               <Checkbox
                 color="primary"
                 isSelected={specialCharacters}
                 onValueChange={(value: boolean) => setSpecialCharacters(value)}
-                data-test="password-generator-password-symbols"
+                data-testid="password-generator-password-symbols"
               >
                 {SPECIAL_CHARS}
               </Checkbox>
@@ -396,7 +396,7 @@ export const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({ passwordTy
         ) : (
           <div className="flex flex-col gap-4">
             <Slider
-              data-test="password-generator-passphrase-length"
+              data-testid="password-generator-passphrase-length"
               label={`${TRAD.wordNumber[locale]} (${wordsNumber})`}
               minValue={4}
               maxValue={24}
@@ -408,7 +408,7 @@ export const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({ passwordTy
                 filler: "bg-primary",
               }}
             />
-            <Select label={TRAD.language[locale]} selectedKeys={[language]} size="sm" className="max-w-xs" data-test="password-generator-passphrase-language">
+            <Select label={TRAD.language[locale]} selectedKeys={[language]} size="sm" className="max-w-xs" data-testid="password-generator-passphrase-language">
               <SelectItem key="fr" onPress={() => setLanguage("fr")}>
                 {TRAD.french[locale]}
               </SelectItem>
@@ -426,7 +426,7 @@ export const PasswordGenerator: React.FC<PasswordGeneratorProps> = ({ passwordTy
           onPress={() => (type === PasswordType.PASSWORD ? generatePassword() : generatePassphrase())}
           color="primary"
           size="sm"
-          data-test="password-generator-regenerate-button"
+          data-testid="password-generator-regenerate-button"
         >
           {TRAD.regenerate[locale]}
         </Button>

@@ -78,7 +78,7 @@ function ConfirmModalContextProvider({ children }: { children: React.ReactNode }
     () => ({
       show: handleShow,
     }),
-    []
+    [],
   );
 
   // Color mappings for alert box styling
@@ -172,14 +172,14 @@ function ConfirmModalContextProvider({ children }: { children: React.ReactNode }
             </ModalBody>
 
             <ModalFooter>
-              <Button variant="flat" color="default" onPress={handleCancel} startContent={content.cancelIcon} data-test="confirm-dialog-deny">
+              <Button variant="flat" color="default" onPress={handleCancel} startContent={content.cancelIcon} data-testid="confirm-dialog-deny">
                 {content.cancelText}
               </Button>
               <Button
                 color={getButtonColor(content.color ?? "primary") as "default" | "success" | "warning" | "danger" | "primary" | "secondary"}
                 onPress={handleAccept}
                 startContent={content.acceptIcon}
-                data-test="confirm-dialog-accept"
+                data-testid="confirm-dialog-accept"
                 className={`${content.color === "info" && "bg-modern-blue"}`}
               >
                 {content.acceptText}

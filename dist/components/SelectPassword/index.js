@@ -211,7 +211,7 @@ export const SelectPassword = ({ label = "Mot de passe", description, password =
                 };
         }
     };
-    return (_jsxs("div", { className: `flex flex-col w-full ${compact ? "gap-2" : "gap-4"}`, children: [_jsx(Input, { "data-test": testId, label: label, value: value, type: showPassword ? "text" : "password", onValueChange: (val) => {
+    return (_jsxs("div", { className: `flex flex-col w-full ${compact ? "gap-2" : "gap-4"}`, children: [_jsx(Input, { "data-testid": testId, label: label, value: value, type: showPassword ? "text" : "password", onValueChange: (val) => {
                     setValue(val);
                     if (onChange)
                         onChange(val);

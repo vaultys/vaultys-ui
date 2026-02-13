@@ -127,7 +127,7 @@ export const SelectLanguage: React.FC<SelectLanguageProps> = ({ languages, onLan
     <div
       className={`${size === "sm" && "text-sm"} ${size === "md" && "text-md"} ${size === "lg" && "text-lg"} ${size === "xl" && "text-xl"} ${size === "2xl" && "text-2xl"} ${size === "3xl" && "text-3xl"} ${size === "4xl" && "text-4xl"} ${size === "5xl" && "text-5xl"} cursor-pointer px-1 ${currentValue == lc ? "" : "opacity-20"}`}
       onClick={() => onLanguageClicked(lc)}
-      data-test={lc}
+      data-testid={lc}
     >
       {emoji}
     </div>

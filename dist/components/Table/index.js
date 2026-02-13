@@ -131,7 +131,7 @@ export const Table = ({ cols, rows, setSelectedRows, refresh, configureButton = 
             headerItems.push(_jsx(HeaderItem, { title: col.name, onClick: () => changeSort(i), sortActive: currentSortIndex === i, sortColumn: col.sort, sortType: currentSortType, testId: `col-${i}` }));
         });
         selectable &&
-            headerItems.push(_jsx(HeaderItem, { children: _jsx(Checkbox, { "data-test": `${dataTest}-select-all`, onValueChange: (value) => {
+            headerItems.push(_jsx(HeaderItem, { children: _jsx(Checkbox, { "data-testid": `${dataTest}-select-all`, onValueChange: (value) => {
                         setSelectedAll(value);
                     }, isSelected: selectedAll }) }));
         if (configureButton)
@@ -163,7 +163,7 @@ export const Table = ({ cols, rows, setSelectedRows, refresh, configureButton = 
             case ColumnType.TEXT:
                 return (_jsx(RowItem, { testId: `row-${rows.indexOf((_j = rows.find((row) => row.id === rowId)) !== null && _j !== void 0 ? _j : rows[0])}-item-${rowItem.colIndex}`, type: ColumnType.TEXT, value: rowItem.value, id: rowItem.id }, `${rowId}-${rowItem.colIndex}`));
             default:
-                return (_jsx("div", { "data-test": `row-${rows.indexOf((_k = rows.find((row) => row.id === rowId)) !== null && _k !== void 0 ? _k : rows[0])}-item-${rowItem.colIndex}` }, `${rowId}-${rowItem.colIndex}`));
+                return (_jsx("div", { "data-testid": `row-${rows.indexOf((_k = rows.find((row) => row.id === rowId)) !== null && _k !== void 0 ? _k : rows[0])}-item-${rowItem.colIndex}` }, `${rowId}-${rowItem.colIndex}`));
         }
     };
     const applySort = (rowA, rowB) => {
@@ -212,7 +212,7 @@ export const Table = ({ cols, rows, setSelectedRows, refresh, configureButton = 
         else
             return numberB - numberA;
     };
-    return (_jsxs("div", { className: "w-max min-w-full flex flex-col relative min-h-[400px] bg-light-secondary dark:bg-dark-secondary rounded-large shadow-small", children: [rows.length === 0 && emptyTableContent && (_jsx("div", { className: "absolute top-0 opacity-50 bottom-0 left-0 right-0 flex items-center justify-center text-center", children: emptyTableContent })), _jsxs("table", { className: "table-auto border-separate border-spacing-y-1 bg-light-secondary dark:bg-dark-secondary  p-4 rounded-large ", ref: ref, "data-test": dataTest, children: [_jsx(Header, { items: getHeaderItems() }), _jsx("tbody", { "data-test": `${dataTest}-body`, children: rows.sort(applySort).map((row, index) => (_jsx(Row, { rowIndex: index, showLines: showLines, blur: blur, dataTest: `${dataTest}-row-${index}`, id: row.rowId, clickable: row.clickable && typeof row.onClick === "function", warning: row.warning, danger: row.danger, inactiveState: row.inactive, onSelectedClicked: (selected) => {
+    return (_jsxs("div", { className: "w-max min-w-full flex flex-col relative min-h-[400px] bg-light-secondary dark:bg-dark-secondary rounded-large shadow-small", children: [rows.length === 0 && emptyTableContent && (_jsx("div", { className: "absolute top-0 opacity-50 bottom-0 left-0 right-0 flex items-center justify-center text-center", children: emptyTableContent })), _jsxs("table", { className: "table-auto border-separate border-spacing-y-1 bg-light-secondary dark:bg-dark-secondary  p-4 rounded-large ", ref: ref, "data-testid": dataTest, children: [_jsx(Header, { items: getHeaderItems() }), _jsx("tbody", { "data-testid": `${dataTest}-body`, children: rows.sort(applySort).map((row, index) => (_jsx(Row, { rowIndex: index, showLines: showLines, blur: blur, dataTest: `${dataTest}-row-${index}`, id: row.rowId, clickable: row.clickable && typeof row.onClick === "function", warning: row.warning, danger: row.danger, inactiveState: row.inactive, onSelectedClicked: (selected) => {
                                 if (selected) {
                                     setSelectedIds([...selectedIds, row.id]);
                                 }

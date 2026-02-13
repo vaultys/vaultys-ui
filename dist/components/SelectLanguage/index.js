@@ -116,6 +116,6 @@ const emojis = {
     nd: "🇿🇦",
 };
 export const SelectLanguage = ({ languages, onLanguageClicked, currentValue, size = "3xl" }) => {
-    const Flag = ({ lc, emoji }) => (_jsx("div", { className: `${size === "sm" && "text-sm"} ${size === "md" && "text-md"} ${size === "lg" && "text-lg"} ${size === "xl" && "text-xl"} ${size === "2xl" && "text-2xl"} ${size === "3xl" && "text-3xl"} ${size === "4xl" && "text-4xl"} ${size === "5xl" && "text-5xl"} cursor-pointer px-1 ${currentValue == lc ? "" : "opacity-20"}`, onClick: () => onLanguageClicked(lc), "data-test": lc, children: emoji }));
+    const Flag = ({ lc, emoji }) => (_jsx("div", { className: `${size === "sm" && "text-sm"} ${size === "md" && "text-md"} ${size === "lg" && "text-lg"} ${size === "xl" && "text-xl"} ${size === "2xl" && "text-2xl"} ${size === "3xl" && "text-3xl"} ${size === "4xl" && "text-4xl"} ${size === "5xl" && "text-5xl"} cursor-pointer px-1 ${currentValue == lc ? "" : "opacity-20"}`, onClick: () => onLanguageClicked(lc), "data-testid": lc, children: emoji }));
     return (_jsx("div", { className: "flex flex-row gap-1", children: languages.map((language) => (_jsx(Flag, { lc: language, emoji: emojis[language] }))) }));
 };

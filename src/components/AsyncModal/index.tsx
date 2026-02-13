@@ -107,7 +107,7 @@ function InputModalContextProvider(props) {
               {content.type === "confirm" && (
                 <Input
                   isInvalid={confirmationMessageInvalid}
-                  data-test="confirm-dialog-input"
+                  data-testid="confirm-dialog-input"
                   placeholder={content.placeholder}
                   onValueChange={(value: string) => setVal(value)}
                   value={val}
@@ -115,11 +115,11 @@ function InputModalContextProvider(props) {
               )}
             </ModalBody>
             <ModalFooter>
-              <Button color="success" className="text-white" onPress={() => handleOk()} data-test="confirm-dialog-accept">
+              <Button color="success" className="text-white" onPress={() => handleOk()} data-testid="confirm-dialog-accept">
                 <span className="text-ellipsis truncate ...">{content.acceptText}</span>
               </Button>
               {content.type !== "info" && (
-                <Button color="danger" className="text-white" onPress={() => handleCancel()} data-test="confirm-dialog-deny">
+                <Button color="danger" className="text-white" onPress={() => handleCancel()} data-testid="confirm-dialog-deny">
                   <span className="text-ellipsis truncate ...">{content.declineText}</span>
                 </Button>
               )}

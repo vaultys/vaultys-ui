@@ -181,7 +181,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
         <input
           ref={inputRef}
           placeholder={placeholder}
-          data-test="search"
+          data-testid="search"
           value={inputValue}
           autoComplete="off"
           accessKey="shift+e"
