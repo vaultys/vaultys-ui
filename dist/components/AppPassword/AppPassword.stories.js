@@ -228,6 +228,48 @@ export const CompactEnglish = {
         (Story) => (_jsx("div", { style: { width: "400px" }, children: _jsx(Story, {}) })),
     ],
 };
+// Variante avec callback onDelete
+export const WithDeleteCallback = {
+    args: {
+        locale: "fr",
+        passwordData: {
+            username: "utilisateur@exemple.com",
+            password: "MotDePasse123!",
+            totpSecret: "JBSWY3DPEHPK3PXP",
+            secureNotes: "Ceci est une note sécurisée",
+        },
+        onDelete: () => {
+            alert("Suppression du mot de passe confirmée");
+            console.log("Password deleted");
+        },
+        onUpdate: (data) => {
+            console.log("Password updated:", data);
+        },
+        onGeneratorConfig: () => {
+            alert("Configurer le générateur de mot de passe");
+        },
+    },
+};
+// Mode compact avec delete
+export const CompactWithDelete = {
+    args: {
+        locale: "en",
+        passwordData: {
+            username: "user@example.com",
+            password: "Password123!",
+            totpSecret: "JBSWY3DPEHPK3PXP",
+            secureNotes: "This is a secure note",
+        },
+        compact: true,
+        onDelete: () => {
+            alert("Password deletion confirmed");
+            console.log("Password deleted");
+        },
+    },
+    decorators: [
+        (Story) => (_jsx("div", { style: { width: "400px" }, children: _jsx(Story, {}) })),
+    ],
+};
 // Comparaison côte à côte : Normal vs Compact
 export const NormalVsCompact = {
     render: (args) => (_jsxs("div", { style: { display: "flex", gap: "20px", alignItems: "flex-start" }, children: [_jsxs("div", { style: { width: "500px" }, children: [_jsx("h3", { style: { marginBottom: "10px" }, children: "Normal Mode" }), _jsx(AppPassword, Object.assign({}, args, { compact: false }))] }), _jsxs("div", { style: { width: "400px" }, children: [_jsx("h3", { style: { marginBottom: "10px" }, children: "Compact Mode" }), _jsx(AppPassword, Object.assign({}, args, { compact: true }))] })] })),

@@ -9,7 +9,7 @@ import { AiFillLock } from "@react-icons/all-files/ai/AiFillLock";
 import { BiChevronDown } from "@react-icons/all-files/bi/BiChevronDown";
 import { AppPassword } from "../AppPassword";
 import { MANAGE_PASSWORDS_TRAD } from "./translations";
-export const ManagePasswords = ({ personalPassword, folderPasswords = [], locale = "en", onUpdate, onGeneratorConfig, readonly = false, admin = false, passwordConfig, compact = false, allowPersonal = true, }) => {
+export const ManagePasswords = ({ personalPassword, folderPasswords = [], locale = "en", onUpdate, onDelete, onGeneratorConfig, readonly = false, admin = false, passwordConfig, compact = false, allowPersonal = true, }) => {
     const [selectedKey, setSelectedKey] = useState("");
     const [isOpen, setIsOpen] = useState(false);
     // Déterminer le premier élément avec un mot de passe
@@ -40,7 +40,7 @@ export const ManagePasswords = ({ personalPassword, folderPasswords = [], locale
     const isCurrentReadonly = readonly || (!admin && selectedKey !== "personal");
     // S'il n'y a pas de dossiers et allowPersonal est true, afficher directement AppPassword
     if (folderPasswords.length === 0 && allowPersonal) {
-        return (_jsx(AppPassword, { passwordConfig: passwordConfig, passwordData: personalPassword || {}, locale: locale, onUpdate: (data) => onUpdate === null || onUpdate === void 0 ? void 0 : onUpdate("personal", data), onGeneratorConfig: onGeneratorConfig, readonly: readonly, compact: compact }));
+        return (_jsx(AppPassword, { passwordConfig: passwordConfig, passwordData: personalPassword || {}, locale: locale, onUpdate: (data) => onUpdate === null || onUpdate === void 0 ? void 0 : onUpdate("personal", data), onDelete: onDelete ? () => onDelete("personal") : undefined, onGeneratorConfig: onGeneratorConfig, readonly: readonly, compact: compact }));
     }
     // Si allowPersonal est false et qu'il n'y a pas de dossiers, ne rien afficher
     if (folderPasswords.length === 0 && !allowPersonal) {
@@ -76,6 +76,9 @@ export const ManagePasswords = ({ personalPassword, folderPasswords = [], locale
     const handleUpdate = (data) => {
         onUpdate === null || onUpdate === void 0 ? void 0 : onUpdate(selectedKey, data);
     };
+    const handleDelete = () => {
+        onDelete === null || onDelete === void 0 ? void 0 : onDelete(selectedKey);
+    };
     // Obtenir le label de l'option sélectionnée
     const getSelectedLabel = () => {
         const selected = options.find((opt) => opt.key === selectedKey);
@@ -87,6 +90,6 @@ export const ManagePasswords = ({ personalPassword, folderPasswords = [], locale
                                     setSelectedKey(selected);
                                     setIsOpen(false);
                                 }
-                            }, children: options.map((option, index) => (_jsx(ListboxItem, { "data-testid": `app-password-folder-item-${index}`, startContent: option.icon, endContent: option.hasPassword ? (_jsx(Chip, { size: "sm", color: "success", variant: "flat", startContent: _jsx(BiKey, { className: "w-3 h-3" }), children: _jsx("span", { className: "text-xs", children: "Password" }) })) : undefined, children: option.label }, option.key))) }) })] }), !admin && selectedKey !== "personal" && (_jsx(Chip, { color: "warning", variant: "flat", startContent: _jsx(AiFillLock, { className: compact ? "w-3 h-3" : "w-4 h-4" }), classNames: { base: compact ? "p-2 h-auto" : "p-3 h-auto" }, children: _jsx("span", { className: compact ? "text-xs text-wrap" : "text-sm text-wrap", children: MANAGE_PASSWORDS_TRAD.folder_readonly_info[locale] }) })), _jsx(AppPassword, { passwordData: getCurrentPassword(), locale: locale, onUpdate: handleUpdate, onGeneratorConfig: onGeneratorConfig, passwordConfig: passwordConfig, readonly: isCurrentReadonly, compact: compact }, selectedKey)] }));
+                            }, children: options.map((option, index) => (_jsx(ListboxItem, { "data-testid": `app-password-folder-item-${index}`, startContent: option.icon, endContent: option.hasPassword ? (_jsx(Chip, { size: "sm", color: "success", variant: "flat", startContent: _jsx(BiKey, { className: "w-3 h-3" }), children: _jsx("span", { className: "text-xs", children: "Password" }) })) : undefined, children: option.label }, option.key))) }) })] }), !admin && selectedKey !== "personal" && (_jsx(Chip, { color: "warning", variant: "flat", startContent: _jsx(AiFillLock, { className: compact ? "w-3 h-3" : "w-4 h-4" }), classNames: { base: compact ? "p-2 h-auto" : "p-3 h-auto" }, children: _jsx("span", { className: compact ? "text-xs text-wrap" : "text-sm text-wrap", children: MANAGE_PASSWORDS_TRAD.folder_readonly_info[locale] }) })), _jsx(AppPassword, { passwordData: getCurrentPassword(), locale: locale, onUpdate: handleUpdate, onDelete: onDelete ? handleDelete : undefined, onGeneratorConfig: onGeneratorConfig, passwordConfig: passwordConfig, readonly: isCurrentReadonly, compact: compact }, selectedKey)] }));
 };
 export default ManagePasswords;

@@ -6,6 +6,7 @@ import { BiShow } from "@react-icons/all-files/bi/BiShow";
 import { BiHide } from "@react-icons/all-files/bi/BiHide";
 import { FaExpand } from "@react-icons/all-files/fa/FaExpand";
 import { FaRegEdit } from "@react-icons/all-files/fa/FaRegEdit";
+import { FaRegTrashAlt } from "@react-icons/all-files/fa/FaRegTrashAlt";
 import { generateTOTP } from "../../lib/totp";
 import { TRAD, PasswordDataType } from "./translations";
 import { AnimatePresence, motion } from "framer-motion";
@@ -14,11 +15,12 @@ interface AppPasswordReadProps {
   passwordData: PasswordDataType;
   locale: "fr" | "en" | "es" | "de" | "zh";
   onEdit: () => void;
+  onDelete?: () => void;
   readonly?: boolean;
   compact?: boolean;
 }
 
-export const AppPasswordRead: React.FC<AppPasswordReadProps> = ({ passwordData, locale, onEdit, readonly = false, compact = false }) => {
+export const AppPasswordRead: React.FC<AppPasswordReadProps> = ({ passwordData, locale, onEdit, onDelete, readonly = false, compact = false }) => {
   const [usernameCopied, setUsernameCopied] = useState<boolean>(false);
   const [passwordCopied, setPasswordCopied] = useState<boolean>(false);
   const [otpCopied, setOtpCopied] = useState<boolean>(false);
@@ -292,18 +294,32 @@ export const AppPasswordRead: React.FC<AppPasswordReadProps> = ({ passwordData, 
         />
       )}
       {!readonly && (
-        <Button
-          color="primary"
-          variant="flat"
-          startContent={<FaRegEdit />}
-          onPress={onEdit}
-          className={compact ? "mt-1" : "mt-2"}
-          size={compact ? "md" : "lg"}
-          fullWidth
-          data-testid="app-password-configure"
-        >
-          {TRAD.edit[locale]}
-        </Button>
+        <div className={`flex ${compact ? "gap-2" : "gap-3"} ${compact ? "mt-1" : "mt-2"}`}>
+          <Button
+            color="primary"
+            variant="flat"
+            startContent={<FaRegEdit className="shrink-0" />}
+            onPress={onEdit}
+            size={compact ? "md" : "lg"}
+            fullWidth
+            data-testid="app-password-configure"
+          >
+            {TRAD.edit[locale]}
+          </Button>
+          {onDelete && (
+            <Button
+              color="danger"
+              variant="flat"
+              startContent={<FaRegTrashAlt className="shrink-0" />}
+              onPress={onDelete}
+              size={compact ? "md" : "lg"}
+              fullWidth
+              data-testid="app-password-delete"
+            >
+              {TRAD.delete[locale]}
+            </Button>
+          )}
+        </div>
       )}
       <Modal
         backdrop="blur"

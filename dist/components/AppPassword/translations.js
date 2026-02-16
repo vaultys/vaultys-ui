@@ -195,4 +195,11 @@ export const TRAD = {
         de: "Generieren",
         zh: "生成",
     },
+    delete: {
+        fr: "Supprimer",
+        en: "Delete",
+        es: "Eliminar",
+        de: "Löschen",
+        zh: "删除",
+    },
 };

@@ -302,3 +302,58 @@ export const NoPersonalAllowedNoFolders: Story = {
     allowPersonal: false,
   },
 };
+
+export const WithDeleteCallback: Story = {
+  args: {
+    personalPassword: examplePersonalPassword,
+    folderPasswords: [
+      {
+        folder: "/Dev/FrontEnd",
+        password: exampleFolderPassword1,
+      },
+      {
+        folder: "/Dev/Backend",
+        password: exampleFolderPassword2,
+      },
+    ],
+    locale: "en",
+    onUpdate: (folder, data) => {
+      console.log(`Password updated for ${folder}:`, data);
+      alert(`Password updated for ${folder}`);
+    },
+    onDelete: (folder) => {
+      console.log(`Password deleted for ${folder}`);
+      alert(`Password deletion confirmed for ${folder}`);
+    },
+    onGeneratorConfig: () => {
+      console.log("Generator config opened");
+      alert("Generator configuration opened");
+    },
+  },
+};
+
+export const AdminModeWithDelete: Story = {
+  args: {
+    personalPassword: examplePersonalPassword,
+    folderPasswords: [
+      {
+        folder: "/Production/App1",
+        password: exampleFolderPassword1,
+      },
+      {
+        folder: "/Production/App2",
+        password: exampleFolderPassword2,
+      },
+    ],
+    locale: "fr",
+    admin: true,
+    onUpdate: (folder, data) => {
+      console.log(`Mot de passe mis à jour pour ${folder}:`, data);
+      alert(`Mot de passe mis à jour pour ${folder}`);
+    },
+    onDelete: (folder) => {
+      console.log(`Mot de passe supprimé pour ${folder}`);
+      alert(`Suppression confirmée pour ${folder}`);
+    },
+  },
+};

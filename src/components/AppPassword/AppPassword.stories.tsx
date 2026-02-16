@@ -268,6 +268,54 @@ export const CompactEnglish: Story = {
   ],
 };
 
+// Variante avec callback onDelete
+export const WithDeleteCallback: Story = {
+  args: {
+    locale: "fr",
+    passwordData: {
+      username: "utilisateur@exemple.com",
+      password: "MotDePasse123!",
+      totpSecret: "JBSWY3DPEHPK3PXP",
+      secureNotes: "Ceci est une note sécurisée",
+    },
+    onDelete: () => {
+      alert("Suppression du mot de passe confirmée");
+      console.log("Password deleted");
+    },
+    onUpdate: (data) => {
+      console.log("Password updated:", data);
+    },
+    onGeneratorConfig: () => {
+      alert("Configurer le générateur de mot de passe");
+    },
+  },
+};
+
+// Mode compact avec delete
+export const CompactWithDelete: Story = {
+  args: {
+    locale: "en",
+    passwordData: {
+      username: "user@example.com",
+      password: "Password123!",
+      totpSecret: "JBSWY3DPEHPK3PXP",
+      secureNotes: "This is a secure note",
+    },
+    compact: true,
+    onDelete: () => {
+      alert("Password deletion confirmed");
+      console.log("Password deleted");
+    },
+  },
+  decorators: [
+    (Story) => (
+      <div style={{ width: "400px" }}>
+        <Story />
+      </div>
+    ),
+  ],
+};
+
 // Comparaison côte à côte : Normal vs Compact
 export const NormalVsCompact: Story = {
   render: (args) => (

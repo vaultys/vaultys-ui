@@ -10,13 +10,23 @@ interface AppPasswordProps {
   passwordData: PasswordDataType;
   locale: "fr" | "en" | "es" | "de" | "zh";
   onUpdate?: (data: PasswordDataType) => void;
+  onDelete?: () => void;
   readonly?: boolean;
   onGeneratorConfig?: () => void;
   passwordConfig?: PasswordConfig;
   compact?: boolean;
 }
 
-export const AppPassword: React.FC<AppPasswordProps> = ({ passwordData, locale, onUpdate, readonly = false, onGeneratorConfig, passwordConfig, compact = false }) => {
+export const AppPassword: React.FC<AppPasswordProps> = ({
+  passwordData,
+  locale,
+  onUpdate,
+  onDelete,
+  readonly = false,
+  onGeneratorConfig,
+  passwordConfig,
+  compact = false,
+}) => {
   const [editMode, setEditMode] = useState<boolean>(false);
   const [currentData, setCurrentData] = useState<PasswordDataType>(passwordData);
   const [isDataChanged, setIsDataChanged] = useState<boolean>(false);
@@ -71,7 +81,7 @@ export const AppPassword: React.FC<AppPasswordProps> = ({ passwordData, locale, 
           </motion.div>
         ) : (
           <motion.div key="read" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.2 }}>
-            <AppPasswordRead readonly={readonly} passwordData={currentData} locale={locale} onEdit={handleEdit} compact={compact} />
+            <AppPasswordRead readonly={readonly} passwordData={currentData} locale={locale} onEdit={handleEdit} onDelete={onDelete} compact={compact} />
           </motion.div>
         )}
       </AnimatePresence>

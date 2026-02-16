@@ -3,6 +3,7 @@ interface AppPasswordReadProps {
     passwordData: PasswordDataType;
     locale: "fr" | "en" | "es" | "de" | "zh";
     onEdit: () => void;
+    onDelete?: () => void;
     readonly?: boolean;
     compact?: boolean;
 }

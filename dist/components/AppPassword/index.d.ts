@@ -4,6 +4,7 @@ interface AppPasswordProps {
     passwordData: PasswordDataType;
     locale: "fr" | "en" | "es" | "de" | "zh";
     onUpdate?: (data: PasswordDataType) => void;
+    onDelete?: () => void;
     readonly?: boolean;
     onGeneratorConfig?: () => void;
     passwordConfig?: PasswordConfig;

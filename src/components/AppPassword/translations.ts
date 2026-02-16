@@ -39,7 +39,8 @@ type TranslationKeys =
   | "unsaved_changes_description"
   | "discard"
   | "configure_generator"
-  | "generate_password";
+  | "generate_password"
+  | "delete";
 
 type LanguageCodes = "fr" | "en" | "es" | "de" | "zh";
 
@@ -245,5 +246,12 @@ export const TRAD = {
     es: "Generar",
     de: "Generieren",
     zh: "生成",
+  },
+  delete: {
+    fr: "Supprimer",
+    en: "Delete",
+    es: "Eliminar",
+    de: "Löschen",
+    zh: "删除",
   },
 };

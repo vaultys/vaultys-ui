@@ -18,4 +18,6 @@ export declare const Compact: Story;
 export declare const CompactReadOnly: Story;
 export declare const CompactMinimal: Story;
 export declare const CompactEnglish: Story;
+export declare const WithDeleteCallback: Story;
+export declare const CompactWithDelete: Story;
 export declare const NormalVsCompact: Story;

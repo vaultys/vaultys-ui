@@ -9,6 +9,7 @@ export interface ManagePasswordsProps {
     folderPasswords?: FolderPassword[];
     locale?: "fr" | "en" | "es" | "de" | "zh";
     onUpdate?: (folder: string | "personal", data: PasswordDataType) => void;
+    onDelete?: (folder: string | "personal") => void;
     onGeneratorConfig?: () => void;
     readonly?: boolean;
     admin?: boolean;

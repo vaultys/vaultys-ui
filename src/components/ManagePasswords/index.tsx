@@ -21,6 +21,7 @@ export interface ManagePasswordsProps {
   folderPasswords?: FolderPassword[];
   locale?: "fr" | "en" | "es" | "de" | "zh";
   onUpdate?: (folder: string | "personal", data: PasswordDataType) => void;
+  onDelete?: (folder: string | "personal") => void;
   onGeneratorConfig?: () => void;
   readonly?: boolean;
   admin?: boolean;
@@ -34,6 +35,7 @@ export const ManagePasswords: React.FC<ManagePasswordsProps> = ({
   folderPasswords = [],
   locale = "en",
   onUpdate,
+  onDelete,
   onGeneratorConfig,
   readonly = false,
   admin = false,
@@ -82,6 +84,7 @@ export const ManagePasswords: React.FC<ManagePasswordsProps> = ({
         passwordData={personalPassword || {}}
         locale={locale}
         onUpdate={(data) => onUpdate?.("personal", data)}
+        onDelete={onDelete ? () => onDelete("personal") : undefined}
         onGeneratorConfig={onGeneratorConfig}
         readonly={readonly}
         compact={compact}
@@ -134,6 +137,10 @@ export const ManagePasswords: React.FC<ManagePasswordsProps> = ({
 
   const handleUpdate = (data: PasswordDataType) => {
     onUpdate?.(selectedKey, data);
+  };
+
+  const handleDelete = () => {
+    onDelete?.(selectedKey);
   };
 
   // Obtenir le label de l'option sélectionnée
@@ -227,6 +234,7 @@ export const ManagePasswords: React.FC<ManagePasswordsProps> = ({
         passwordData={getCurrentPassword()}
         locale={locale}
         onUpdate={handleUpdate}
+        onDelete={onDelete ? handleDelete : undefined}
         onGeneratorConfig={onGeneratorConfig}
         passwordConfig={passwordConfig}
         readonly={isCurrentReadonly}

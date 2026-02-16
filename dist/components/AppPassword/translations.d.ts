@@ -206,4 +206,11 @@ export declare const TRAD: {
         de: string;
         zh: string;
     };
+    delete: {
+        fr: string;
+        en: string;
+        es: string;
+        de: string;
+        zh: string;
+    };
 };
