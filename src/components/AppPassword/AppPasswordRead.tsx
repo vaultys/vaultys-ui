@@ -1,5 +1,17 @@
 "use client";
-import { Button, Input, Modal, ModalBody, ModalContent, ModalHeader, Textarea, Tooltip, useDisclosure, Card, Progress } from "@heroui/react";
+import {
+  Button,
+  Input,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalHeader,
+  Textarea,
+  Tooltip,
+  useDisclosure,
+  Card,
+  Progress,
+} from "@heroui/react";
 import { useEffect, useState } from "react";
 import { FaRegCopy } from "@react-icons/all-files/fa/FaRegCopy";
 import { BiShow } from "@react-icons/all-files/bi/BiShow";
@@ -18,9 +30,22 @@ interface AppPasswordReadProps {
   onDelete?: () => void;
   readonly?: boolean;
   compact?: boolean;
+  onCopyUsername?: () => void;
+  onCopyPassword?: () => void;
+  onCopyOtp?: () => void;
 }
 
-export const AppPasswordRead: React.FC<AppPasswordReadProps> = ({ passwordData, locale, onEdit, onDelete, readonly = false, compact = false }) => {
+export const AppPasswordRead: React.FC<AppPasswordReadProps> = ({
+  passwordData,
+  locale,
+  onEdit,
+  onDelete,
+  readonly = false,
+  compact = false,
+  onCopyUsername,
+  onCopyPassword,
+  onCopyOtp,
+}) => {
   const [usernameCopied, setUsernameCopied] = useState<boolean>(false);
   const [passwordCopied, setPasswordCopied] = useState<boolean>(false);
   const [otpCopied, setOtpCopied] = useState<boolean>(false);
@@ -29,8 +54,13 @@ export const AppPasswordRead: React.FC<AppPasswordReadProps> = ({ passwordData, 
   const [otpProgress, setOtpProgress] = useState<number>(0);
   const [showSecureNotes, setShowSecureNotes] = useState<boolean>(false);
 
-  const { isOpen: secureNotesIsOpen, onOpen: secureNotesOnOpen, onClose: secureNotesOnClose } = useDisclosure();
-  const [isInvalidTotpSecret, setIsInvalidTotpSecret] = useState<boolean>(false);
+  const {
+    isOpen: secureNotesIsOpen,
+    onOpen: secureNotesOnOpen,
+    onClose: secureNotesOnClose,
+  } = useDisclosure();
+  const [isInvalidTotpSecret, setIsInvalidTotpSecret] =
+    useState<boolean>(false);
 
   useEffect(() => {
     if (!passwordData?.totpSecret) {
@@ -55,7 +85,11 @@ export const AppPasswordRead: React.FC<AppPasswordReadProps> = ({ passwordData, 
       try {
         const generatedOtp = generateTOTP(passwordData.totpSecret);
         setOtp(generatedOtp);
-        setOtpProgress(Math.floor((Date.now() - Math.floor(Date.now() / 30000) * 30000) / 300));
+        setOtpProgress(
+          Math.floor(
+            (Date.now() - Math.floor(Date.now() / 30000) * 30000) / 300,
+          ),
+        );
       } catch (error) {
         setOtp(undefined);
         setIsInvalidTotpSecret(true);
@@ -77,6 +111,9 @@ export const AppPasswordRead: React.FC<AppPasswordReadProps> = ({ passwordData, 
     if (passwordData.username) {
       navigator.clipboard.writeText(passwordData.username);
       setUsernameCopied(true);
+      if (onCopyUsername) {
+        onCopyUsername();
+      }
       setTimeout(() => {
         setUsernameCopied(false);
       }, 3000);
@@ -87,6 +124,9 @@ export const AppPasswordRead: React.FC<AppPasswordReadProps> = ({ passwordData, 
     if (passwordData.password) {
       navigator.clipboard.writeText(passwordData.password);
       setPasswordCopied(true);
+      if (onCopyPassword) {
+        onCopyPassword();
+      }
       setTimeout(() => {
         setPasswordCopied(false);
       }, 3000);
@@ -97,30 +137,47 @@ export const AppPasswordRead: React.FC<AppPasswordReadProps> = ({ passwordData, 
     if (otp) {
       navigator.clipboard.writeText(otp);
       setOtpCopied(true);
+      if (onCopyOtp) {
+        onCopyOtp();
+      }
       setTimeout(() => {
         setOtpCopied(false);
       }, 3000);
     }
   };
 
-  const isEmptyPasswordData = !passwordData?.username && !passwordData?.password && !passwordData?.totpSecret && !passwordData?.secureNotes;
+  const isEmptyPasswordData =
+    !passwordData?.username &&
+    !passwordData?.password &&
+    !passwordData?.totpSecret &&
+    !passwordData?.secureNotes;
 
   return (
     <div className={`flex flex-col w-full ${compact ? "gap-2" : "gap-4"}`}>
       {isEmptyPasswordData && (
-        <Card className={`bg-default-50 border-none ${compact ? "p-3" : "p-6"}`}>
+        <Card
+          className={`bg-default-50 border-none ${compact ? "p-3" : "p-6"}`}
+        >
           <div className="flex flex-col items-center justify-center text-center">
-            <div className={`mb-2 ${compact ? "text-2xl" : "text-4xl mb-3"}`}>🔒</div>
-            <p className={`text-default-600 ${compact ? "text-sm" : ""}`}>{TRAD.no_credentials[locale]}</p>
+            <div className={`mb-2 ${compact ? "text-2xl" : "text-4xl mb-3"}`}>
+              🔒
+            </div>
+            <p className={`text-default-600 ${compact ? "text-sm" : ""}`}>
+              {TRAD.no_credentials[locale]}
+            </p>
           </div>
         </Card>
       )}
 
       {isInvalidTotpSecret && (
-        <div className={`bg-danger-100 text-danger rounded-lg border border-danger/20 shadow-xs ${compact ? "p-2 mb-1" : "p-4 mb-2"}`}>
+        <div
+          className={`bg-danger-100 text-danger rounded-lg border border-danger/20 shadow-xs ${compact ? "p-2 mb-1" : "p-4 mb-2"}`}
+        >
           <div className="flex items-center gap-2">
             <span className={compact ? "text-base" : "text-lg"}>⚠️</span>
-            <span className={compact ? "text-sm" : ""}>{TRAD.invalid_totp_secret[locale]}</span>
+            <span className={compact ? "text-sm" : ""}>
+              {TRAD.invalid_totp_secret[locale]}
+            </span>
           </div>
         </div>
       )}
@@ -140,8 +197,14 @@ export const AppPasswordRead: React.FC<AppPasswordReadProps> = ({ passwordData, 
             endContent={
               <div className="flex flex-row gap-2 items-center">
                 <Tooltip content={TRAD.copy[locale]}>
-                  <button className="p-1 rounded-md hover:bg-default-200 transition-colors" data-testid="app-password-copy-username-button">
-                    <FaRegCopy className="cursor-pointer" onClick={handleCopyUsername} />
+                  <button
+                    className="p-1 rounded-md hover:bg-default-200 transition-colors"
+                    data-testid="app-password-copy-username-button"
+                  >
+                    <FaRegCopy
+                      className="cursor-pointer"
+                      onClick={handleCopyUsername}
+                    />
                   </button>
                 </Tooltip>
               </div>
@@ -178,18 +241,32 @@ export const AppPasswordRead: React.FC<AppPasswordReadProps> = ({ passwordData, 
             }}
             endContent={
               <div className="flex flex-row gap-2 items-center">
-                <Tooltip content={showPassword ? TRAD.hide[locale] : TRAD.show[locale]}>
+                <Tooltip
+                  content={showPassword ? TRAD.hide[locale] : TRAD.show[locale]}
+                >
                   <button className="p-1 rounded-md hover:bg-default-200 transition-colors">
                     {showPassword ? (
-                      <BiHide className="cursor-pointer" onClick={() => setShowPassword(false)} />
+                      <BiHide
+                        className="cursor-pointer"
+                        onClick={() => setShowPassword(false)}
+                      />
                     ) : (
-                      <BiShow className="cursor-pointer" onClick={() => setShowPassword(true)} />
+                      <BiShow
+                        className="cursor-pointer"
+                        onClick={() => setShowPassword(true)}
+                      />
                     )}
                   </button>
                 </Tooltip>
                 <Tooltip content={TRAD.copy[locale]}>
-                  <button className="p-1 rounded-md hover:bg-default-200 transition-colors" data-testid="app-password-copy-password-button-in-input">
-                    <FaRegCopy className="cursor-pointer" onClick={handleCopyPassword} />
+                  <button
+                    className="p-1 rounded-md hover:bg-default-200 transition-colors"
+                    data-testid="app-password-copy-password-button-in-input"
+                  >
+                    <FaRegCopy
+                      className="cursor-pointer"
+                      onClick={handleCopyPassword}
+                    />
                   </button>
                 </Tooltip>
               </div>
@@ -219,17 +296,30 @@ export const AppPasswordRead: React.FC<AppPasswordReadProps> = ({ passwordData, 
           >
             <div className={`flex flex-col ${compact ? "gap-1" : "gap-2"}`}>
               <div className="flex justify-between items-center">
-                <span className={compact ? "text-sm" : ""}>{TRAD.otp[locale]}</span>
-                {passwordData.totpSecret && otpProgress !== null && <div className="text-xs text-default-500">{30 - Math.floor(otpProgress / 3.333)}s</div>}
+                <span className={compact ? "text-sm" : ""}>
+                  {TRAD.otp[locale]}
+                </span>
+                {passwordData.totpSecret && otpProgress !== null && (
+                  <div className="text-xs text-default-500">
+                    {30 - Math.floor(otpProgress / 3.333)}s
+                  </div>
+                )}
               </div>
               <div className="relative">
                 <div className="flex justify-center items-center">
-                  <div className={`font-mono tracking-wider ${compact ? "text-lg px-2 py-1" : "text-2xl px-4 py-2"}`}>
+                  <div
+                    className={`font-mono tracking-wider ${compact ? "text-lg px-2 py-1" : "text-2xl px-4 py-2"}`}
+                  >
                     {otp ? otp.match(/.{1,3}/g)?.join(" ") || otp : ""}
                   </div>
                   <Tooltip content={TRAD.copy[locale]}>
-                    <button className={`p-1 rounded-md hover:bg-default-200 transition-colors ${compact ? "ml-1" : "ml-2"}`}>
-                      <FaRegCopy className={`cursor-pointer ${compact ? "text-sm" : ""}`} onClick={handleCopyOtp} />
+                    <button
+                      className={`p-1 rounded-md hover:bg-default-200 transition-colors ${compact ? "ml-1" : "ml-2"}`}
+                    >
+                      <FaRegCopy
+                        className={`cursor-pointer ${compact ? "text-sm" : ""}`}
+                        onClick={handleCopyOtp}
+                      />
                     </button>
                   </Tooltip>
                 </div>
@@ -273,19 +363,32 @@ export const AppPasswordRead: React.FC<AppPasswordReadProps> = ({ passwordData, 
           className="hover:border-primary focus:border-primary transition-all"
           endContent={
             <div className="flex flex-row gap-2 items-center">
-              <Tooltip content={showSecureNotes ? TRAD.hide[locale] : TRAD.show[locale]}>
+              <Tooltip
+                content={
+                  showSecureNotes ? TRAD.hide[locale] : TRAD.show[locale]
+                }
+              >
                 <button className="p-1 rounded-md hover:bg-default-200 transition-colors">
                   {showSecureNotes ? (
-                    <BiHide className="cursor-pointer" onClick={() => setShowSecureNotes(false)} />
+                    <BiHide
+                      className="cursor-pointer"
+                      onClick={() => setShowSecureNotes(false)}
+                    />
                   ) : (
-                    <BiShow className="cursor-pointer" onClick={() => setShowSecureNotes(true)} />
+                    <BiShow
+                      className="cursor-pointer"
+                      onClick={() => setShowSecureNotes(true)}
+                    />
                   )}
                 </button>
               </Tooltip>
               {passwordData.secureNotes.length > 100 && (
                 <Tooltip content={TRAD.secure_notes[locale]}>
                   <button className="p-1 rounded-md hover:bg-default-200 transition-colors">
-                    <FaExpand className="cursor-pointer" onClick={() => secureNotesOnOpen()} />
+                    <FaExpand
+                      className="cursor-pointer"
+                      onClick={() => secureNotesOnOpen()}
+                    />
                   </button>
                 </Tooltip>
               )}
@@ -294,7 +397,9 @@ export const AppPasswordRead: React.FC<AppPasswordReadProps> = ({ passwordData, 
         />
       )}
       {!readonly && (
-        <div className={`flex ${compact ? "gap-2" : "gap-3"} ${compact ? "mt-1" : "mt-2"}`}>
+        <div
+          className={`flex ${compact ? "gap-2" : "gap-3"} ${compact ? "mt-1" : "mt-2"}`}
+        >
           <Button
             color="primary"
             variant="flat"
@@ -336,7 +441,11 @@ export const AppPasswordRead: React.FC<AppPasswordReadProps> = ({ passwordData, 
         <ModalContent>
           <ModalHeader>{TRAD.secure_notes[locale]}</ModalHeader>
           <ModalBody>
-            <Textarea readOnly label={TRAD.secure_notes[locale]} value={passwordData.secureNotes} />
+            <Textarea
+              readOnly
+              label={TRAD.secure_notes[locale]}
+              value={passwordData.secureNotes}
+            />
           </ModalBody>
         </ModalContent>
       </Modal>
