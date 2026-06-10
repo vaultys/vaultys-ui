@@ -6,9 +6,9 @@ interface AppPasswordReadProps {
     onDelete?: () => void;
     readonly?: boolean;
     compact?: boolean;
-    onCopyUsername?: () => void;
-    onCopyPassword?: () => void;
-    onCopyOtp?: () => void;
+    onUsernameCopied?: () => void;
+    onPasswordCopied?: () => void;
+    onTotpCopied?: () => void;
 }
 export declare const AppPasswordRead: React.FC<AppPasswordReadProps>;
 export default AppPasswordRead;

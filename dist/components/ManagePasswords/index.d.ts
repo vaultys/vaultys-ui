@@ -16,6 +16,9 @@ export interface ManagePasswordsProps {
     passwordConfig?: PasswordConfig;
     compact?: boolean;
     allowPersonal?: boolean;
+    onUsernameCopied?: () => void;
+    onPasswordCopied?: () => void;
+    onTotpCopied?: () => void;
 }
 export declare const ManagePasswords: React.FC<ManagePasswordsProps>;
 export default ManagePasswords;

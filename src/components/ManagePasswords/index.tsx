@@ -1,6 +1,14 @@
 "use client";
 import { useState, useEffect } from "react";
-import { Button, Popover, PopoverTrigger, PopoverContent, Listbox, ListboxItem, Chip } from "@heroui/react";
+import {
+  Button,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  Listbox,
+  ListboxItem,
+  Chip,
+} from "@heroui/react";
 import { BsFolderFill } from "@react-icons/all-files/bs/BsFolderFill";
 import { BsPersonFill } from "@react-icons/all-files/bs/BsPersonFill";
 import { BiKey } from "@react-icons/all-files/bi/BiKey";
@@ -28,6 +36,9 @@ export interface ManagePasswordsProps {
   passwordConfig?: PasswordConfig;
   compact?: boolean;
   allowPersonal?: boolean;
+  onUsernameCopied?: () => void;
+  onPasswordCopied?: () => void;
+  onTotpCopied?: () => void;
 }
 
 export const ManagePasswords: React.FC<ManagePasswordsProps> = ({
@@ -42,6 +53,9 @@ export const ManagePasswords: React.FC<ManagePasswordsProps> = ({
   passwordConfig,
   compact = false,
   allowPersonal = true,
+  onUsernameCopied,
+  onPasswordCopied,
+  onTotpCopied,
 }) => {
   const [selectedKey, setSelectedKey] = useState<string>("");
   const [isOpen, setIsOpen] = useState(false);
@@ -51,13 +65,19 @@ export const ManagePasswords: React.FC<ManagePasswordsProps> = ({
     if (selectedKey) return;
 
     // Vérifier le mot de passe personnel d'abord (seulement si allowPersonal est true)
-    if (allowPersonal && personalPassword && (personalPassword.username || personalPassword.password)) {
+    if (
+      allowPersonal &&
+      personalPassword &&
+      (personalPassword.username || personalPassword.password)
+    ) {
       setSelectedKey("personal");
       return;
     }
 
     // Chercher le premier dossier avec un mot de passe
-    const firstFolderWithPassword = folderPasswords.find((fp) => fp.password && (fp.password.username || fp.password.password));
+    const firstFolderWithPassword = folderPasswords.find(
+      (fp) => fp.password && (fp.password.username || fp.password.password),
+    );
 
     if (firstFolderWithPassword) {
       setSelectedKey(firstFolderWithPassword.folder);
@@ -80,6 +100,9 @@ export const ManagePasswords: React.FC<ManagePasswordsProps> = ({
   if (folderPasswords.length === 0 && allowPersonal) {
     return (
       <AppPassword
+        onUsernameCopied={onUsernameCopied}
+        onPasswordCopied={onPasswordCopied}
+        onTotpCopied={onTotpCopied}
         passwordConfig={passwordConfig}
         passwordData={personalPassword || {}}
         locale={locale}
@@ -98,10 +121,14 @@ export const ManagePasswords: React.FC<ManagePasswordsProps> = ({
       <Chip
         color="warning"
         variant="flat"
-        startContent={<AiFillLock className={compact ? "w-3 h-3" : "w-4 h-4"} />}
+        startContent={
+          <AiFillLock className={compact ? "w-3 h-3" : "w-4 h-4"} />
+        }
         classNames={{ base: compact ? "p-2 h-auto" : "p-3 h-auto" }}
       >
-        <span className={compact ? "text-xs text-wrap" : "text-sm text-wrap"}>{MANAGE_PASSWORDS_TRAD.personal_not_allowed[locale]}</span>
+        <span className={compact ? "text-xs text-wrap" : "text-sm text-wrap"}>
+          {MANAGE_PASSWORDS_TRAD.personal_not_allowed[locale]}
+        </span>
       </Chip>
     );
   }
@@ -123,7 +150,10 @@ export const ManagePasswords: React.FC<ManagePasswordsProps> = ({
             key: "personal",
             label: MANAGE_PASSWORDS_TRAD.personal[locale],
             icon: <BsPersonFill className="text-primary" />,
-            hasPassword: !!(personalPassword && (personalPassword.username || personalPassword.password)),
+            hasPassword: !!(
+              personalPassword &&
+              (personalPassword.username || personalPassword.password)
+            ),
           },
         ]
       : []),
@@ -131,7 +161,10 @@ export const ManagePasswords: React.FC<ManagePasswordsProps> = ({
       key: fp.folder,
       label: fp.folder,
       icon: <BsFolderFill className="text-yellow-500" />,
-      hasPassword: !!(fp.password && (fp.password.username || fp.password.password)),
+      hasPassword: !!(
+        fp.password &&
+        (fp.password.username || fp.password.password)
+      ),
     })),
   ];
 
@@ -156,30 +189,46 @@ export const ManagePasswords: React.FC<ManagePasswordsProps> = ({
         <Chip
           color="primary"
           variant="flat"
-          startContent={<AiFillLock className={compact ? "w-3 h-3" : "w-4 h-4"} />}
+          startContent={
+            <AiFillLock className={compact ? "w-3 h-3" : "w-4 h-4"} />
+          }
           classNames={{ base: compact ? "p-2 h-auto" : "p-3 h-auto" }}
         >
-          <span className={compact ? "text-xs text-wrap" : "text-sm text-wrap"}>{MANAGE_PASSWORDS_TRAD.personal_not_allowed[locale]}</span>
+          <span className={compact ? "text-xs text-wrap" : "text-sm text-wrap"}>
+            {MANAGE_PASSWORDS_TRAD.personal_not_allowed[locale]}
+          </span>
         </Chip>
       )}
 
       {/* Sélecteur de dossier */}
-      <Popover placement="bottom-start" isOpen={isOpen} onOpenChange={setIsOpen}>
+      <Popover
+        placement="bottom-start"
+        isOpen={isOpen}
+        onOpenChange={setIsOpen}
+      >
         <PopoverTrigger>
           <Button
             data-testid="app-password-folders-trigger"
             variant="flat"
             className={`justify-between ${compact ? "h-10" : "h-14"}`}
             size={compact ? "sm" : "md"}
-            endContent={<BiChevronDown className={compact ? "w-3 h-3" : "w-4 h-4"} />}
+            endContent={
+              <BiChevronDown className={compact ? "w-3 h-3" : "w-4 h-4"} />
+            }
           >
             <div className={`flex items-center ${compact ? "gap-1" : "gap-2"}`}>
               {selectedKey === "personal" ? (
-                <BsPersonFill className={`text-primary ${compact ? "w-4 h-4" : "w-5 h-5"}`} />
+                <BsPersonFill
+                  className={`text-primary ${compact ? "w-4 h-4" : "w-5 h-5"}`}
+                />
               ) : (
-                <BsFolderFill className={`text-yellow-500 ${compact ? "w-4 h-4" : "w-5 h-5"}`} />
+                <BsFolderFill
+                  className={`text-yellow-500 ${compact ? "w-4 h-4" : "w-5 h-5"}`}
+                />
               )}
-              <span className={compact ? "text-sm" : ""}>{getSelectedLabel()}</span>
+              <span className={compact ? "text-sm" : ""}>
+                {getSelectedLabel()}
+              </span>
             </div>
           </Button>
         </PopoverTrigger>
@@ -203,7 +252,12 @@ export const ManagePasswords: React.FC<ManagePasswordsProps> = ({
                 startContent={option.icon}
                 endContent={
                   option.hasPassword ? (
-                    <Chip size="sm" color="success" variant="flat" startContent={<BiKey className="w-3 h-3" />}>
+                    <Chip
+                      size="sm"
+                      color="success"
+                      variant="flat"
+                      startContent={<BiKey className="w-3 h-3" />}
+                    >
                       <span className="text-xs">Password</span>
                     </Chip>
                   ) : undefined
@@ -221,10 +275,14 @@ export const ManagePasswords: React.FC<ManagePasswordsProps> = ({
         <Chip
           color="warning"
           variant="flat"
-          startContent={<AiFillLock className={compact ? "w-3 h-3" : "w-4 h-4"} />}
+          startContent={
+            <AiFillLock className={compact ? "w-3 h-3" : "w-4 h-4"} />
+          }
           classNames={{ base: compact ? "p-2 h-auto" : "p-3 h-auto" }}
         >
-          <span className={compact ? "text-xs text-wrap" : "text-sm text-wrap"}>{MANAGE_PASSWORDS_TRAD.folder_readonly_info[locale]}</span>
+          <span className={compact ? "text-xs text-wrap" : "text-sm text-wrap"}>
+            {MANAGE_PASSWORDS_TRAD.folder_readonly_info[locale]}
+          </span>
         </Chip>
       )}
 

@@ -9,6 +9,9 @@ interface AppPasswordProps {
     onGeneratorConfig?: () => void;
     passwordConfig?: PasswordConfig;
     compact?: boolean;
+    onPasswordCopied?: () => void;
+    onUsernameCopied?: () => void;
+    onTotpCopied?: () => void;
 }
 export declare const AppPassword: React.FC<AppPasswordProps>;
 export default AppPassword;

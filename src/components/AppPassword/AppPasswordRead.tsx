@@ -30,9 +30,9 @@ interface AppPasswordReadProps {
   onDelete?: () => void;
   readonly?: boolean;
   compact?: boolean;
-  onCopyUsername?: () => void;
-  onCopyPassword?: () => void;
-  onCopyOtp?: () => void;
+  onUsernameCopied?: () => void;
+  onPasswordCopied?: () => void;
+  onTotpCopied?: () => void;
 }
 
 export const AppPasswordRead: React.FC<AppPasswordReadProps> = ({
@@ -42,9 +42,9 @@ export const AppPasswordRead: React.FC<AppPasswordReadProps> = ({
   onDelete,
   readonly = false,
   compact = false,
-  onCopyUsername,
-  onCopyPassword,
-  onCopyOtp,
+  onUsernameCopied,
+  onPasswordCopied,
+  onTotpCopied,
 }) => {
   const [usernameCopied, setUsernameCopied] = useState<boolean>(false);
   const [passwordCopied, setPasswordCopied] = useState<boolean>(false);
@@ -111,8 +111,8 @@ export const AppPasswordRead: React.FC<AppPasswordReadProps> = ({
     if (passwordData.username) {
       navigator.clipboard.writeText(passwordData.username);
       setUsernameCopied(true);
-      if (onCopyUsername) {
-        onCopyUsername();
+      if (onUsernameCopied) {
+        onUsernameCopied();
       }
       setTimeout(() => {
         setUsernameCopied(false);
@@ -124,8 +124,8 @@ export const AppPasswordRead: React.FC<AppPasswordReadProps> = ({
     if (passwordData.password) {
       navigator.clipboard.writeText(passwordData.password);
       setPasswordCopied(true);
-      if (onCopyPassword) {
-        onCopyPassword();
+      if (onPasswordCopied) {
+        onPasswordCopied();
       }
       setTimeout(() => {
         setPasswordCopied(false);
@@ -137,8 +137,8 @@ export const AppPasswordRead: React.FC<AppPasswordReadProps> = ({
     if (otp) {
       navigator.clipboard.writeText(otp);
       setOtpCopied(true);
-      if (onCopyOtp) {
-        onCopyOtp();
+      if (onTotpCopied) {
+        onTotpCopied();
       }
       setTimeout(() => {
         setOtpCopied(false);

@@ -1,6 +1,16 @@
 "use client";
 import { useState, useEffect } from "react";
-import { Button, Input, Tab, Tabs, Textarea, Switch, Progress, Tooltip, Chip } from "@heroui/react";
+import {
+  Button,
+  Input,
+  Tab,
+  Tabs,
+  Textarea,
+  Switch,
+  Progress,
+  Tooltip,
+  Chip,
+} from "@heroui/react";
 import { FaRegSave } from "@react-icons/all-files/fa/FaRegSave";
 import { FaTimes } from "@react-icons/all-files/fa/FaTimes";
 import { BiShow } from "@react-icons/all-files/bi/BiShow";
@@ -29,6 +39,9 @@ interface AppPasswordEditProps {
   onGeneratorConfig?: () => void;
   passwordConfig?: PasswordConfig;
   compact?: boolean;
+  onUsernameCopied?: () => void;
+  onPasswordCopied?: () => void;
+  onTotpCopied?: () => void;
 }
 
 export const AppPasswordEdit: React.FC<AppPasswordEditProps> = ({
@@ -45,16 +58,24 @@ export const AppPasswordEdit: React.FC<AppPasswordEditProps> = ({
     specialCharacters: true,
   },
   compact = false,
+  onUsernameCopied,
+  onPasswordCopied,
+  onTotpCopied,
 }) => {
   const confirmModal = useConfirmModal();
   const [activeTab, setActiveTab] = useState<string>("credentials");
-  const [editedData, setEditedData] = useState<PasswordDataType>({ ...passwordData });
+  const [editedData, setEditedData] = useState<PasswordDataType>({
+    ...passwordData,
+  });
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showSecureNotes, setShowSecureNotes] = useState<boolean>(false);
-  const [totpEnabled, setTotpEnabled] = useState<boolean>(!!editedData.totpSecret);
+  const [totpEnabled, setTotpEnabled] = useState<boolean>(
+    !!editedData.totpSecret,
+  );
   const [otp, setOtp] = useState<string>("");
   const [otpProgress, setOtpProgress] = useState<number>(0);
-  const [isInvalidTotpSecret, setIsInvalidTotpSecret] = useState<boolean>(false);
+  const [isInvalidTotpSecret, setIsInvalidTotpSecret] =
+    useState<boolean>(false);
   const [usernameCopied, setUsernameCopied] = useState<boolean>(false);
   const [passwordCopied, setPasswordCopied] = useState<boolean>(false);
   const [otpCopied, setOtpCopied] = useState<boolean>(false);
@@ -103,7 +124,13 @@ export const AppPasswordEdit: React.FC<AppPasswordEditProps> = ({
 
     let passwordChars = "";
     let generatedPwd: string[] = [];
-    const { length, lowercaseLetters, capitalLetters, numbers, specialCharacters } = passwordConfig;
+    const {
+      length,
+      lowercaseLetters,
+      capitalLetters,
+      numbers,
+      specialCharacters,
+    } = passwordConfig;
 
     if (lowercaseLetters) {
       passwordChars += LOWERCASE_LETTERS;
@@ -111,7 +138,9 @@ export const AppPasswordEdit: React.FC<AppPasswordEditProps> = ({
       while (generatedPwd[index]) {
         index = Math.floor(Math.random() * length);
       }
-      generatedPwd[index] = LOWERCASE_LETTERS.charAt(Math.floor(Math.random() * LOWERCASE_LETTERS.length));
+      generatedPwd[index] = LOWERCASE_LETTERS.charAt(
+        Math.floor(Math.random() * LOWERCASE_LETTERS.length),
+      );
     }
     if (capitalLetters) {
       passwordChars += CAPITAL_LETTERS;
@@ -119,7 +148,9 @@ export const AppPasswordEdit: React.FC<AppPasswordEditProps> = ({
       while (generatedPwd[index]) {
         index = Math.floor(Math.random() * length);
       }
-      generatedPwd[index] = CAPITAL_LETTERS.charAt(Math.floor(Math.random() * CAPITAL_LETTERS.length));
+      generatedPwd[index] = CAPITAL_LETTERS.charAt(
+        Math.floor(Math.random() * CAPITAL_LETTERS.length),
+      );
     }
     if (numbers) {
       passwordChars += NUMBERS;
@@ -127,7 +158,9 @@ export const AppPasswordEdit: React.FC<AppPasswordEditProps> = ({
       while (generatedPwd[index]) {
         index = Math.floor(Math.random() * length);
       }
-      generatedPwd[index] = NUMBERS.charAt(Math.floor(Math.random() * NUMBERS.length));
+      generatedPwd[index] = NUMBERS.charAt(
+        Math.floor(Math.random() * NUMBERS.length),
+      );
     }
     if (specialCharacters) {
       passwordChars += SPECIAL_CHARS;
@@ -135,7 +168,9 @@ export const AppPasswordEdit: React.FC<AppPasswordEditProps> = ({
       while (generatedPwd[index]) {
         index = Math.floor(Math.random() * length);
       }
-      generatedPwd[index] = SPECIAL_CHARS.charAt(Math.floor(Math.random() * SPECIAL_CHARS.length));
+      generatedPwd[index] = SPECIAL_CHARS.charAt(
+        Math.floor(Math.random() * SPECIAL_CHARS.length),
+      );
     }
 
     for (let i = 0; i < length; i++) {
@@ -213,7 +248,11 @@ export const AppPasswordEdit: React.FC<AppPasswordEditProps> = ({
         const generatedOtp = generateTOTP(editedData.totpSecret);
         setOtp(generatedOtp);
         // Calculer la progression (0-100) basée sur le temps écoulé dans la période de 30s
-        setOtpProgress(Math.floor((Date.now() - Math.floor(Date.now() / 30000) * 30000) / 300));
+        setOtpProgress(
+          Math.floor(
+            (Date.now() - Math.floor(Date.now() / 30000) * 30000) / 300,
+          ),
+        );
       } catch (error) {
         setOtp("");
         setIsInvalidTotpSecret(true);
@@ -269,25 +308,43 @@ export const AppPasswordEdit: React.FC<AppPasswordEditProps> = ({
     const colors = ["danger", "warning", "success", "primary"];
 
     return {
-      label: strengthLabels[locale]?.[robustness] || strengthLabels.en[robustness],
+      label:
+        strengthLabels[locale]?.[robustness] || strengthLabels.en[robustness],
       color: colors[robustness] as "danger" | "warning" | "success" | "primary",
     };
   };
 
   return (
-    <div className={`flex flex-col w-full ${compact ? "gap-2" : "gap-4"}`} data-testid="app-password-edit-layout">
+    <div
+      className={`flex flex-col w-full ${compact ? "gap-2" : "gap-4"}`}
+      data-testid="app-password-edit-layout"
+    >
       {/* Banner et boutons fixes en haut */}
       {hasChanges() && (
         <div className="sticky top-0 z-10 bg-content1 -mx-1 px-1 pb-3 border-b-2 border-default-200">
-          <div className={`bg-warning-50 border-l-4 border-warning rounded-r-lg flex items-start gap-2 ${compact ? "p-2 mb-2" : "p-4 mb-3 gap-3"}`}>
-            <FaInfoCircle className={`text-warning shrink-0 mt-0.5 ${compact ? "text-base" : "text-xl"}`} />
+          <div
+            className={`bg-warning-50 border-l-4 border-warning rounded-r-lg flex items-start gap-2 ${compact ? "p-2 mb-2" : "p-4 mb-3 gap-3"}`}
+          >
+            <FaInfoCircle
+              className={`text-warning shrink-0 mt-0.5 ${compact ? "text-base" : "text-xl"}`}
+            />
             <div className="flex-1">
-              <p className={`font-semibold text-warning-700 ${compact ? "text-sm" : ""}`}>{TRAD.unsaved_changes_title[locale]}</p>
-              <p className={`text-warning-600 ${compact ? "text-xs mt-0.5" : "text-sm mt-1"}`}>{TRAD.unsaved_changes_message[locale]}</p>
+              <p
+                className={`font-semibold text-warning-700 ${compact ? "text-sm" : ""}`}
+              >
+                {TRAD.unsaved_changes_title[locale]}
+              </p>
+              <p
+                className={`text-warning-600 ${compact ? "text-xs mt-0.5" : "text-sm mt-1"}`}
+              >
+                {TRAD.unsaved_changes_message[locale]}
+              </p>
             </div>
           </div>
 
-          <div className={`flex flex-row justify-end ${compact ? "gap-2" : "gap-3"}`}>
+          <div
+            className={`flex flex-row justify-end ${compact ? "gap-2" : "gap-3"}`}
+          >
             <Button
               color="default"
               variant="flat"
@@ -304,7 +361,10 @@ export const AppPasswordEdit: React.FC<AppPasswordEditProps> = ({
               variant="shadow"
               startContent={<FaRegSave />}
               onPress={handleSave}
-              isDisabled={(isInvalidTotpSecret && !!editedData.totpSecret) || !hasChanges()}
+              isDisabled={
+                (isInvalidTotpSecret && !!editedData.totpSecret) ||
+                !hasChanges()
+              }
               size={compact ? "md" : "lg"}
               className={`${compact ? "min-w-[100px]" : "min-w-[120px]"} animate-in zoom-in-95`}
             >
@@ -323,7 +383,9 @@ export const AppPasswordEdit: React.FC<AppPasswordEditProps> = ({
         onSelectionChange={(key) => setActiveTab(key.toString())}
         classNames={{
           tabList: compact ? "gap-1" : "gap-4",
-          tab: compact ? "px-1 h-8 data-[selected=true]:text-primary" : "px-1 h-10 data-[selected=true]:text-primary",
+          tab: compact
+            ? "px-1 h-8 data-[selected=true]:text-primary"
+            : "px-1 h-10 data-[selected=true]:text-primary",
         }}
       >
         <Tab
@@ -350,7 +412,9 @@ export const AppPasswordEdit: React.FC<AppPasswordEditProps> = ({
                 label={TRAD.username[locale]}
                 placeholder={TRAD.enter_username[locale]}
                 value={editedData.username || ""}
-                onValueChange={(value) => setEditedData({ ...editedData, username: value })}
+                onValueChange={(value) =>
+                  setEditedData({ ...editedData, username: value })
+                }
                 size={compact ? "sm" : "md"}
                 startContent={<AiOutlineUser className="text-default-400" />}
                 endContent={
@@ -360,6 +424,7 @@ export const AppPasswordEdit: React.FC<AppPasswordEditProps> = ({
                       onClick={() => {
                         if (editedData.username) {
                           navigator.clipboard.writeText(editedData.username);
+                          if (onUsernameCopied) onUsernameCopied();
                           setUsernameCopied(true);
                           setTimeout(() => setUsernameCopied(false), 3000);
                         }
@@ -387,14 +452,26 @@ export const AppPasswordEdit: React.FC<AppPasswordEditProps> = ({
 
             <div className={compact ? "space-y-1" : "space-y-2"}>
               <div className="flex items-center justify-between">
-                <span className={compact ? "text-xs" : "text-sm"}>{TRAD.password[locale]}</span>
+                <span className={compact ? "text-xs" : "text-sm"}>
+                  {TRAD.password[locale]}
+                </span>
                 <div className="flex items-center gap-2">
-                  <Button size="sm" color="primary" onPress={generatePassword} startContent={<FiRefreshCcw />}>
+                  <Button
+                    size="sm"
+                    color="primary"
+                    onPress={generatePassword}
+                    startContent={<FiRefreshCcw />}
+                  >
                     {TRAD.generate_password[locale]}
                   </Button>
                   {onGeneratorConfig && (
                     <Tooltip content={TRAD.configure_generator[locale]}>
-                      <Button isIconOnly size="sm" variant="light" onPress={onGeneratorConfig}>
+                      <Button
+                        isIconOnly
+                        size="sm"
+                        variant="light"
+                        onPress={onGeneratorConfig}
+                      >
                         <FaCog className="text-default-400" />
                       </Button>
                     </Tooltip>
@@ -413,13 +490,21 @@ export const AppPasswordEdit: React.FC<AppPasswordEditProps> = ({
                   }}
                   endContent={
                     <div className="flex flex-row gap-2 items-center">
-                      <Tooltip content={showPassword ? TRAD.hide[locale] : TRAD.show[locale]}>
+                      <Tooltip
+                        content={
+                          showPassword ? TRAD.hide[locale] : TRAD.show[locale]
+                        }
+                      >
                         <button
                           className="p-1 rounded-md hover:bg-default-200 transition-colors"
                           data-testid="app-password-show-password-button"
                           onClick={() => setShowPassword(!showPassword)}
                         >
-                          {showPassword ? <BiHide className="cursor-pointer" /> : <BiShow className="cursor-pointer" />}
+                          {showPassword ? (
+                            <BiHide className="cursor-pointer" />
+                          ) : (
+                            <BiShow className="cursor-pointer" />
+                          )}
                         </button>
                       </Tooltip>
                       <Tooltip content={TRAD.copy[locale]}>
@@ -427,7 +512,10 @@ export const AppPasswordEdit: React.FC<AppPasswordEditProps> = ({
                           className="p-1 rounded-md hover:bg-default-200 transition-colors"
                           onClick={() => {
                             if (editedData.password) {
-                              navigator.clipboard.writeText(editedData.password);
+                              navigator.clipboard.writeText(
+                                editedData.password,
+                              );
+                              if (onPasswordCopied) onPasswordCopied();
                               setPasswordCopied(true);
                               setTimeout(() => setPasswordCopied(false), 3000);
                             }
@@ -458,7 +546,9 @@ export const AppPasswordEdit: React.FC<AppPasswordEditProps> = ({
                 <div className={compact ? "space-y-1 mt-2" : "space-y-2 mt-3"}>
                   <div className="flex justify-between items-center">
                     <div className="flex items-center gap-2">
-                      <span className={`font-medium text-default-600 ${compact ? "text-xs" : "text-sm"}`}>
+                      <span
+                        className={`font-medium text-default-600 ${compact ? "text-xs" : "text-sm"}`}
+                      >
                         {locale === "fr"
                           ? "Force du mot de passe"
                           : locale === "es"
@@ -482,12 +572,26 @@ export const AppPasswordEdit: React.FC<AppPasswordEditProps> = ({
                                   : "The more character types you use and the longer your password is, the more secure it will be."
                         }
                       >
-                        <Button isIconOnly size="sm" variant="light" className={compact ? "min-w-5 w-5 h-5" : "min-w-6 w-6 h-6"}>
-                          <BsInfoCircleFill className={`text-default-400 ${compact ? "text-xs" : "text-sm"}`} />
+                        <Button
+                          isIconOnly
+                          size="sm"
+                          variant="light"
+                          className={
+                            compact ? "min-w-5 w-5 h-5" : "min-w-6 w-6 h-6"
+                          }
+                        >
+                          <BsInfoCircleFill
+                            className={`text-default-400 ${compact ? "text-xs" : "text-sm"}`}
+                          />
                         </Button>
                       </Tooltip>
                     </div>
-                    <Chip size="sm" color={getStrengthInfo().color} variant="flat" className={compact ? "text-xs h-5" : ""}>
+                    <Chip
+                      size="sm"
+                      color={getStrengthInfo().color}
+                      variant="flat"
+                      className={compact ? "text-xs h-5" : ""}
+                    >
                       {getStrengthInfo().label}
                     </Chip>
                   </div>
@@ -529,14 +633,19 @@ export const AppPasswordEdit: React.FC<AppPasswordEditProps> = ({
         >
           <div className={compact ? "py-2 space-y-3" : "py-4 space-y-5"}>
             {!compact && (
-              <div className={`flex items-start gap-2 text-default-600 ${compact ? "text-xs" : "text-sm"}`}>
+              <div
+                className={`flex items-start gap-2 text-default-600 ${compact ? "text-xs" : "text-sm"}`}
+              >
                 <FaInfoCircle className="mt-0.5 shrink-0 text-default-400" />
                 <p>{TRAD.totp_explanation[locale]}</p>
               </div>
             )}
 
             {compact && (
-              <Tooltip content={TRAD.totp_explanation[locale]} className="max-w-xs">
+              <Tooltip
+                content={TRAD.totp_explanation[locale]}
+                className="max-w-xs"
+              >
                 <div className="flex items-center gap-2 text-default-600 text-xs cursor-help">
                   <FaInfoCircle className="text-default-400" />
                 </div>
@@ -544,8 +653,14 @@ export const AppPasswordEdit: React.FC<AppPasswordEditProps> = ({
             )}
 
             <div className="flex items-center gap-2">
-              <Switch isSelected={totpEnabled} onValueChange={setTotpEnabled} color="primary">
-                <span className="text-medium">{TRAD.two_factor_auth[locale]}</span>
+              <Switch
+                isSelected={totpEnabled}
+                onValueChange={setTotpEnabled}
+                color="primary"
+              >
+                <span className="text-medium">
+                  {TRAD.two_factor_auth[locale]}
+                </span>
               </Switch>
             </div>
 
@@ -559,30 +674,49 @@ export const AppPasswordEdit: React.FC<AppPasswordEditProps> = ({
                   color={isInvalidTotpSecret ? "danger" : "default"}
                   variant="flat"
                   size={compact ? "sm" : "md"}
-                  description={isInvalidTotpSecret ? TRAD.invalid_totp_secret[locale] : ""}
+                  description={
+                    isInvalidTotpSecret ? TRAD.invalid_totp_secret[locale] : ""
+                  }
                 />
 
                 {editedData.totpSecret && !isInvalidTotpSecret && otp && (
                   <div className={compact ? "py-1" : "py-2"}>
-                    <div className={`flex flex-col ${compact ? "gap-1" : "gap-2"}`}>
+                    <div
+                      className={`flex flex-col ${compact ? "gap-1" : "gap-2"}`}
+                    >
                       <div className="flex justify-between items-center">
-                        <span className={`text-default-600 ${compact ? "text-xs" : "text-sm"}`}>{TRAD.otp[locale]}</span>
-                        {otpProgress !== null && <div className="text-xs text-default-500">{30 - Math.floor(otpProgress / 3.333)}s</div>}
+                        <span
+                          className={`text-default-600 ${compact ? "text-xs" : "text-sm"}`}
+                        >
+                          {TRAD.otp[locale]}
+                        </span>
+                        {otpProgress !== null && (
+                          <div className="text-xs text-default-500">
+                            {30 - Math.floor(otpProgress / 3.333)}s
+                          </div>
+                        )}
                       </div>
                       <div className="flex justify-center items-center relative">
-                        <div className={`font-mono tracking-wider ${compact ? "text-lg" : "text-2xl"}`}>{otp ? otp.match(/.{1,3}/g)?.join(" ") || otp : ""}</div>
+                        <div
+                          className={`font-mono tracking-wider ${compact ? "text-lg" : "text-2xl"}`}
+                        >
+                          {otp ? otp.match(/.{1,3}/g)?.join(" ") || otp : ""}
+                        </div>
                         <Tooltip content={TRAD.copy[locale]}>
                           <button
                             className={`p-1 rounded-md hover:bg-default-200 transition-colors ${compact ? "ml-1" : "ml-2"}`}
                             onClick={() => {
                               if (otp) {
                                 navigator.clipboard.writeText(otp);
+                                if (onTotpCopied) onTotpCopied();
                                 setOtpCopied(true);
                                 setTimeout(() => setOtpCopied(false), 3000);
                               }
                             }}
                           >
-                            <FaRegCopy className={`cursor-pointer ${compact ? "text-sm" : ""}`} />
+                            <FaRegCopy
+                              className={`cursor-pointer ${compact ? "text-sm" : ""}`}
+                            />
                           </button>
                         </Tooltip>
                         <AnimatePresence>
@@ -599,7 +733,13 @@ export const AppPasswordEdit: React.FC<AppPasswordEditProps> = ({
                           )}
                         </AnimatePresence>
                       </div>
-                      <Progress aria-label="OTP Timer" size={compact ? "sm" : "md"} value={100 - otpProgress} color="secondary" showValueLabel={false} />
+                      <Progress
+                        aria-label="OTP Timer"
+                        size={compact ? "sm" : "md"}
+                        value={100 - otpProgress}
+                        color="secondary"
+                        showValueLabel={false}
+                      />
                     </div>
                   </div>
                 )}
@@ -627,14 +767,19 @@ export const AppPasswordEdit: React.FC<AppPasswordEditProps> = ({
         >
           <div className={compact ? "py-2 space-y-2" : "py-4 space-y-4"}>
             {!compact && (
-              <div className={`flex items-start gap-2 text-default-600 ${compact ? "text-xs" : "text-sm"}`}>
+              <div
+                className={`flex items-start gap-2 text-default-600 ${compact ? "text-xs" : "text-sm"}`}
+              >
                 <FaInfoCircle className="mt-0.5 shrink-0 text-default-400" />
                 <p>{TRAD.secure_notes_explanation[locale]}</p>
               </div>
             )}
 
             {compact && (
-              <Tooltip content={TRAD.secure_notes_explanation[locale]} className="max-w-xs">
+              <Tooltip
+                content={TRAD.secure_notes_explanation[locale]}
+                className="max-w-xs"
+              >
                 <div className="flex items-center gap-2 text-default-600 text-xs cursor-help">
                   <FaInfoCircle className="text-default-400" />
                 </div>
@@ -643,11 +788,23 @@ export const AppPasswordEdit: React.FC<AppPasswordEditProps> = ({
 
             <div className={compact ? "space-y-1" : "space-y-2"}>
               <div className="flex items-center justify-between">
-                <label className={`block ${compact ? "text-sm" : "text-medium"}`} htmlFor="secureNotes">
+                <label
+                  className={`block ${compact ? "text-sm" : "text-medium"}`}
+                  htmlFor="secureNotes"
+                >
                   {TRAD.secure_notes[locale]}
                 </label>
-                <Tooltip content={showSecureNotes ? TRAD.hide[locale] : TRAD.show[locale]}>
-                  <Button isIconOnly size="sm" variant="light" onPress={() => setShowSecureNotes(!showSecureNotes)}>
+                <Tooltip
+                  content={
+                    showSecureNotes ? TRAD.hide[locale] : TRAD.show[locale]
+                  }
+                >
+                  <Button
+                    isIconOnly
+                    size="sm"
+                    variant="light"
+                    onPress={() => setShowSecureNotes(!showSecureNotes)}
+                  >
                     {showSecureNotes ? <BiHide /> : <BiShow />}
                   </Button>
                 </Tooltip>
@@ -671,7 +828,11 @@ export const AppPasswordEdit: React.FC<AppPasswordEditProps> = ({
                 }}
               />
 
-              {(editedData.secureNotes?.length || 0) > 0 && <div className="text-xs text-right text-default-500">{editedData.secureNotes?.length}/1000</div>}
+              {(editedData.secureNotes?.length || 0) > 0 && (
+                <div className="text-xs text-right text-default-500">
+                  {editedData.secureNotes?.length}/1000
+                </div>
+              )}
             </div>
           </div>
         </Tab>

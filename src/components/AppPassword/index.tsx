@@ -15,6 +15,9 @@ interface AppPasswordProps {
   onGeneratorConfig?: () => void;
   passwordConfig?: PasswordConfig;
   compact?: boolean;
+  onPasswordCopied?: () => void;
+  onUsernameCopied?: () => void;
+  onTotpCopied?: () => void;
 }
 
 export const AppPassword: React.FC<AppPasswordProps> = ({
@@ -26,9 +29,13 @@ export const AppPassword: React.FC<AppPasswordProps> = ({
   onGeneratorConfig,
   passwordConfig,
   compact = false,
+  onPasswordCopied,
+  onUsernameCopied,
+  onTotpCopied,
 }) => {
   const [editMode, setEditMode] = useState<boolean>(false);
-  const [currentData, setCurrentData] = useState<PasswordDataType>(passwordData);
+  const [currentData, setCurrentData] =
+    useState<PasswordDataType>(passwordData);
   const [isDataChanged, setIsDataChanged] = useState<boolean>(false);
 
   // Mise à jour du state lorsque les props changent
@@ -68,8 +75,17 @@ export const AppPassword: React.FC<AppPasswordProps> = ({
     <div className="w-full" data-testid="app-password">
       <AnimatePresence mode="wait">
         {editMode ? (
-          <motion.div key="edit" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.2 }}>
+          <motion.div
+            key="edit"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+          >
             <AppPasswordEdit
+              onPasswordCopied={onPasswordCopied}
+              onUsernameCopied={onUsernameCopied}
+              onTotpCopied={onTotpCopied}
               passwordData={currentData}
               locale={locale}
               onSave={handleSave}
@@ -80,8 +96,24 @@ export const AppPassword: React.FC<AppPasswordProps> = ({
             />
           </motion.div>
         ) : (
-          <motion.div key="read" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.2 }}>
-            <AppPasswordRead readonly={readonly} passwordData={currentData} locale={locale} onEdit={handleEdit} onDelete={onDelete} compact={compact} />
+          <motion.div
+            key="read"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+          >
+            <AppPasswordRead
+              onPasswordCopied={onPasswordCopied}
+              onUsernameCopied={onUsernameCopied}
+              onTotpCopied={onTotpCopied}
+              readonly={readonly}
+              passwordData={currentData}
+              locale={locale}
+              onEdit={handleEdit}
+              onDelete={onDelete}
+              compact={compact}
+            />
           </motion.div>
         )}
       </AnimatePresence>

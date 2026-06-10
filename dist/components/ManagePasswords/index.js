@@ -1,7 +1,7 @@
 "use client";
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { useState, useEffect } from "react";
-import { Button, Popover, PopoverTrigger, PopoverContent, Listbox, ListboxItem, Chip } from "@heroui/react";
+import { Button, Popover, PopoverTrigger, PopoverContent, Listbox, ListboxItem, Chip, } from "@heroui/react";
 import { BsFolderFill } from "@react-icons/all-files/bs/BsFolderFill";
 import { BsPersonFill } from "@react-icons/all-files/bs/BsPersonFill";
 import { BiKey } from "@react-icons/all-files/bi/BiKey";
@@ -9,7 +9,7 @@ import { AiFillLock } from "@react-icons/all-files/ai/AiFillLock";
 import { BiChevronDown } from "@react-icons/all-files/bi/BiChevronDown";
 import { AppPassword } from "../AppPassword";
 import { MANAGE_PASSWORDS_TRAD } from "./translations";
-export const ManagePasswords = ({ personalPassword, folderPasswords = [], locale = "en", onUpdate, onDelete, onGeneratorConfig, readonly = false, admin = false, passwordConfig, compact = false, allowPersonal = true, }) => {
+export const ManagePasswords = ({ personalPassword, folderPasswords = [], locale = "en", onUpdate, onDelete, onGeneratorConfig, readonly = false, admin = false, passwordConfig, compact = false, allowPersonal = true, onUsernameCopied, onPasswordCopied, onTotpCopied, }) => {
     const [selectedKey, setSelectedKey] = useState("");
     const [isOpen, setIsOpen] = useState(false);
     // Déterminer le premier élément avec un mot de passe
@@ -17,7 +17,9 @@ export const ManagePasswords = ({ personalPassword, folderPasswords = [], locale
         if (selectedKey)
             return;
         // Vérifier le mot de passe personnel d'abord (seulement si allowPersonal est true)
-        if (allowPersonal && personalPassword && (personalPassword.username || personalPassword.password)) {
+        if (allowPersonal &&
+            personalPassword &&
+            (personalPassword.username || personalPassword.password)) {
             setSelectedKey("personal");
             return;
         }
@@ -40,7 +42,7 @@ export const ManagePasswords = ({ personalPassword, folderPasswords = [], locale
     const isCurrentReadonly = readonly || (!admin && selectedKey !== "personal");
     // S'il n'y a pas de dossiers et allowPersonal est true, afficher directement AppPassword
     if (folderPasswords.length === 0 && allowPersonal) {
-        return (_jsx(AppPassword, { passwordConfig: passwordConfig, passwordData: personalPassword || {}, locale: locale, onUpdate: (data) => onUpdate === null || onUpdate === void 0 ? void 0 : onUpdate("personal", data), onDelete: onDelete ? () => onDelete("personal") : undefined, onGeneratorConfig: onGeneratorConfig, readonly: readonly, compact: compact }));
+        return (_jsx(AppPassword, { onUsernameCopied: onUsernameCopied, onPasswordCopied: onPasswordCopied, onTotpCopied: onTotpCopied, passwordConfig: passwordConfig, passwordData: personalPassword || {}, locale: locale, onUpdate: (data) => onUpdate === null || onUpdate === void 0 ? void 0 : onUpdate("personal", data), onDelete: onDelete ? () => onDelete("personal") : undefined, onGeneratorConfig: onGeneratorConfig, readonly: readonly, compact: compact }));
     }
     // Si allowPersonal est false et qu'il n'y a pas de dossiers, ne rien afficher
     if (folderPasswords.length === 0 && !allowPersonal) {
@@ -62,7 +64,8 @@ export const ManagePasswords = ({ personalPassword, folderPasswords = [], locale
                     key: "personal",
                     label: MANAGE_PASSWORDS_TRAD.personal[locale],
                     icon: _jsx(BsPersonFill, { className: "text-primary" }),
-                    hasPassword: !!(personalPassword && (personalPassword.username || personalPassword.password)),
+                    hasPassword: !!(personalPassword &&
+                        (personalPassword.username || personalPassword.password)),
                 },
             ]
             : []),
@@ -70,7 +73,8 @@ export const ManagePasswords = ({ personalPassword, folderPasswords = [], locale
             key: fp.folder,
             label: fp.folder,
             icon: _jsx(BsFolderFill, { className: "text-yellow-500" }),
-            hasPassword: !!(fp.password && (fp.password.username || fp.password.password)),
+            hasPassword: !!(fp.password &&
+                (fp.password.username || fp.password.password)),
         })),
     ];
     const handleUpdate = (data) => {

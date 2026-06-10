@@ -8,6 +8,9 @@ interface AppPasswordEditProps {
     onGeneratorConfig?: () => void;
     passwordConfig?: PasswordConfig;
     compact?: boolean;
+    onUsernameCopied?: () => void;
+    onPasswordCopied?: () => void;
+    onTotpCopied?: () => void;
 }
 export declare const AppPasswordEdit: React.FC<AppPasswordEditProps>;
 export default AppPasswordEdit;

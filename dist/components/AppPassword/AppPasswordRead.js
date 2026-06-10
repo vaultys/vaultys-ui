@@ -11,7 +11,7 @@ import { FaRegTrashAlt } from "@react-icons/all-files/fa/FaRegTrashAlt";
 import { generateTOTP } from "../../lib/totp";
 import { TRAD } from "./translations";
 import { AnimatePresence, motion } from "framer-motion";
-export const AppPasswordRead = ({ passwordData, locale, onEdit, onDelete, readonly = false, compact = false, onCopyUsername, onCopyPassword, onCopyOtp, }) => {
+export const AppPasswordRead = ({ passwordData, locale, onEdit, onDelete, readonly = false, compact = false, onUsernameCopied, onPasswordCopied, onTotpCopied, }) => {
     var _a;
     const [usernameCopied, setUsernameCopied] = useState(false);
     const [passwordCopied, setPasswordCopied] = useState(false);
@@ -62,8 +62,8 @@ export const AppPasswordRead = ({ passwordData, locale, onEdit, onDelete, readon
         if (passwordData.username) {
             navigator.clipboard.writeText(passwordData.username);
             setUsernameCopied(true);
-            if (onCopyUsername) {
-                onCopyUsername();
+            if (onUsernameCopied) {
+                onUsernameCopied();
             }
             setTimeout(() => {
                 setUsernameCopied(false);
@@ -74,8 +74,8 @@ export const AppPasswordRead = ({ passwordData, locale, onEdit, onDelete, readon
         if (passwordData.password) {
             navigator.clipboard.writeText(passwordData.password);
             setPasswordCopied(true);
-            if (onCopyPassword) {
-                onCopyPassword();
+            if (onPasswordCopied) {
+                onPasswordCopied();
             }
             setTimeout(() => {
                 setPasswordCopied(false);
@@ -86,8 +86,8 @@ export const AppPasswordRead = ({ passwordData, locale, onEdit, onDelete, readon
         if (otp) {
             navigator.clipboard.writeText(otp);
             setOtpCopied(true);
-            if (onCopyOtp) {
-                onCopyOtp();
+            if (onTotpCopied) {
+                onTotpCopied();
             }
             setTimeout(() => {
                 setOtpCopied(false);
